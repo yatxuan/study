@@ -1,0 +1,8 @@
+1、下载镜像
+docker pull delron/fastdfs   (该版本包含Nginx已经整合过了，不需要重新整合)
+
+2、创建 tracker 容器
+docker run -d --network=host --name tracker -v /home/xxx/docker/fastdfs/tracker:/var/fdfs delron/fastdfs tracker
+
+3、创建 storage 容器(ip需要修改，和自己虚拟机的ip保持一致)
+docker run -d --network=host --name storage -e TRACKER_SERVER=192.168.1.138:22122 -v /home/xxx/docker/fastdfs/storage:/var/fdfs -e GROUP_NAME=group1 delron/fastdfs storage
