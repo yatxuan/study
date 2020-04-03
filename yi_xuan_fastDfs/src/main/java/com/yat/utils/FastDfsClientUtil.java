@@ -51,15 +51,17 @@ public class FastDfsClientUtil {
      * @throws IOException
      */
     public String uploadFileImage(MultipartFile file) throws IOException {
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getContentType());
+        log.info(file.getOriginalFilename());
+        log.info(file.getContentType());
         if (ImageUtil.isImageByFileName(file.getOriginalFilename())) {
             StorePath storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(),
                     FilenameUtils.getExtension(file.getOriginalFilename()), null);
 
-            String path = thumbImageConfig.getThumbImagePath(storePath.getPath());
-            log.info("略缩图：thumbImage--->{}", "http://" + reqHost + ":" + reqPort + "/group1" + path);
-            return getResAccessUrl(storePath);
+            // 获取略缩图
+            String thumbnailsUrl = getThumbnailsUrl(storePath);
+            log.info("略缩图：thumbImage--->{}", thumbnailsUrl);
+
+            return getFilePath(storePath);
         }
         return "请上传正确的图片";
     }
@@ -74,9 +76,14 @@ public class FastDfsClientUtil {
     public String uploadFile(MultipartFile file) throws IOException {
         StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(),
                 FilenameUtils.getExtension(file.getOriginalFilename()), null);
-        return getResAccessUrl(storePath);
+        return getFilePath(storePath);
     }
 
+    /**
+     * 删除文件
+     *
+     * @param filePath 文件路径：http://accessimage.yatxuan.cn/group1/M00/00/00/rBKsVl6Gp7WAeOgJAAAQmDrLZTA452.jpg
+     */
     public void delFile(String filePath) {
         storageClient.deleteFile(filePath);
 
@@ -85,22 +92,43 @@ public class FastDfsClientUtil {
 
     public InputStream download(String groupName, String path) {
         // 将此ins返回给上面的ins
-        InputStream ins = storageClient.downloadFile(groupName, path, FastDfsClientUtil::recv);
-        return ins;
+        return storageClient.downloadFile(groupName, path, FastDfsClientUtil::recv);
     }
 
     private static InputStream recv(InputStream ins1) {
         return ins1;
     }
 
+
+    /**
+     * 获取文件的完整访问路径
+     *
+     * @param storePath 、
+     * @return 、
+     */
+    private String getFilePath(StorePath storePath) {
+        return getResAccessUrl(storePath.getFullPath());
+    }
+
+    /**
+     * 获取略缩图
+     *
+     * @param storePath /
+     * @return 访问略缩图的 URL
+     */
+    private String getThumbnailsUrl(StorePath storePath) {
+        String path = thumbImageConfig.getThumbImagePath(storePath.getFullPath());
+        return getResAccessUrl(path);
+    }
+
     /**
      * 封装文件完整URL地址
      *
-     * @param storePath
-     * @return
+     * @param path /
+     * @return 访问图片的 URL
      */
-    private String getResAccessUrl(StorePath storePath) {
-        return "http://" + reqHost + ":" + reqPort + "/" + storePath.getFullPath();
+    private String getResAccessUrl(String path) {
+        return "http://" + reqHost + ":" + reqPort + "/" + path;
     }
 
 }
