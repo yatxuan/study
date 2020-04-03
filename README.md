@@ -17,7 +17,7 @@
 如果您感觉我写的文章对您有用，或者解决了您的问题，想请作者喝瓶水的，请扫下方。
 
 <p>
-    <img width="100" src="common/pic/WeChat.png" alt="doraemon logo">
-    <img width="100" src="common/pic/AliPay.jpg" alt="doraemon logo">
+    <img width="100" src="common/pic/WeChat.png" >
+    <img width="100" src="common/pic/AliPay.jpg" >
 </p>
    
