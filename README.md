@@ -8,8 +8,9 @@
 
 ## 文章目录
 
-* [SpringBoot整合FastDfs---yi_xuan_fastDfs]
-* [文件压缩---yi_xuan_file_compression]
+* [SpringBoot整合FastDfs---yi_xuan_fastDfs](https://github.com/yatxuan/study/tree/master/yi_xuan_fastDfs)
+* [文件压缩---yi_xuan_file_compression](https://github.com/yatxuan/study/tree/master/yi_xuan_file_compression)
+* []()
 
 ## 感谢
 
