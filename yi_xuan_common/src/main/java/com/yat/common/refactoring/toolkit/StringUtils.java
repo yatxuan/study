@@ -94,7 +94,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return true：为空 false：非空
      */
     public static boolean isNull(Object object) {
-        return object == null;
+        return null == object;
     }
 
     /**

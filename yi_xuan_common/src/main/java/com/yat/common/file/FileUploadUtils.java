@@ -48,7 +48,7 @@ public class FileUploadUtils {
      *
      * @param file 上传的文件
      * @return 文件名称
-     * @throws Exception
+     * @throws IOException /
      */
     public static final String upload(MultipartFile file) throws IOException {
         try {
@@ -89,6 +89,10 @@ public class FileUploadUtils {
     public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension)
             throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
             InvalidExtensionException {
+
+        if (null == file || null == file.getOriginalFilename()) {
+            return null;
+        }
         int fileNamelength = file.getOriginalFilename().length();
         if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
             throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
@@ -100,8 +104,8 @@ public class FileUploadUtils {
 
         File desc = getAbsoluteFile(baseDir, fileName);
         file.transferTo(desc);
-        String pathFileName = getPathFileName(baseDir, fileName);
-        return pathFileName;
+        return getPathFileName(baseDir, fileName);
+
     }
 
     /**
@@ -150,7 +154,7 @@ public class FileUploadUtils {
      * @param file 上传的文件
      * @return
      * @throws FileSizeLimitExceededException 如果超出最大大小
-     * @throws InvalidExtensionException
+     * @throws InvalidExtensionException /
      */
     public static final void assertAllowed(MultipartFile file, String[] allowedExtension)
             throws FileSizeLimitExceededException, InvalidExtensionException {

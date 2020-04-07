@@ -8,7 +8,11 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 /**
  * <p>Description: 类型转换器 </p>
@@ -17,6 +21,34 @@ import java.util.Set;
  * @date 2020/3/27 10:57
  */
 public class Convert {
+
+
+    /**
+     * 空格
+     */
+    private final static char CHAR_SPACE = ' ';
+    /**
+     * 左书名号  《
+     */
+    private final static char LEFT_TITLE_NUMBER = '\uFF5F';
+    /**
+     * 英文逗号  ,
+     */
+    private final static String ENGLISH_COMMA = ",";
+
+    /**
+     * 中文(全角)空格
+     */
+    private final static char T_Z_Z_Z = '\u3000';
+    /**
+     * 
+     */
+    private final static char O_S_S = '\177';
+    /**
+     * ＀
+     */
+    private final static char F_F_Z_Z = '\uFF00';
+
     /**
      * 转换为字符串<br>
      * 如果给定的值为null，或者转换失败，返回默认值<br>
@@ -27,7 +59,7 @@ public class Convert {
      * @return 结果
      */
     public static String toStr(Object value, String defaultValue) {
-        if (null == value) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof String) {
@@ -58,7 +90,7 @@ public class Convert {
      * @return 结果
      */
     public static Character toChar(Object value, Character defaultValue) {
-        if (null == value) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Character) {
@@ -91,7 +123,7 @@ public class Convert {
      * @return 结果
      */
     public static Byte toByte(Object value, Byte defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Byte) {
@@ -133,7 +165,7 @@ public class Convert {
      * @return 结果
      */
     public static Short toShort(Object value, Short defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Short) {
@@ -175,7 +207,7 @@ public class Convert {
      * @return 结果
      */
     public static Number toNumber(Object value, Number defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Number) {
@@ -214,7 +246,7 @@ public class Convert {
      * @return 结果
      */
     public static Integer toInt(Object value, Integer defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Integer) {
@@ -253,7 +285,7 @@ public class Convert {
      * @return 结果
      */
     public static Integer[] toIntArray(String str) {
-        return toIntArray(",", str);
+        return toIntArray(ENGLISH_COMMA, str);
     }
 
     /**
@@ -263,14 +295,14 @@ public class Convert {
      * @return 结果
      */
     public static Long[] toLongArray(String str) {
-        return toLongArray(",", str);
+        return toLongArray(ENGLISH_COMMA, str);
     }
 
     /**
      * 转换为Integer数组<br>
      *
      * @param split 分隔符
-     * @param split 被转换的值
+     * @param str   被转换的值
      * @return 结果
      */
     public static Integer[] toIntArray(String split, String str) {
@@ -278,11 +310,12 @@ public class Convert {
             return new Integer[]{};
         }
         String[] arr = str.split(split);
-        final Integer[] ints = new Integer[arr.length];
-        for (int i = 0; i < arr.length; i++) {
+        int num = arr.length;
+        final Integer[] ints = new Integer[num];
+        IntStream.range(0, num).forEach(i -> {
             final Integer v = toInt(arr[i], 0);
             ints[i] = v;
-        }
+        });
         return ints;
     }
 
@@ -298,11 +331,12 @@ public class Convert {
             return new Long[]{};
         }
         String[] arr = str.split(split);
-        final Long[] longs = new Long[arr.length];
-        for (int i = 0; i < arr.length; i++) {
+        int num = arr.length;
+        final Long[] longs = new Long[num];
+        IntStream.range(0, num).forEach(i -> {
             final Long v = toLong(arr[i], null);
             longs[i] = v;
-        }
+        });
         return longs;
     }
 
@@ -313,14 +347,14 @@ public class Convert {
      * @return 结果
      */
     public static String[] toStrArray(String str) {
-        return toStrArray(",", str);
+        return toStrArray(ENGLISH_COMMA, str);
     }
 
     /**
      * 转换为String数组<br>
      *
      * @param split 分隔符
-     * @param split 被转换的值
+     * @param str   被转换的值
      * @return 结果
      */
     public static String[] toStrArray(String split, String str) {
@@ -337,7 +371,7 @@ public class Convert {
      * @return 结果
      */
     public static Long toLong(Object value, Long defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Long) {
@@ -380,7 +414,7 @@ public class Convert {
      * @return 结果
      */
     public static Double toDouble(Object value, Double defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Double) {
@@ -423,7 +457,7 @@ public class Convert {
      * @return 结果
      */
     public static Float toFloat(Object value, Float defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Float) {
@@ -465,7 +499,17 @@ public class Convert {
      * @return 结果
      */
     public static Boolean toBool(Object value, Boolean defaultValue) {
-        if (value == null) {
+
+        final Map<String, Boolean> map = new HashMap<>(7);
+        map.put("true", true);
+        map.put("yes", true);
+        map.put("ok", true);
+        map.put("1", true);
+        map.put("false", false);
+        map.put("no", false);
+        map.put("0", false);
+
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof Boolean) {
@@ -476,24 +520,7 @@ public class Convert {
             return defaultValue;
         }
         valueStr = valueStr.trim().toLowerCase();
-        switch (valueStr) {
-            case "true":
-                return true;
-            case "false":
-                return false;
-            case "yes":
-                return true;
-            case "ok":
-                return true;
-            case "no":
-                return false;
-            case "1":
-                return true;
-            case "0":
-                return false;
-            default:
-                return defaultValue;
-        }
+        return null == map.get(valueStr) ? defaultValue : map.get(valueStr);
     }
 
     /**
@@ -518,7 +545,7 @@ public class Convert {
      * @return Enum
      */
     public static <E extends Enum<E>> E toEnum(Class<E> clazz, Object value, E defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (clazz.isAssignableFrom(value.getClass())) {
@@ -559,7 +586,7 @@ public class Convert {
      * @return 结果
      */
     public static BigInteger toBigInteger(Object value, BigInteger defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof BigInteger) {
@@ -601,7 +628,7 @@ public class Convert {
      * @return 结果
      */
     public static BigDecimal toBigDecimal(Object value, BigDecimal defaultValue) {
-        if (value == null) {
+        if (StringUtils.isNull(value)) {
             return defaultValue;
         }
         if (value instanceof BigDecimal) {
@@ -671,14 +698,14 @@ public class Convert {
      * @return 字符串
      */
     public static String str(Object obj, Charset charset) {
-        if (null == obj) {
+        if (StringUtils.isNull(obj)) {
             return null;
         }
 
         if (obj instanceof String) {
             return (String) obj;
         } else if (obj instanceof byte[] || obj instanceof Byte[]) {
-            return str((Byte[]) obj, charset);
+            return str(obj, charset);
         } else if (obj instanceof ByteBuffer) {
             return str((ByteBuffer) obj, charset);
         }
@@ -722,11 +749,7 @@ public class Convert {
      * @return 字符串
      */
     public static String str(ByteBuffer data, String charset) {
-        if (data == null) {
-            return null;
-        }
-
-        return str(data, Charset.forName(charset));
+        return null == data ? null : str(data, Charset.forName(charset));
     }
 
     /**
@@ -763,31 +786,30 @@ public class Convert {
      * @return 全角字符串.
      */
     public static String toSBC(String input, Set<Character> notConvertSet) {
-        char c[] = input.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (null != notConvertSet && notConvertSet.contains(c[i])) {
-                // 跳过不替换的字符
-                continue;
-            }
+        char[] c = input.toCharArray();
+        // 跳过不替换的字符
+        IntStream.range(0, c.length)
+                .filter(i -> null == notConvertSet || !notConvertSet.contains(c[i]))
+                .forEach(i -> {
+                    if (c[i] == CHAR_SPACE) {
+                        c[i] = T_Z_Z_Z;
+                    } else if (c[i] < O_S_S) {
+                        c[i] = (char) (c[i] + 65248);
 
-            if (c[i] == ' ') {
-                c[i] = '\u3000';
-            } else if (c[i] < '\177') {
-                c[i] = (char) (c[i] + 65248);
-
-            }
-        }
+                    }
+                });
         return new String(c);
     }
 
     /**
      * 全角转半角
+     * ，。、 -> ,。、
      *
      * @param input String.
      * @return 半角字符串
      */
-    public static String toDBC(String input) {
-        return toDBC(input, null);
+    public static String toDbc(String input) {
+        return toDbc(input, null);
     }
 
     /**
@@ -797,27 +819,24 @@ public class Convert {
      * @param notConvertSet 不替换的字符集合
      * @return 替换后的字符
      */
-    public static String toDBC(String text, Set<Character> notConvertSet) {
-        char c[] = text.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (null != notConvertSet && notConvertSet.contains(c[i])) {
-                // 跳过不替换的字符
-                continue;
-            }
-
-            if (c[i] == '\u3000') {
-                c[i] = ' ';
-            } else if (c[i] > '\uFF00' && c[i] < '\uFF5F') {
-                c[i] = (char) (c[i] - 65248);
-            }
-        }
-        String returnString = new String(c);
-
-        return returnString;
+    public static String toDbc(String text, Set<Character> notConvertSet) {
+        char[] c = text.toCharArray();
+        // 跳过不替换的字符
+        IntStream.range(0, c.length)
+                .filter(i -> null == notConvertSet || !notConvertSet.contains(c[i]))
+                .forEach(i -> {
+                    if (c[i] == T_Z_Z_Z) {
+                        c[i] = CHAR_SPACE;
+                    } else if (c[i] > F_F_Z_Z && c[i] < LEFT_TITLE_NUMBER) {
+                        c[i] = (char) (c[i] - 65248);
+                    }
+                });
+        return new String(c);
     }
 
     /**
      * 数字金额大写转换 先写个完整的然后将如零拾替换成零
+     * 3.663 -> 叁元陆角陆分
      *
      * @param n 数字
      * @return 中文大写数字
@@ -830,23 +849,39 @@ public class Convert {
         String head = n < 0 ? "负" : "";
         n = Math.abs(n);
 
-        String s = "";
-        for (int i = 0; i < fraction.length; i++) {
-            s += (digit[(int) (Math.floor(n * 10 * Math.pow(10, i)) % 10)] + fraction[i]).replaceAll("(零.)+", "");
+        StringBuilder s = new StringBuilder();
+        for (int i = 0, num = fraction.length; i < num; i++) {
+            s.append(
+                    (digit[(int) (Math.floor(n * 10 * Math.pow(10, i)) % 10)] + fraction[i])
+                            .replaceAll("(零.)+", "")
+            );
         }
         if (s.length() < 1) {
-            s = "整";
+            s = new StringBuilder("整");
         }
         int integerPart = (int) Math.floor(n);
 
         for (int i = 0; i < unit[0].length && integerPart > 0; i++) {
-            String p = "";
+            StringBuilder p = new StringBuilder();
             for (int j = 0; j < unit[1].length && n > 0; j++) {
-                p = digit[integerPart % 10] + unit[1][j] + p;
+                p.insert(0, digit[integerPart % 10] + unit[1][j]);
                 integerPart = integerPart / 10;
             }
-            s = p.replaceAll("(零.)*零$", "").replaceAll("^$", "零") + unit[0][i] + s;
+            s.insert(0, p.toString()
+                    .replaceAll("(零.)*零$", "")
+                    .replaceAll("^$", "零") + unit[0][i]);
         }
-        return head + s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", "").replaceAll("(零.)+", "零").replaceAll("^整$", "零元整");
+        return head + s.toString()
+                .replaceAll("(零.)*零元", "元")
+                .replaceFirst("(零.)+", "")
+                .replaceAll("(零.)+", "零")
+                .replaceAll("^整$", "零元整");
+    }
+
+    public static void main(String[] args) {
+        Set<Character> notConvertSet = new HashSet<>(16);
+        notConvertSet.add(T_Z_Z_Z);
+        System.out.println(T_Z_Z_Z);
+        System.out.println(toDbc("　，。、", notConvertSet));
     }
 }

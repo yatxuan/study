@@ -76,26 +76,31 @@ public class ImageUtil {
      * @param file          文件
      * @throws IOException
      */
-    public static boolean drawSimpleImage(BufferedImage bufferedImage, String type, File file) throws IOException {
-        Graphics g = bufferedImage.getGraphics();//获取图片画笔
+    public static boolean drawSimpleImage(BufferedImage bufferedImage, String type, File file)
+            throws IOException {
+        //获取图片画笔
+        Graphics g = bufferedImage.getGraphics();
         try {
-            int backgroundX = 10;//背景x坐标
-            int backgroundY = 40;//背景y坐标
-            int backgroundWith = 180;//背景宽
-            int backgroundHeight = 120;//背景高
-            g.fillRect(backgroundX, backgroundY, backgroundWith, backgroundHeight);//填充背景，默认白色
+            //背景x坐标 背景y坐标 背景高 背景宽
+            int backgroundX = 10, backgroundY = 40, backgroundHeight = 120, backgroundWith = 180;
+            //填充背景，默认白色
+            g.fillRect(backgroundX, backgroundY, backgroundWith, backgroundHeight);
 
-            g.setColor(new Color(120, 120, 120));//设置画笔颜色
+            //设置画笔颜色
+            g.setColor(new Color(120, 120, 120));
 
-            int fontSize = 28;//字体大小
-            g.setFont(new Font("宋体", Font.BOLD, fontSize));//设置字体
+            //设置字体
+            //字体大小
+            int fontSize = 28;
+            g.setFont(new Font("宋体", Font.BOLD, fontSize));
 
-            int stringX = 10;//文字x坐标
-            int stringY = 100;//文字y坐标
-            g.drawString("绘制简单图片", stringX, stringY);
+            //文字x坐标,文字y坐标
+            int textX = 10, textY = 100;
+            g.drawString("绘制简单图片", textX, textY);
             return ImageIO.write(bufferedImage, type, file);
         } finally {
-            g.dispose();//释放画笔
+            //释放画笔
+            g.dispose();
         }
     }
 
@@ -147,7 +152,7 @@ public class ImageUtil {
      * 判断文件后缀是否为图片文件格式,bmp|gif|jpg|jpeg|png 返回true
      *
      * @param imageFileSuffix 图片文件后缀名
-     * @return
+     * @return /
      */
     public static boolean isImageBySuffix(String imageFileSuffix) {
         if (StringUtils.isNotEmpty(imageFileSuffix)) {
@@ -179,7 +184,7 @@ public class ImageUtil {
      *
      * @param srcPath        图片文件绝对路径
      * @param checkImageName 是否校验图片文件名
-     * @return
+     * @return /
      */
     public static boolean isImage(String srcPath, boolean checkImageName) {
         if (checkImageName) {
@@ -199,7 +204,7 @@ public class ImageUtil {
      * 判断文件流是否为合法图片
      *
      * @param file 图片文件
-     * @return
+     * @return /
      */
     public static boolean isImage(File file) {
         return isImage((Object) file);
@@ -209,7 +214,7 @@ public class ImageUtil {
      * 判断文件流是否为合法图片
      *
      * @param srcInputStream 图片文件的流
-     * @return
+     * @return /
      */
     public static boolean isImage(InputStream srcInputStream) {
         return isImage((Object) srcInputStream);
@@ -218,8 +223,8 @@ public class ImageUtil {
     /**
      * 判断文件流是否为合法图片
      *
-     * @param srcInputStream 图片文件的流
-     * @return
+     * @param url 图片文件路径
+     * @return /
      */
     public static boolean isImage(URL url) {
         return isImage((Object) url);
@@ -229,11 +234,11 @@ public class ImageUtil {
      * 图片文件读取
      *
      * @param obj (URL|InputStream|File)
-     * @return
+     * @return /
      */
     private static boolean isImage(Object obj) {
         Image image = null;
-        if (obj != null) {
+        if (null != obj) {
             try {
                 if (obj instanceof URL) {
                     image = ImageIO.read((URL) obj);
@@ -247,9 +252,7 @@ public class ImageUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (image != null && image.getWidth(null) > 0 && image.getHeight(null) > 0) {
-                return true;
-            }
+            return image != null && image.getWidth(null) > 0 && image.getHeight(null) > 0;
         }
         return false;
     }
@@ -273,7 +276,8 @@ public class ImageUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            String hexStr = HexConverter.byteArrayToHexString(b, true);//图片文件流前4个字节的头信息（子文字母）
+            //图片文件流前4个字节的头信息（子文字母）
+            String hexStr = HexConverter.byteArrayToHexString(b, true);
             if (hexStr != null) {
                 if (hexStr.startsWith(JPG_HEX)) {
                     type = JPG;
@@ -336,8 +340,8 @@ public class ImageUtil {
      * 根据文件头，判断文件流是否为合法图片
      *
      * @param file 图片文件
-     * @return
-     * @throws FileNotFoundException
+     * @return 、
+     * @throws FileNotFoundException 、
      */
     public static boolean isImageByHeader(File file) throws FileNotFoundException {
         return isImageBySuffix(getImageType(file));
@@ -351,10 +355,11 @@ public class ImageUtil {
      * @param destPath 压缩后的文件路径
      * @param scale    压缩图的比例因子(0,1]
      * @param quality  图片质量，取值范围[0, 1]
-     * @return
-     * @throws IOException
+     * @return /
+     * @throws IOException /
      */
-    public static boolean compressImageByThumbnails(String srcPath, String destPath, float scale, float quality) throws IOException {
+    public static boolean compressImageByThumbnails(String srcPath, String destPath, float scale, float quality)
+            throws IOException {
         Thumbnails.of(srcPath).scale(scale).outputQuality(quality).toFile(destPath);
         return true;
     }
@@ -367,8 +372,7 @@ public class ImageUtil {
      * @param srcPath  原文件路径
      * @param destPath 压缩后的文件路径
      * @param quality  图片质量，取值范围[0, 1]
-     * @return
-     * @throws IOException
+     * @return /
      */
     public static boolean compressImageByJdk(String srcPath, String destPath, float quality) {
         boolean isSuccess = false;
@@ -386,8 +390,7 @@ public class ImageUtil {
                 ImageWriter writer = imageWriterIte.next();
                 ImageWriteParam imgWriteParam;
                 BufferedImage srcImage = null;
-                FileOutputStream fos = null;
-                try {
+                try (FileOutputStream fos = new FileOutputStream(destPath)) {
                     //写图片参数
                     imgWriteParam = writer.getDefaultWriteParam();
                     //必须指定压缩方式为MODE_EXPLICIT
@@ -400,26 +403,14 @@ public class ImageUtil {
 //					imgWriteParam.setDestinationType(new ImageTypeSpecifier(
 //							colorModel, colorModel.createCompatibleSampleModel(16, 16)));
 
-                    fos = new FileOutputStream(destPath);
+                    ;
                     writer.reset();
                     writer.setOutput(ImageIO.createImageOutputStream(fos));
                     srcImage = ImageIO.read(image);
                     writer.write(null, new IIOImage(srcImage, null, null), imgWriteParam);
                     isSuccess = true;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                } finally {
-                    if (fos != null) {
-                        try {
-                            fos.flush();
-                            fos.close();
-                            writer.dispose();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
             }
         } else {
@@ -436,10 +427,11 @@ public class ImageUtil {
      * @param newWith   新的宽度
      * @param newHeight 新的高度
      * @param forceSize 是否强制使用指定宽、高,false:会保持原图片宽高比例约束
-     * @return
-     * @throws IOException
+     * @return /
+     * @throws IOException /
      */
-    public static boolean resizeImage(String srcPath, String destPath, int newWith, int newHeight, boolean forceSize) throws IOException {
+    public static boolean resizeImage(String srcPath, String destPath, int newWith, int newHeight, boolean forceSize)
+            throws IOException {
         if (forceSize) {
             Thumbnails.of(srcPath).forceSize(newWith, newHeight).toFile(destPath);
         } else {
@@ -451,19 +443,17 @@ public class ImageUtil {
     /**
      * 网络图片下载
      *
-     * @param imageUrl        图片url
+     * @param imageUrl   图片url
      * @param formatName 文件格式名称
      * @param localFile  下载到本地文件
      * @return 下载是否成功
      */
     public static boolean downloadImage(String imageUrl, String formatName, File localFile) {
         boolean isSuccess = false;
-        URL url = null;
+        URL url;
         try {
             url = new URL(imageUrl);
             isSuccess = ImageIO.write(ImageIO.read(url), formatName, localFile);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -473,7 +463,7 @@ public class ImageUtil {
     /**
      * 携带头信息下载网络图片
      *
-     * @param imageUrl        图片url
+     * @param imageUrl   图片url
      * @param formatName 文件格式名称
      * @param localFile  下载到本地文件
      * @param headers    http协议交互中header信息，如Cookie
@@ -499,8 +489,6 @@ public class ImageUtil {
             } else {
                 throw new RuntimeException("图片[" + imageUrl + "]下载失败");
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -521,27 +509,15 @@ public class ImageUtil {
      * @param srcPath    原图路径
      * @param destPath   新图路径
      * @param formatName 图片格式，支持bmp|gif|jpg|jpeg|png
-     * @return
+     * @return /
      */
     public static boolean modifyImageFormat(String srcPath, String destPath, String formatName) {
         boolean isSuccess = false;
-        InputStream fis = null;
-        try {
-            fis = new FileInputStream(srcPath);
+        try (InputStream fis = new FileInputStream(srcPath)) {
             BufferedImage bufferedImg = ImageIO.read(fis);
             isSuccess = ImageIO.write(bufferedImg, formatName, new File(destPath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return isSuccess;
     }
@@ -652,12 +628,13 @@ public class ImageUtil {
     /**
      * 在图片右下角添加白色文字水印
      *
-     * @param is
-     * @param os
-     * @param text
-     * @throws IOException
+     * @param is   /
+     * @param os   /
+     * @param text /
+     * @throws IOException /
      */
-    public static void makeWatermark(InputStream is, OutputStream os, String text, String format) throws IOException {
+    public static void makeWatermark(InputStream is, OutputStream os, String text, String format)
+            throws IOException {
         BufferedImage image = ImageIO.read(is);
         if (image != null) {
             int width = image.getWidth();
@@ -669,9 +646,10 @@ public class ImageUtil {
 
             Graphics2D g = image.createGraphics();
             g.setFont(font);
-            g.setColor(Color.white); //水印颜色-白色
+            //水印颜色-白色
+            g.setColor(Color.white);
 
-//			// 透明度
+            // 透明度
 //			float alpha = 0.9f;
 //			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
 
@@ -693,7 +671,7 @@ public class ImageUtil {
      * 获取水印文字总长度
      *
      * @param text 水印的文字
-     * @param g
+     * @param g    /
      * @return 水印文字总长度
      */
     private static int getWatermarkLength(String text, Graphics g) {

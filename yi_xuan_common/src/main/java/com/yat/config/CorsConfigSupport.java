@@ -18,9 +18,10 @@ import com.yat.config.redis.interceptor.LimitRaterInterceptor;
  * @Date: 2019/9/10
  * @Time: 17:27
  */
+@EnableWebMvc
 @Configuration
 @SuppressWarnings("all")
-public class CorsConfigSupport extends WebMvcConfigurationSupport {
+public class CorsConfigSupport implements WebMvcConfigurer {
 
 
     @Autowired
@@ -46,14 +47,13 @@ public class CorsConfigSupport extends WebMvcConfigurationSupport {
      * 所以要自己手动在这里配置映射路径
      */
     @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // registry.addResourceHandler("接口访问的路径")
         //         .addResourceLocations("项目里对应的静态文件的路径");
 
         registry.addResourceHandler("/favicon.ico")
                 .addResourceLocations("classpath:/static/favicon.ico");
 
-        super.addResourceHandlers(registry);
     }
 
     @Override
