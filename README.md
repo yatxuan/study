@@ -9,6 +9,8 @@
 ## 文章目录
 
 * [SpringBoot整合FastDfs---yi_xuan_fastDfs](https://github.com/yatxuan/study/tree/master/yi_xuan_fastDfs)
+* [SpringBoot整合WebSocket---yi_xuan_webSocket](https://github.com/yatxuan/study/tree/master/yi_xuan_webSocket)
+* [SpringBoot发送邮件---yi_xuan_mail]()
 * [文件压缩---yi_xuan_file_compression](https://github.com/yatxuan/study/tree/master/yi_xuan_file_compression)
 * []()
 

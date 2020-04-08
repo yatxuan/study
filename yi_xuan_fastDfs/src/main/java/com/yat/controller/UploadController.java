@@ -70,12 +70,13 @@ public class UploadController {
      * 下载图片
      *
      * @param filePath - http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gup-AOBTfAAClFitxlGY465.jpg
-     * @param request
-     * @param response
-     * @throws IOException
+     * @param request /
+     * @param response /
+     * @throws IOException /
      */
     @RequestMapping("/download")
-    public void download(String filePath, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void download(String filePath, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
         //    group1/M00/00/00/wKgIZVzZEF2ATP08ABC9j8AnNSs744.jpg
         String[] paths = filePath.split("/");

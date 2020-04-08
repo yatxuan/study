@@ -62,7 +62,7 @@ public class FdfsTest {
 
         // 上传图片
         StorePath storePath = this.storageClient.uploadImageAndCrtThumbImage(
-                new FileInputStream(file), file.length(), "jpg", null);
+                new FileInputStream(file), file.length(), "png", null);
         // 带分组的路径
         System.out.println(storePath.getFullPath());
         // 不带分组的路径
