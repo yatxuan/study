@@ -42,11 +42,11 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
      * @throws MessagingException 邮件异常
      */
     @Test
-    public void sendHtmlMail() throws MessagingException {
+    public void sendHtmlMail() {
         Context context = new Context();
         context.setVariable("project", "Spring Boot Demo");
         context.setVariable("author", "YangXuan");
-        context.setVariable("url", "https://github.com/xkcoding/spring-boot-demo");
+        context.setVariable("url", "https://github.com/yatxuan/study/tree/master/yi_xuan_email");
         String emailTemplate = templateEngine.process("welcome", context);
         mailService.sendHtmlMail(to, "这是一封模板HTML邮件", emailTemplate);
     }
@@ -57,7 +57,7 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
      * @throws MessagingException 邮件异常
      */
     @Test
-    public void sendHtmlMail2() throws MessagingException {
+    public void sendHtmlMail2() {
 
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(context);
@@ -69,8 +69,8 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
         Context context = new Context();
         context.setVariable("project", "Spring Boot Demo");
-        context.setVariable("author", "Yangkai.Shen");
-        context.setVariable("url", "https://github.com/xkcoding/spring-boot-demo");
+        context.setVariable("author", "YatXuan");
+        context.setVariable("url", "https://github.com/yatxuan/study/tree/master/yi_xuan_email");
 
         String emailTemplate = templateEngine.process("test", context);
         mailService.sendHtmlMail(to, "这是一封模板HTML邮件", emailTemplate);
@@ -83,7 +83,7 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
      */
     @Test
     public void sendAttachmentsMail() throws MessagingException {
-        String url = "static/xkcoding.png";
+        String url = "static/ceShi.png";
         URL resource = ResourceUtil.getResource(url);
         if (resource == null) {
             System.err.println("获取不到文件----------------------------------》");
@@ -101,7 +101,7 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
     public void sendResourceMail() throws MessagingException {
         String rscId = "xkcoding";
         String content = "<html><body>这是带静态资源的邮件<br/><img src=\'cid:" + rscId + "\' ></body></html>";
-        URL resource = ResourceUtil.getResource("static/xkcoding.png");
+        URL resource = ResourceUtil.getResource("static/ceShi.png");
         mailService.sendResourceMail(to, "这是一封带静态资源的邮件", content, resource.getPath(), rscId);
     }
 }

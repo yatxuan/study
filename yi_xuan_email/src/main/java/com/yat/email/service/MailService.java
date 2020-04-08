@@ -26,7 +26,6 @@ public interface MailService {
      * @param subject 邮件主题
      * @param content 邮件内容
      * @param cc      抄送地址
-     * @throws MessagingException 邮件发送异常
      */
     void sendHtmlMail(String to, String subject, String content, String... cc);
 

@@ -5,11 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.yat</groupId>
-    <artifactId>yi_xuan_email</artifactId>
+    <artifactId>yi_xuan_social</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <description>SpringBoot发送邮件</description>
-
+    <description>第三方登陆集成</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -24,20 +23,37 @@
         <java.version>1.8</java.version>
         <jasypt.version>2.1.1</jasypt.version>
         <hutool.version>5.0.0</hutool.version>
+        <justauth-spring-boot.version>1.1.0</justauth-spring-boot.version>
+        <guava.version>28.1-jre</guava.version>
+
+        <alipay-sdk-version>4.8.10.ALL</alipay-sdk-version>
+        <simple-http.version>1.0</simple-http.version>
+
     </properties>
 
     <dependencies>
-        <!-- Spring Boot 邮件依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-        <!-- Spring Boot 模板依赖 -->
+        <!-- 对象池，使用redis时必须引入 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
         </dependency>
+
+<!--        &lt;!&ndash; oauth工具类 &ndash;&gt;-->
+        <dependency>
+            <groupId>com.xkcoding</groupId>
+            <artifactId>justauth-spring-boot-starter</artifactId>
+            <version>${justauth-spring-boot.version}</version>
+        </dependency>
+
 
         <!--jasypt配置文件加解密-->
         <dependency>
@@ -63,6 +79,27 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
+        </dependency>
+
+        <!-- guava工具类 -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>${alipay-sdk-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.xkcoding.http</groupId>
+            <artifactId>simple-http</artifactId>
+            <version>${simple-http.version}</version>
         </dependency>
     </dependencies>
 

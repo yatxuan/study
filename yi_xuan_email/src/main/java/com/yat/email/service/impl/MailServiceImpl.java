@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>Description: 邮件接口 </p>
@@ -77,7 +80,8 @@ public class MailServiceImpl implements MailService {
      * @throws MessagingException 邮件发送异常
      */
     @Override
-    public void sendAttachmentsMail(String to, String subject, String content, String filePath, String... cc) throws MessagingException {
+    public void sendAttachmentsMail(String to, String subject, String content, String filePath, String... cc)
+            throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = getHelper(message, to, subject, content, cc);
@@ -99,7 +103,8 @@ public class MailServiceImpl implements MailService {
      * @throws MessagingException 邮件发送异常
      */
     @Override
-    public void sendResourceMail(String to, String subject, String content, String rscPath, String rscId, String... cc) throws MessagingException {
+    public void sendResourceMail(String to, String subject, String content, String rscPath, String rscId, String... cc)
+            throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = getHelper(message, to, subject, content, cc);
@@ -136,5 +141,22 @@ public class MailServiceImpl implements MailService {
             e.printStackTrace();
         }
         return helper;
+    }
+
+
+    /**
+     * 定时任务，指定 5 分钟后执行该任务
+     *
+     * @param str 验证码
+     */
+    private void timedDestruction(String str) {
+        int expiration = 5;
+        //以下示例为程序调用结束继续运行
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        try {
+            executorService.schedule(() -> System.out.println(str), expiration * 60 * 1000L, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
