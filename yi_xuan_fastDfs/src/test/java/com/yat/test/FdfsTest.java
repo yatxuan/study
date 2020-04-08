@@ -46,10 +46,10 @@ public class FdfsTest {
 
     @Test
     public void testUpload() throws FileNotFoundException {
-        File file = new File("D:\\Work\\Idea\\logo.jpg");
+        File file = new File("D:\\Work\\Idea\\测试文本.txt");
         // 上传文件
         StorePath storePath = this.storageClient.uploadFile(
-                new FileInputStream(file), file.length(), "jpg", null);
+                new FileInputStream(file), file.length(), "txt", null);
         // 带分组的路径
         System.out.println(storePath.getFullPath());
         // 不带分组的路径
@@ -58,7 +58,7 @@ public class FdfsTest {
 
     @Test
     public void testUploadAndCreateThumb() throws FileNotFoundException {
-        File file = new File("D:\\img\\1582787548492.jpg");
+        File file = new File("D:\\Work\\Idea\\yi_xuan_study\\common\\pic\\WeChat.png");
 
         // 上传图片
         StorePath storePath = this.storageClient.uploadImageAndCrtThumbImage(
