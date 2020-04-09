@@ -22,47 +22,12 @@ spring:
     # 一般来说是不用配置的，Spring Cache 会根据依赖的包自行装配
     type: redis
 
-justauth:
-  enabled: true
-  type:
-    qq:
-      client-id: 10******85
-      client-secret: 1f7d************************d629e
-      redirect-uri: http://oauth.yatxuan.cn/oauth/qq/callback
-    github:
-      client-id: Iv1.8bac98496cfaad52
-      client-secret: ENC(5VjY2uSj52y5DXNOWiOR0K2BAWwToRZnPrDRZSFKDknAzxMOPyCC5U0E+4EzKOx/4VwagGmEQ9s=)
-      redirect-uri: http://oauth.yatxuan.cn/oauth/github/callback
-    wechat:
-      client-id: wxdcb******4ff4
-      client-secret: b4e9dc************************a08ed6d
-      redirect-uri: http://oauth.yatxuan.cn/oauth/wechat/callback
-    google:
-      client-id: 716******17-6db******vh******ttj320i******userco******t.com
-      client-secret: 9IBorn************7-E
-      redirect-uri: http://oauth.yatxuan.cn/oauth/google/callback
-    microsoft:
-      client-id: 7bdce8******************e194ad76c1b
-      client-secret: Iu0zZ4************************tl9PWan_.
-      redirect-uri: https://oauth.yatxuan.cn/oauth/microsoft/callback
-    mi:
-      client-id: 288************2994
-      client-secret: nFeTt89************************==
-      redirect-uri: http://oauth.yatxuan.cn/demo/oauth/mi/callback
-    wechat_enterprise:
-      client-id: ww58******f3************fbc
-      client-secret: 8G6PCr00j************************rgk************AyzaPc78
-      redirect-uri: http://oauth.yatxuan.cn/oauth/wechat_enterprise/callback
-      agent-id: 1******2
-    alipay:
-      client-id: 2018120962441761
-      client-secret: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCW6qdZakwYZY3ldjiQmYqYcJxuE1I1oG1GtxJCtfq8+H0qiylQmifAsFbCzKNMwzJMmOoo73BQiwg2F6sW+aPlIKqffpzrgnEgpxVl7TRsx3R6nkkAly0xPhAFkX7sNf2HqEu1p64E/ooSKU4CCweTusL817vqNyitmT1qyP70IzOpNnbGGJQo83N7iG08zM+Rcf7azh86p0tDIjFXHOffL+xDxK88ZShxtMn0Vu8IdKmvnz7txbS+LBVXXI72jbaGJ90uoKwfHbzm8/7zc0/K/9aPdvz2qHXXvgVHO9y5e6OpsqxQnwy1nJQMqMQFQZEkAVKSltgNtP6eE4tMKoQBAgMBAAECggEBAJN5VnNwBlBI3PKAJiJXiDISySpfwxQYYvCZcUSzZARJprZuKr9TBMmtB/tv0ZvvmzVysE+0O0LZufpyAoR/CoOa+mDFbz5Mx5Oq8qQZugManV49UwU6tbTK+wkV9ruIvulTsjgfVVQYEIBS0KH6eTsJZAWEI2Nq51tMxdGV/F5Aj8SoP8gZhsxzQk8OS/k09WsgfmR8qiuZILf+CiDqb/Hc90C8aJY7m3Hv5xBbFmcIEhF739A6pbyAu0XivE0uAbZf6zYr+gl/hkZ/yr05sG3BtTcZgDj9/nu6uU/HTSJ7o7oC7bILjlRqMDsT4Bo9Jo9QoN5X5/Ll7s7Kn9mTZYECgYEAx9eRSpeUIjPe1tCpZnVmlHPTL2E+lVDE6laqLThnuoGSiltRycGrmPlOLkpI0zdyqhydlBv6z6UHD0h8Xx0wIIRusc+ht0k8QhEYRurJIdLswpQPZbP1h5ndvoe4pWSJ7zgh3gqdrepQRw+IeRPvLG+dwE8T3692Z06oR3gISFkCgYEAwVNwoRqEauXn/4uZ7oRNu4TjkTc9cB8ZpSNyGXhZwwKhfstTRZkGMQGRxIpY6ZvherH6eYwj8tg3pPOMtHdliYR0eusjoq742XH4uAmrnrikwzdAIaffJtZxcODhVbBSM2CxsHkeaeo6STXO+zwJKo6TtwsvetTQriwdzykQo+kCgYBgPS8KFg9PnV0+ZESARB9/dHwKgDFMZRY/qDbSCiziA45XtPyhRfRmegEth7akiTpeM+OrNQJHRzksIgNLJtpLfpt0ZAKEKu+q/WKMnHr6IALG/digaNbgU7gXDnNcqxtGKekdbk1bONEqN4/Ih1ISOzpkJ3DxsyU5QQcHTAXpGQKBgCTSAYeNh17cvtz696xn4m4ulzEXNkpeggHjyF11gJMVszB1BT0iMf2vcNXgC6Min0VBFJWFzWr5J0/xWwEcJGiWo6CtnDHl5Vt0y4wxu1AVlrvfkAVY9bVt7lkzW3d4h49lgTI9Pz+o7sT2zJ8pBg3m7ddU+AwK8Fvb5ymHhrXRAoGAPBxDmxsHnu0s/9+J5q+1b3d70+GlIEHXa98xV5+XnRwOoiUVs6LwxeCi6/pab18lpcf0F98hq4/gwje1uQmHdmEiIqWJaP6SKP3xvYaY0Z8lxGks67+Kl/rQc3uOye3WKbV1Vcc1bwL0nH8yBNpJwujpnYF2JVjB/vOTqSM3iDA=
-      alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAluqnWWpMGGWN5XY4kJmKmHCcbhNSNaBtRrcSQrX6vPh9KospUJonwLBWwsyjTMMyTJjqKO9wUIsINherFvmj5SCqn36c64JxIKcVZe00bMd0ep5JAJctMT4QBZF+7DX9h6hLtaeuBP6KEilOAgsHk7rC/Ne76jcorZk9asj+9CMzqTZ2xhiUKPNze4htPMzPkXH+2s4fOqdLQyIxVxzn3y/sQ8SvPGUocbTJ9FbvCHSpr58+7cW0viwVV1yO9o22hifdLqCsHx285vP+83NPyv/Wj3b89qh1174FRzvcuXujqbKsUJ8MtZyUDKjEBUGRJAFSkpbYDbT+nhOLTCqEAQIDAQAB
-      redirect-uri: http://oauth.yatxuan.cn/oauth/alipay/callback
-  cache:
-    type: redis
-    prefix: 'SOCIAL:STATE:'
-    timeout: 1h
+#justauth:
+#  enabled: true
+#  cache:
+#    type: redis
+#    prefix: 'SOCIAL:STATE:'
+#    timeout: 1h
 
 # 为 jasypt 配置解密秘钥
 jasypt:

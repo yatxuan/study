@@ -47,13 +47,6 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-<!--        &lt;!&ndash; oauth工具类 &ndash;&gt;-->
-        <dependency>
-            <groupId>com.xkcoding</groupId>
-            <artifactId>justauth-spring-boot-starter</artifactId>
-            <version>${justauth-spring-boot.version}</version>
-        </dependency>
-
 
         <!--jasypt配置文件加解密-->
         <dependency>
@@ -88,18 +81,18 @@
             <version>${guava.version}</version>
         </dependency>
 
-
-
+        <!-- 第三方授权工具类 -->
+        <dependency>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+            <version>1.14.0</version>
+        </dependency>
+        <!--    支付宝授权登陆，需要单独引入依赖    -->
         <dependency>
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay-sdk-java</artifactId>
             <version>${alipay-sdk-version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.xkcoding.http</groupId>
-            <artifactId>simple-http</artifactId>
-            <version>${simple-http.version}</version>
         </dependency>
     </dependencies>
 
