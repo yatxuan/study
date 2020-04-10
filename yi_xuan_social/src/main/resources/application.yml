@@ -22,12 +22,47 @@ spring:
     # 一般来说是不用配置的，Spring Cache 会根据依赖的包自行装配
     type: redis
 
-#justauth:
-#  enabled: true
-#  cache:
-#    type: redis
-#    prefix: 'SOCIAL:STATE:'
-#    timeout: 1h
+# 以下配置没用
+justauth:
+  enabled: true
+  type:
+    qq:
+      clientId: 10******85
+      clientSecret: 1f7d************************d629e
+      redirectUri: http://oauth.yatxuan.cn/oauth/qq/callback
+    github:
+      clientId: 'Iv1.8bac98496cfaad52'
+      clientSecret: ENC(5VjY2uSj52y5DXNOWiOR0K2BAWwToRZnPrDRZSFKDknAzxMOPyCC5U0E+4EzKOx/4VwagGmEQ9s=)
+      redirectUri: http://oauth.yatxuan.cn/oauth/github/callback
+    wechat:
+      clientId: wxdcb******4ff4
+      clientSecret: b4e9dc************************a08ed6d
+      redirectUri: http://oauth.yatxuan.cn/oauth/wechat/callback
+    google:
+      clientId: 716******17-6db******vh******ttj320i******userco******t.com
+      clientSecret: 9IBorn************7-E
+      redirectUri: http://oauth.yatxuan.cn/oauth/google/callback
+    microsoft:
+      clientId: 7bdce8******************e194ad76c1b
+      clientSecret: Iu0zZ4************************tl9PWan_.
+      redirectUri: https://oauth.yatxuan.cn/oauth/microsoft/callback
+    mi:
+      clientId: 288************2994
+      clientSecret: nFeTt89************************==
+      redirectUri: http://oauth.yatxuan.cn/demo/oauth/mi/callback
+    wechat_enterprise:
+      clientId: ww58******f3************fbc
+      clientSecret: 8G6PCr00j************************rgk************AyzaPc78
+      redirectUri: http://oauth.yatxuan.cn/oauth/wechat_enterprise/callback
+      agentId: 1******2
+    alipay:
+      clientId:
+      alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAluqnWWpMGGWN5XY4kJmKmHCcbhNSNaBtRrcSQrX6vPh9KospUJonwLBWwsyjTMMyTJjqKO9wUIsINherFvmj5SCqn36c64JxIKcVZe00bMd0ep5JAJctMT4QBZF+7DX9h6hLtaeuBP6KEilOAgsHk7rC/Ne76jcorZk9asj+9CMzqTZ2xhiUKPNze4htPMzPkXH+2s4fOqdLQyIxVxzn3y/sQ8SvPGUocbTJ9FbvCHSpr58+7cW0viwVV1yO9o22hifdLqCsHx285vP+83NPyv/Wj3b89qh1174FRzvcuXujqbKsUJ8MtZyUDKjEBUGRJAFSkpbYDbT+nhOLTCqEAQIDAQAB
+      redirectUri: http://oauth.yatxuan.cn/oauth/alipay/callback
+  cache:
+    type: redis
+    prefix: 'SOCIAL:STATE:'
+    timeout: 1h
 
 # 为 jasypt 配置解密秘钥
 jasypt:

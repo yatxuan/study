@@ -12,7 +12,7 @@
 * [SpringBoot整合WebSocket---yi_xuan_webSocket](https://github.com/yatxuan/study/tree/master/yi_xuan_webSocket)
 * [SpringBoot发送邮件---yi_xuan_email](https://github.com/yatxuan/study/tree/master/yi_xuan_email)
 * [文件压缩---yi_xuan_file_compression](https://github.com/yatxuan/study/tree/master/yi_xuan_file_compression)
-* []()
+* [SpringBoot整合第三方登陆---yi_xuan_social]()
 
 ## 感谢
 
