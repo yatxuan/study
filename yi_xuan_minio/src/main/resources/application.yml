@@ -1,0 +1,20 @@
+server:
+  port: 9333
+
+# ---------------------------- Minio ----------------------------
+minio:
+  endpoint:
+    enable: true
+    name: minio-endpoint
+  url: http://minio.yatxuan.cn
+  access-key: AKIAIOSFODNN7EXAMPLE
+  secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+# ---------------------------- Minio ----------------------------
+
+# ---------------------------- FileUpload ----------------------------
+spring:
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+# ---------------------------- FileUpload ----------------------------

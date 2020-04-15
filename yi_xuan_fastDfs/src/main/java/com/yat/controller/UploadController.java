@@ -26,6 +26,7 @@ import java.io.InputStream;
  */
 @Slf4j
 @RestController
+@SuppressWarnings("all")
 public class UploadController {
 
     @Autowired
@@ -91,7 +92,6 @@ public class UploadController {
         InputStream input;
         try {
             input = dfsClient.download(groupName, path);
-
         } catch (Exception e) {
             log.error("下载的文件不存在--------------------------->{}", e.getMessage());
             return;
