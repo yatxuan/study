@@ -48,7 +48,7 @@ public class MinioController {
         // 获取原文件名称
         String filename = multipartFile.getOriginalFilename();
         // 重新生成文件名，防止名称冲突
-        String objectName = UUID.randomUUID().toString() + getSuffixName(filename);
+        String objectName = UUID.randomUUID().toString(true) + getSuffixName(filename);
         return minioService.saveObject(bucketName, objectName, multipartFile.getInputStream(), multipartFile.getSize(), multipartFile.getContentType());
     }
 

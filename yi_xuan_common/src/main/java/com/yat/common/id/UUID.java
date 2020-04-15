@@ -15,13 +15,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author yat
  */
 public final class UUID implements java.io.Serializable, Comparable<UUID> {
+
     private static final long serialVersionUID = -1185015143654744140L;
 
     /**
      * SecureRandom 的单例
      */
     private static class Holder {
-        static final SecureRandom numberGenerator = getSecureRandom();
+        static final SecureRandom NUMBER_GENERATOR = getSecureRandom();
     }
 
     /**
@@ -89,14 +90,18 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
      * @return 随机生成的 {@code UUID}
      */
     public static UUID randomUUID(boolean isSecure) {
-        final Random ng = isSecure ? Holder.numberGenerator : getRandom();
+        final Random ng = isSecure ? Holder.NUMBER_GENERATOR : getRandom();
 
         byte[] randomBytes = new byte[16];
         ng.nextBytes(randomBytes);
-        randomBytes[6] &= 0x0f; /* clear version */
-        randomBytes[6] |= 0x40; /* set to version 4 */
-        randomBytes[8] &= 0x3f; /* clear variant */
-        randomBytes[8] |= 0x80; /* set to IETF variant */
+        /* clear version */
+        randomBytes[6] &= 0x0f;
+        /* set to version 4 */
+        randomBytes[6] |= 0x40;
+        /* clear variant */
+        randomBytes[8] &= 0x3f;
+        /* set to IETF variant */
+        randomBytes[8] |= 0x80;
         return new UUID(randomBytes);
     }
 
@@ -114,10 +119,14 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
             throw new InternalError("MD5 not supported");
         }
         byte[] md5Bytes = md.digest(name);
-        md5Bytes[6] &= 0x0f; /* clear version */
-        md5Bytes[6] |= 0x30; /* set to version 3 */
-        md5Bytes[8] &= 0x3f; /* clear variant */
-        md5Bytes[8] |= 0x80; /* set to IETF variant */
+        /* clear version */
+        md5Bytes[6] &= 0x0f;
+        /* set to version 3 */
+        md5Bytes[6] |= 0x30;
+        /* clear variant */
+        md5Bytes[8] &= 0x3f;
+        /* set to IETF variant */
+        md5Bytes[8] |= 0x80;
         return new UUID(md5Bytes);
     }
 
@@ -129,23 +138,25 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
      * @throws IllegalArgumentException 如果 name 与 {@link #toString} 中描述的字符串表示形式不符抛出此异常
      */
     public static UUID fromString(String name) {
+        StringBuilder builder;
         String[] components = name.split("-");
         if (components.length != 5) {
             throw new IllegalArgumentException("Invalid UUID string: " + name);
         }
         for (int i = 0; i < 5; i++) {
-            components[i] = "0x" + components[i];
+            builder = new StringBuilder("0x");
+            components[i] = builder.append(components[i]).toString();
         }
 
-        long mostSigBits = Long.decode(components[0]).longValue();
+        long mostSigBits = Long.decode(components[0]);
         mostSigBits <<= 16;
-        mostSigBits |= Long.decode(components[1]).longValue();
+        mostSigBits |= Long.decode(components[1]);
         mostSigBits <<= 16;
-        mostSigBits |= Long.decode(components[2]).longValue();
+        mostSigBits |= Long.decode(components[2]);
 
-        long leastSigBits = Long.decode(components[3]).longValue();
+        long leastSigBits = Long.decode(components[3]);
         leastSigBits <<= 48;
-        leastSigBits |= Long.decode(components[4]).longValue();
+        leastSigBits |= Long.decode(components[4]);
 
         return new UUID(mostSigBits, leastSigBits);
     }
@@ -223,8 +234,8 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
      */
     public long timestamp() throws UnsupportedOperationException {
         checkTimeBase();
-        return (mostSigBits & 0x0FFFL) << 48//
-                | ((mostSigBits >> 16) & 0x0FFFFL) << 32//
+        return (mostSigBits & 0x0FFFL) << 48
+                | ((mostSigBits >> 16) & 0x0FFFFL) << 32
                 | mostSigBits >>> 32;
     }
 
@@ -319,22 +330,22 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
         final StringBuilder builder = new StringBuilder(isSimple ? 32 : 36);
         // time_low
         builder.append(digits(mostSigBits >> 32, 8));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // time_mid
         builder.append(digits(mostSigBits >> 16, 4));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // time_high_and_version
         builder.append(digits(mostSigBits, 4));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // variant_and_sequence
         builder.append(digits(leastSigBits >> 48, 4));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // node
@@ -386,11 +397,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
     public int compareTo(UUID val) {
         // The ordering is intentionally set up so that the UUIDs
         // can simply be numerically compared as two numbers
-        return (this.mostSigBits < val.mostSigBits ? -1 :
-                (this.mostSigBits > val.mostSigBits ? 1 :
-                        (this.leastSigBits < val.leastSigBits ? -1 :
-                                (this.leastSigBits > val.leastSigBits ? 1 :
-                                        0))));
+        return (Long.compare(this.leastSigBits, val.leastSigBits));
     }
 
     // -------------------------------------------------------------------------------------------------------------------
@@ -426,7 +433,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
         try {
             return SecureRandom.getInstance("SHA1PRNG");
         } catch (NoSuchAlgorithmException e) {
-            throw new UtilException(e);
+            throw new UtilException("UUID生成异常");
         }
     }
 
