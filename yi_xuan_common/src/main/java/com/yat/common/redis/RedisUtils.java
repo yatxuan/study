@@ -1,6 +1,5 @@
 package com.yat.common.redis;
 
-import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import io.lettuce.core.RedisConnectionException;
 import lombok.extern.slf4j.Slf4j;
@@ -231,7 +230,7 @@ public class RedisUtils<V> {
                         redisConnection.scan(scanOptions), redisSerializer::deserialize
                 )
         );
-        Set<String> keys = Sets.newHashSet();
+        Set<String> keys = new HashSet<>(16);
         assert cursor != null;
         while (cursor.hasNext()) {
             keys.add(cursor.next());

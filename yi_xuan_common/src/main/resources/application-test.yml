@@ -1,0 +1,44 @@
+server:
+    port: 10001
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        druid:
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            url: jdbc:mysql:///backtest?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+            username: root
+            password: root
+            initial-size: 10
+            max-active: 100
+            min-idle: 10
+            max-wait: 60000
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            time-between-eviction-runs-millis: 60000
+            min-evictable-idle-time-millis: 300000
+            test-while-idle: true
+            test-on-borrow: false
+            test-on-return: false
+            # 默认true 内置监控页面首页/druid/index.html
+            stat-view-servlet:
+                enabled: true
+                url-pattern: /druid/*
+                # 允许清空统计数据
+                reset-enable: true
+                login-username: admin
+                login-password: admin
+                # IP白名单 多个逗号分隔
+                allow:
+                # IP黑名单
+                deny:
+            filter:
+                stat:
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: false
+                # 防SQL注入过滤
+                wall:
+                    config:
+                        # 允许多条sql同时执行
+                        multi-statement-allow: true
+
