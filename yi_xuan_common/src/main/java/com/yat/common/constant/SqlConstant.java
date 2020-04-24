@@ -31,7 +31,7 @@ public interface SqlConstant {
      */
     String ASC = "asc";
     /**
-     * 升序
+     * 降序
      */
     String DESC = "desc";
 
