@@ -1,6 +1,5 @@
 package cn.yat;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Time: 16:06
  */
 @SpringBootApplication
-@MapperScan("cn.yat.mapper")
 public class ReadWriterApplication {
 
     public static void main(String[] args) {

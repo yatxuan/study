@@ -1,3 +1,5 @@
+server:
+  port: 10002
 spring:
   # ShardingSphere 配置项
   shardingsphere:
@@ -28,7 +30,9 @@ spring:
     masterslave:
       name: ms # 名字，任意，需要保证唯一
       master-data-source-name: ds-master # 主库数据源
-      slave-data-source-names: ds-slave-1, ds-slave-2 # 从库数据源
+      slave-data-source-names: # 从库数据源
+        - ds-slave-1
+        - ds-slave-2
     # 拓展属性配置
     props:
       sql:
@@ -50,3 +54,4 @@ mybatis-plus:
       column-underline: true
       logic-delete-value: -1 # 逻辑已删除值(默认为 -1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
