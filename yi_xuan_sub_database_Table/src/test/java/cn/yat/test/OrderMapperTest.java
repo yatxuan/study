@@ -42,7 +42,9 @@ public class OrderMapperTest {
     @Test
     public void testInsert() {
         OrderDO order = new OrderDO();
-        order.setUserId(1);
-        orderMapper.insertOrder(order);
+        for (int i = 0; i < 1000; i++) {
+            order.setUserId(i);
+            orderMapper.insertOrder(order);
+        }
     }
 }
