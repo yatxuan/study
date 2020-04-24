@@ -1,5 +1,7 @@
 package cn.yat.modules.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,11 +13,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("order_config")
 public class OrderConfigDO {
 
     /**
      * 编号
      */
+    @TableId
     private Integer id;
     /**
      * 支付超时时间

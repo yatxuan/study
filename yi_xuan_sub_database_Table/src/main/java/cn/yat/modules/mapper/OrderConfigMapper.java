@@ -1,10 +1,9 @@
 package cn.yat.modules.mapper;
 
 import cn.yat.modules.entity.OrderConfigDO;
-import org.apache.ibatis.annotations.Param;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-public interface OrderConfigMapper {
+public interface OrderConfigMapper extends BaseMapper<OrderConfigDO> {
 
-    OrderConfigDO selectById(@Param("id") Integer id);
 
 }

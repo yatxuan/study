@@ -3,6 +3,7 @@ package cn.yat.test;
 import cn.yat.SubDataTableApplication;
 import cn.yat.modules.entity.OrderConfigDO;
 import cn.yat.modules.mapper.OrderConfigMapper;
+import cn.yat.modules.service.IOrderConfigService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class OrderConfigMapperTest {
 
     @Autowired
-    private OrderConfigMapper orderConfigMapper;
+    private IOrderConfigService orderConfigService;
 
     @Test
     public void testSelectById() {
-        OrderConfigDO orderConfig = orderConfigMapper.selectById(1);
+        OrderConfigDO orderConfig = orderConfigService.getById(1);
         System.out.println(orderConfig);
     }
 
