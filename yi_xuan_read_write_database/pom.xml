@@ -7,7 +7,7 @@
     <groupId>cn.yat</groupId>
     <artifactId>yi_xuan_read_write_database</artifactId>
     <version>1.0.0</version>
-    <description>读写分离</description>
+    <description>Springboot-MySql读写分离</description>
 
 
     <parent>

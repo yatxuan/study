@@ -7,7 +7,7 @@
     <groupId>cn.yat</groupId>
     <artifactId>yi_xuan_sub_database_Table</artifactId>
     <version>1.0.0</version>
-    <description>Springboot分库分表</description>
+    <description>Springboot-MySql分库分表</description>
 
 
 

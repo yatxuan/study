@@ -38,15 +38,14 @@ import java.util.stream.Collectors;
 public class OauthController {
 
     @Autowired
-    private  AuthStateRedisCache authStateCache;
+    private AuthStateRedisCache authStateCache;
 
     static Map<String, String> map = new HashMap<>(8);
 
     static {
         map.put("gitee", "码云");
-        map.put("google", "谷歌");
+        map.put("weibo", "微博");
         map.put("github", "GitHub");
-        map.put("mi", "小米");
         map.put("wechat", "微信");
         map.put("qq", "QQ");
         map.put("alipay", "支付宝");
@@ -119,6 +118,7 @@ public class OauthController {
         if (StringUtils.isEmpty(redirectUri)) {
             redirectUri = "http://oauth.yatxuan.cn/oauth/" + oauthType + "/callback";
         }
+
         switch (oauthType) {
             case "gitee":
                 return new AuthGiteeRequest(AuthConfig.builder()
@@ -151,15 +151,14 @@ public class OauthController {
                         .clientSecret("b30bea033e2a345400c332995e8f547d")
                         .redirectUri(redirectUri)
                         .build(), authStateCache);
-            case "douyin":
-                return new AuthDouyinRequest(AuthConfig.builder()
-                        .clientId("")
-                        .clientSecret("")
-                        .redirectUri(redirectUri)
-                        .build(), authStateCache);
+            case "wechat":
+                return new AuthWeChatMpRequest(AuthConfig.builder()
+                                .clientId("wx3a9c99cd8dab548f")
+                                .clientSecret("8cbd676499edb5372a545d164dd7e2ed")
+                                .redirectUri(redirectUri)
+                                .build(), authStateCache);
             default:
                 throw new AuthException(AuthResponseStatus.UNSUPPORTED);
-
         }
     }
 }
