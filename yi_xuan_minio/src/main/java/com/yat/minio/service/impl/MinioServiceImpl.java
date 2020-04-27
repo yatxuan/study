@@ -74,12 +74,16 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public MinioObject statObject(String bucketName, String objectName) {
+        return statObject(bucketName, objectName, 60 * 60 * 24);
+    }
 
+    @Override
+    public MinioObject statObject(String bucketName, String objectName, Integer expires) {
         try {
             MinioObject minioObject;
             if (bucketExists(bucketName, false)) {
                 minioObject = new MinioObject(minioClient.statObject(bucketName, objectName));
-                String url = minioClient.presignedGetObject(bucketName, objectName, 60 * 60 * 24);
+                String url = minioClient.presignedGetObject(bucketName, objectName, expires);
                 minioObject.setPath(url);
             } else {
                 minioObject = new MinioObject();
@@ -107,6 +111,7 @@ public class MinioServiceImpl implements MinioService {
             throw new CustomException("presigned URL已经过期了");
         }
     }
+
 
     @Override
     public boolean bucketExists(String bucketName, boolean insecure) {

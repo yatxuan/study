@@ -42,7 +42,7 @@ public interface MinioService {
     MinioObject saveObject(String bucketName, String objectName, InputStream stream, long size, String contentType);
 
     /**
-     * 获取对象的元数据
+     * 获取对象的元数据（自动设置过期时间，过期时间为一天）
      *
      * @param bucketName 存储桶名称
      * @param objectName 存储桶里的对象名称
@@ -59,6 +59,17 @@ public interface MinioService {
      * InvalidExpiresRangeException Presigned URL已经过期了。
      */
     MinioObject statObject(String bucketName, String objectName);
+
+
+    /**
+     * 获取对象的元数据（手动设置过期时间）
+     *
+     * @param bucketName 存储桶名称
+     * @param objectName 存储桶里的对象名称
+     * @param expires    过期时间（秒）
+     * @return /
+     */
+    MinioObject statObject(String bucketName, String objectName, Integer expires);
 
     /**
      * 检查存储桶是否存在,如果不存在，是否需要创建

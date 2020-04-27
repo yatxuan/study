@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import com.yat.minio.common.utils.id.UUID;
 
 /**
@@ -39,8 +40,10 @@ public class MinioController {
     /**
      * 上传文件到minio服务
      *
-     * @param multipartFile 、
+     * @param multipartFile 文件
+     * @param bucketName    文件桶的名称（存放文件的目录）
      * @return 、
+     * @throws IOException 、
      */
     @PostMapping("/upload/{bucketName}")
     public MinioObject saveObject(@RequestParam("multipartFile") MultipartFile multipartFile,
@@ -57,11 +60,14 @@ public class MinioController {
      *
      * @param bucketName 存储桶名称
      * @param objectName 存储桶里的对象名称
+     * @param expires    url过期时间，如果不传过期时间，默认过期时间为一天
      * @return /
      */
     @GetMapping("/stat/{bucketName}/{objectName}")
-    public MinioObject statObject(@PathVariable String bucketName, @PathVariable String objectName) {
-        return minioService.statObject(bucketName, objectName);
+    public MinioObject statObject(@PathVariable String bucketName, @PathVariable String objectName,
+                                  @RequestParam(value = "expires", required = false, defaultValue = "0") Integer expires) {
+        return 0 == expires ? minioService.statObject(bucketName, objectName) : minioService.statObject(bucketName, objectName, expires);
+
     }
 
     /**

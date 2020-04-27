@@ -46,7 +46,7 @@ public class OauthController {
         map.put("gitee", "码云");
         map.put("weibo", "微博");
         map.put("github", "GitHub");
-        map.put("wechat", "微信");
+        map.put("wechatMp", "微信");
         map.put("qq", "QQ");
         map.put("alipay", "支付宝");
     }
@@ -151,7 +151,7 @@ public class OauthController {
                         .clientSecret("b30bea033e2a345400c332995e8f547d")
                         .redirectUri(redirectUri)
                         .build(), authStateCache);
-            case "wechat":
+            case "wechatMp":
                 return new AuthWeChatMpRequest(AuthConfig.builder()
                                 .clientId("wx3a9c99cd8dab548f")
                                 .clientSecret("8cbd676499edb5372a545d164dd7e2ed")
