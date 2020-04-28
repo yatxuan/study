@@ -20,6 +20,14 @@ spring:
         password: root
     # 分片规则
     sharding:
+      default-database-strategy: # 分库策略(这里设置默认的分库策略。如果下面不设置分库策略，默认使用这里的策略) 例：user_id % 2，当user_id的值除以2取余数为0时，默认分配到 ds-orders-0 库
+        inline:
+          algorithm-expression: ds-orders-$->{user_id % 2}
+          sharding-column: user_id
+      default-table-strategy: # 分表策略(这里设置默认的分表策略。如果下面不设置分库策略，默认使用这里的策略) 例：user_id % 8，当user_id的值除以8取余数为0时，默认分配到  orders_0 表
+        inline:
+          algorithm-expression: orders_$->{user_id % 8}
+          sharding-column: user_id
       tables:
         # orders 表配置
         orders:
@@ -27,24 +35,37 @@ spring:
           key-generator: # 主键生成策略
             column: id
             type: SNOWFLAKE
-          database-strategy:
+          database-strategy: # 分库策略 例：user_id % 2，当user_id的值除以2取余数为0时，默认分配到 ds-orders-0 库
             inline:
               algorithm-expression: ds-orders-$->{user_id % 2}
               sharding-column: user_id
-          table-strategy:
+          table-strategy: # 分表策略 例：user_id % 8，当user_id的值除以8取余数为0时，默认分配到  orders_0 表
             inline:
               algorithm-expression: orders_$->{user_id % 8}
               sharding-column: user_id
-        # order_config 表配置
-        order_config:
+        # 不进行分库分表的表，要在这里单独配置映射关系
+        order_config: # order_config 表配置
           actualDataNodes: ds-orders-0.order_config # 仅映射到 ds-orders-0 数据源的 order_config 表
+        tb_user: # tb_user 表配置
+          actualDataNodes: ds-orders-0.tb_user
     # 拓展属性配置
     props:
       sql:
         show: true # 打印 SQL
 
-# mybatis 配置内容
-mybatis:
-  config-location: classpath:mybatis-config.xml # 配置 MyBatis 配置文件路径
-  mapper-locations: classpath:mapper/*.xml # 配置 Mapper XML 地址
-  type-aliases-package: cn.yat.modules.entity # 配置数据库实体包路径
+# mybatis-plus 配置内容
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: cn.yat.entity # 实体扫描，多个package用逗号或者分号分隔
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+  global-config:
+    db-config:
+      id-type: none # 虽然 MyBatis Plus 也提供 ID 生成策略，但是还是使用 Sharding-JDBC 的
+      #驼峰下划线转换
+      column-underline: true
+      logic-delete-value: -1 # 逻辑已删除值(默认为 -1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)

@@ -20,10 +20,10 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `orders_1`;
 CREATE TABLE `orders_1` (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '订单编号',
+  `id` bigint(11) NOT NULL  COMMENT '订单编号',
   `user_id` int(16) DEFAULT NULL COMMENT '用户编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=460478586608943106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
 
 -- ----------------------------
 -- Records of orders_1
@@ -38,10 +38,10 @@ INSERT INTO `orders_1` VALUES ('460478586608943105', '1');
 -- ----------------------------
 DROP TABLE IF EXISTS `orders_3`;
 CREATE TABLE `orders_3` (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '订单编号',
+  `id` bigint(11) NOT NULL  COMMENT '订单编号',
   `user_id` int(16) DEFAULT NULL COMMENT '用户编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
 
 -- ----------------------------
 -- Records of orders_3
@@ -52,10 +52,10 @@ CREATE TABLE `orders_3` (
 -- ----------------------------
 DROP TABLE IF EXISTS `orders_5`;
 CREATE TABLE `orders_5` (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '订单编号',
+  `id` bigint(11) NOT NULL  COMMENT '订单编号',
   `user_id` int(16) DEFAULT NULL COMMENT '用户编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
 
 -- ----------------------------
 -- Records of orders_5
@@ -66,10 +66,10 @@ CREATE TABLE `orders_5` (
 -- ----------------------------
 DROP TABLE IF EXISTS `orders_7`;
 CREATE TABLE `orders_7` (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '订单编号',
+  `id` bigint(11) NOT NULL  COMMENT '订单编号',
   `user_id` int(16) DEFAULT NULL COMMENT '用户编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表';
 
 -- ----------------------------
 -- Records of orders_7
