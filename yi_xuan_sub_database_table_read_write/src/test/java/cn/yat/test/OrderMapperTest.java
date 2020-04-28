@@ -1,10 +1,11 @@
 package cn.yat.test;
 
-import cn.yat.SubDataTableApplication;
+import cn.yat.modules.SubDataTableReadWriteApplication;
 import cn.yat.modules.common.id.IdWorker;
 import cn.yat.modules.entity.OrderDO;
 import cn.yat.modules.service.IOrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shardingsphere.api.hint.HintManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import java.util.List;
 @Slf4j
 @SuppressWarnings("all")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SubDataTableApplication.class)
+@SpringBootTest(classes = SubDataTableReadWriteApplication.class)
 public class OrderMapperTest {
 
     @Autowired
@@ -34,8 +35,16 @@ public class OrderMapperTest {
 
     @Test
     public void testSelectById() {
-        OrderDO order = orderService.getById(1255036824873689088L);
-        log.info("order: '{}'", order);
+        OrderDO order = orderService.getById(1L);
+        log.info("从库：order: '{}'", order);
+
+        try (HintManager hintManager = HintManager.getInstance()) {
+            // 设置强制访问主库
+            hintManager.setMasterRouteOnly();
+            // 执行查询
+            order = orderService.getById(1);
+            log.info("主库：order: '{}'", order);
+        }
     }
 
     @Test
@@ -50,7 +59,7 @@ public class OrderMapperTest {
         long beginTime = System.currentTimeMillis();
         OrderDO order = new OrderDO();
         long id;
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             id = idWorker.nextId();
             order.setId(id);
             order.setUserId(i);
@@ -65,7 +74,7 @@ public class OrderMapperTest {
     }
 
     @Test
-    public void testDel(){
-        orderService.removeById(1255036824873689088L);
+    public void testDel() {
+        orderService.removeById(1L);
     }
 }

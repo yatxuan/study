@@ -16,6 +16,7 @@
 * [SpringBoot整合第三方登陆---yi_xuan_social](https://github.com/yatxuan/study/tree/master/yi_xuan_social)
 * [SpringBoot整合MySQL读写分离---yi_xuan_read_write_database](https://github.com/yatxuan/study/tree/master/yi_xuan_read_write_database)
 * [SpringBoot整合MySQL分库分表---yi_xuan_sub_database_Table](https://github.com/yatxuan/study/tree/master/yi_xuan_sub_database_Table)
+* [Springboot-MySql分库分表+读写分离---yi_xuan_sub_database_table_read_write](https://github.com/yatxuan/study/tree/master/yi_xuan_sub_database_table_read_write)
 * [Springboot整合RabbitMQ---yi_xuan_rabbitmq](https://github.com/yatxuan/study/tree/master/yi_xuan_rabbitmq)
 
 ## 感谢

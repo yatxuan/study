@@ -1,0 +1,90 @@
+spring:
+  # ShardingSphere 配置项
+  shardingsphere:
+    datasource:
+      # 所有数据源的名字
+      names: ds-master-orders-0, ds-master-orders-1, ds-slave-orders-0, ds-slave-orders-1
+      # 订单 orders 数据源配置 00
+      ds-master-orders-0:
+        type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_master_orders_0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      ds-master-orders-1:
+        type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_master_orders_1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      ds-slave-orders-0:
+        type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_slave_orders_0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      # 订单 orders 数据源配置 01
+      ds-slave-orders-1:
+        type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_slave_orders_1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+    # 分片规则
+    sharding:
+      default-database-strategy: # 分库策略(这里设置默认的分库策略。如果下面不设置分库策略，默认使用这里的策略) 例：user_id % 2，当user_id的值除以2取余数为0时，默认分配到 ds-orders-0 库
+        inline:
+          algorithm-expression: ds-master-orders-$->{user_id % 2}
+          sharding-column: user_id
+      default-table-strategy: # 分表策略(这里设置默认的分表策略。如果下面不设置分库策略，默认使用这里的策略) 例：user_id % 8，当user_id的值除以8取余数为0时，默认分配到  orders_0 表
+        inline:
+          algorithm-expression: orders_$->{user_id % 8}
+          sharding-column: user_id
+      tables:
+        # orders 表配置
+        orders:
+          actualDataNodes: ds-master-orders-0.orders_$->{[0,2,4,6]}, ds-master-orders-1.orders_$->{[1,3,5,7]} # 映射到 ds-orders-0 和 ds-orders-1 数据源的 orders 表们
+          key-generator: # 主键生成策略
+            column: id
+            type: SNOWFLAKE
+          database-strategy: # 分库策略 例：user_id % 2，当user_id的值除以2取余数为0时，默认分配到 ds-orders-0 库
+            inline:
+              algorithm-expression: ds-master-orders-$->{user_id % 2}
+              sharding-column: user_id
+          table-strategy: # 分表策略 例：user_id % 8，当user_id的值除以8取余数为0时，默认分配到  orders_0 表
+            inline:
+              algorithm-expression: orders_$->{user_id % 8}
+              sharding-column: user_id
+        # 不进行分库分表的表，要在这里单独配置映射关系
+        order_config: # order_config 表配置
+          actualDataNodes: ds-master-orders-0.order_config # 仅映射到 ds-orders-0 数据源的 order_config 表
+        tb_user: # tb_user 表配置
+          actualDataNodes: ds-master-orders-0.tb_user
+      master-slave-rules:
+        ds-master-orders-0:
+          master-data-source-name: ds-master-orders-0 # 主库数据源
+          slave-data-source-names: ds-slave-orders-0 # 从库数据源
+        ds-master-orders-1:
+          master-data-source-name: ds-master-orders-1 # 主库数据源
+          slave-data-source-names: ds-slave-orders-1 # 从库数据源
+    # 拓展属性配置
+    props:
+      sql:
+        show: true # 打印 SQL
+
+# mybatis-plus 配置内容
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: cn.yat.entity # 实体扫描，多个package用逗号或者分号分隔
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+  global-config:
+    db-config:
+      id-type: none # 虽然 MyBatis Plus 也提供 ID 生成策略，但是还是使用 Sharding-JDBC 的
+      #驼峰下划线转换
+      column-underline: true
+      logic-delete-value: -1 # 逻辑已删除值(默认为 -1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
