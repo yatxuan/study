@@ -35,14 +35,14 @@ public class OrderMapperTest {
 
     @Test
     public void testSelectById() {
-        OrderDO order = orderService.getById(1L);
+        OrderDO order = orderService.getById(1255378066157465600L);
         log.info("从库：order: '{}'", order);
 
         try (HintManager hintManager = HintManager.getInstance()) {
             // 设置强制访问主库
             hintManager.setMasterRouteOnly();
             // 执行查询
-            order = orderService.getById(1);
+            order = orderService.getById(1255378066157465600L);
             log.info("主库：order: '{}'", order);
         }
     }
@@ -59,7 +59,7 @@ public class OrderMapperTest {
         long beginTime = System.currentTimeMillis();
         OrderDO order = new OrderDO();
         long id;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             id = idWorker.nextId();
             order.setId(id);
             order.setUserId(i);

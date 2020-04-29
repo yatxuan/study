@@ -7,27 +7,27 @@ spring:
       # 订单 orders 数据源配置 00
       ds-master-orders-0:
         type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_master_orders_0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.1.163:3306/test_master_orders_0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
         username: root
         password: root
       ds-master-orders-1:
         type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_master_orders_1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.1.163:3306/test_master_orders_1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
         username: root
         password: root
       ds-slave-orders-0:
         type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_slave_orders_0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.1.165:3306/test_master_orders_0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
         username: root
         password: root
       # 订单 orders 数据源配置 01
       ds-slave-orders-1:
         type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_slave_orders_1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.1.165:3306/test_master_orders_1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
         username: root
         password: root
     # 分片规则
