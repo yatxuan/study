@@ -66,7 +66,5 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: none # 虽然 MyBatis Plus 也提供 ID 生成策略，但是还是使用 Sharding-JDBC 的
-      #驼峰下划线转换
-      column-underline: true
       logic-delete-value: -1 # 逻辑已删除值(默认为 -1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)

@@ -98,5 +98,6 @@ CREATE TABLE `tb_user` (
   `id` bigint(11) NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ip_adder` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'ip',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -43,6 +43,7 @@ public class UserController {
             userEntity.setId(idWorker.nextId());
             userEntity.setName("name-" + i);
             userEntity.setPassword("password-" + i);
+            userEntity.setIpAdder("ipAdder-" + i);
             userService.save(userEntity);
         }
 
