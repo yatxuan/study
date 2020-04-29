@@ -24,7 +24,7 @@
 如果您感觉我写的文章对您有用，或者解决了您的问题，想请作者喝瓶水的，请扫下方。
 
 <p>
-    <img width="100" src="http://minio.yatxuan.cn/pic/1514546b772b4d03bd5719bdd91393e4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20200427%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200427T071336Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=bcfcbb5e28dd53cddbd6dc12158b4d133b967936f386fd94b3c0fc774d685ce4" >
-    <img width="100" src="http://minio.yatxuan.cn/pic/19f370c443884cb28391909a1416f35d.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20200427%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200427T071302Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=52af8e6a575a1e60dbb6a2049afa7b8ecc8a1f5549bf433381b7f51c8f090c64" >
+    <img width="100" src="http://minio.yatxuan.cn/pic/1514546b772b4d03bd5719bdd91393e4.png" >
+    <img width="100" src="http://minio.yatxuan.cn/pic/19f370c443884cb28391909a1416f35d.jpg" >
 </p>
    
