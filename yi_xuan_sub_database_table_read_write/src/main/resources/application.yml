@@ -32,6 +32,7 @@ spring:
         password: root
     # 分片规则
     sharding:
+      default-data-source-name: ds-master-orders-0 # 默认数据源，放置不需要分片的表和广播表(不进行分库分表的表，就不用单独配置映射关系了)
       default-database-strategy: # 分库策略(这里设置默认的分库策略。如果下面不设置分库策略，默认使用这里的策略) 例：user_id % 2，当user_id的值除以2取余数为0时，默认分配到 ds-orders-0 库
         inline:
           algorithm-expression: ds-master-orders-$->{user_id % 2}
@@ -56,10 +57,10 @@ spring:
               algorithm-expression: orders_$->{user_id % 8}
               sharding-column: user_id
         # 不进行分库分表的表，要在这里单独配置映射关系
-        order_config: # order_config 表配置
-          actualDataNodes: ds-master-orders-0.order_config # 仅映射到 ds-orders-0 数据源的 order_config 表
-        tb_user: # tb_user 表配置
-          actualDataNodes: ds-master-orders-0.tb_user
+#        order_config: # order_config 表配置
+#          actualDataNodes: ds-master-orders-0.order_config # 仅映射到 ds-orders-0 数据源的 order_config 表
+#        tb_user: # tb_user 表配置
+#          actualDataNodes: ds-master-orders-0.tb_user
       master-slave-rules:
         ds-master-orders-0:
           master-data-source-name: ds-master-orders-0 # 主库数据源
