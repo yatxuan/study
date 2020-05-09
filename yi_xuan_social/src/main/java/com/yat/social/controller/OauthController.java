@@ -46,7 +46,7 @@ public class OauthController {
         map.put("gitee", "码云");
         map.put("weibo", "微博");
         map.put("github", "GitHub");
-        map.put("wechatMp", "微信");
+        map.put("wechatMp", "微信公众号");
         map.put("qq", "QQ");
         map.put("alipay", "支付宝");
     }

@@ -1,0 +1,5 @@
+server:
+  port: 9111
+spring:
+  application:
+    name: spirng-boot-scheduler
