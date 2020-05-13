@@ -1,0 +1,23 @@
+schema {
+    query: YatXuanQuery
+}
+
+type YatXuanQuery {
+    userResources(name:String) : UserResources
+    logResources(id:Long) : LogResources
+}
+
+type UserResources {
+    id:Long
+    name:String
+    age:Int
+    sex:Int
+}
+
+type LogResources {
+    id:Long!
+    title:String
+    content:String
+    userId:Long
+    comment:Int
+}
