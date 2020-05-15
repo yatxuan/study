@@ -12,9 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Time: 9:36
  */
 @SpringBootApplication
-public class YatApplication {
+public class WebSocketApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(YatApplication.class);
+        SpringApplication.run(WebSocketApplication.class);
     }
 }

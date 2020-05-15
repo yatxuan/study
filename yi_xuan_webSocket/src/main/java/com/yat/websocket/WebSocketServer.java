@@ -38,7 +38,7 @@ public class WebSocketServer {
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("sid") String sid) {
+    public void onOpen(Session session, @PathParam("sid") String sid) throws IOException {
         this.session = session;
         //如果存在就先删除一个，防止重复推送消息
         for (WebSocketServer webSocket : webSocketSet) {
@@ -48,6 +48,7 @@ public class WebSocketServer {
         }
         webSocketSet.add(this);
         this.sid = sid;
+        sendMessage(this.sid + ",已连接");
     }
 
     /**
@@ -55,6 +56,7 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
+        log.info(this.sid + ",已关闭连接");
         webSocketSet.remove(this);
     }
 
@@ -67,7 +69,7 @@ public class WebSocketServer {
     public void onMessage(String message, Session session) throws IOException {
         log.info("收到来" + sid + "的信息:" + message);
         int size = webSocketSet.size();
-        this.session.getBasicRemote().sendText("当前连接人数：---------->" + size);
+        sendMessage("当前连接人数：---------->" + size);
         //群发消息
         // for (WebSocketServer item : webSocketSet) {
         //     try {
@@ -104,14 +106,11 @@ public class WebSocketServer {
     public static void sendInfo(String socketMsg, @PathParam("sid") String sid) throws IOException {
         log.info("推送消息到" + sid + "，推送内容:" + socketMsg);
         for (WebSocketServer item : webSocketSet) {
-            try {
-                //这里可以设定只推送给这个sid的，为null则全部推送
-                if (sid == null) {
-                    item.sendMessage(socketMsg);
-                } else if (item.sid.equals(sid)) {
-                    item.sendMessage(socketMsg);
-                }
-            } catch (IOException ignored) {
+            //这里可以设定只推送给这个sid的，为null则全部推送
+            if (sid == null) {
+                item.sendMessage(socketMsg);
+            } else if (item.sid.equals(sid)) {
+                item.sendMessage(socketMsg);
             }
         }
     }

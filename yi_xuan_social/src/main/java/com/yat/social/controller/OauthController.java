@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * <p>Description: 第三方登录 Controller </p>
+ * <p>Description: 第三方登录 controller </p>
  *
  * @author Yat-Xuan
  * @date 2020/4/8 17:47
@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/oauth")
+@SuppressWarnings("all")
 public class OauthController {
 
     @Autowired

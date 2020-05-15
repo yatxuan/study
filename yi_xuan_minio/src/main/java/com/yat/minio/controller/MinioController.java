@@ -29,6 +29,7 @@ import com.yat.minio.common.utils.id.UUID;
  * @date 2020/4/13 17:05
  */
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/minio-endpoint")
 @SuppressWarnings("all")

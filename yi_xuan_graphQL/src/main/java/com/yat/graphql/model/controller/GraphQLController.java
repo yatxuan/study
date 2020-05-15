@@ -21,6 +21,7 @@ import java.util.Map;
 @Controller
 @CrossOrigin
 @RequestMapping("/graphql")
+@SuppressWarnings("all")
 public class GraphQLController {
 
     @Autowired
@@ -38,10 +39,9 @@ public class GraphQLController {
     @GetMapping
     @ResponseBody
     public Map<String, Object> query(String query) {
-
-        if (StringUtils.equals(query, "1")) {
+        if (StringUtils.equals(query, "0")) {
             query = "{userResources{id,name,age}}";
-        }else {
+        }else if (StringUtils.equals(query, "1")) {
             query = "{logResources(id:1){id,title,content}}";
         }
         return this.graphQL.execute(query).toSpecification();
