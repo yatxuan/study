@@ -24,6 +24,9 @@ public class MybatisPlusConfig {
         return new PaginationInterceptor();
     }
 
+    /**
+     * 逻辑删除
+     */
     @Bean
     public ISqlInjector sqlInjector() {
         return new LogicSqlInjector();
