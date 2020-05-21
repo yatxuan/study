@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -69,8 +68,9 @@ public class UserEntity {
     private Integer version;
 
     /**
-     * 逻辑删除
+     * 逻辑删除,单表配置
      * <p>@TableLogic:表示这张表通过这个字段实现逻辑删除，如果删除该注解，就会直接删除数据</p>
+     * <p>但如果实体类上有 @TableLogic 则以实体上的为准，忽略全局。 即先查找注解再查找全局，都没有则此表没有逻辑删除。</p>
      */
     @TableLogic
     @TableField(fill = FieldFill.INSERT)

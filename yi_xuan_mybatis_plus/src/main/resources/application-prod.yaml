@@ -1,5 +1,6 @@
 spring:
   datasource:
+    # 当前版本未配置mybatis_plus 执行 SQL 分析打印
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://127.0.0.1:3306/mybatis_plus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT

@@ -1,8 +1,9 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    # mybatis_plus 配置执行 SQL 分析打印，需要改变 driver-class-name，url 参数，（未配置版本——prod）
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/mybatis_plus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql:///mybatis_plus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT&serverTimezone=Asia/Shanghai
     username: root
     password: root
 
@@ -19,9 +20,11 @@ mybatis-plus:
       id-type: ID_WORKER
       #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
       field-strategy: NOT_NULL
-      # 配置逻辑删除的值
+      # 逻辑删除配置
       logic-delete-value: -1
       logic-not-delete-value: 0
+      # 配置全局逻辑删除的字段(但如果实体类上有 @TableLogic 则以实体上的为准，忽略全局。 即先查找注解再查找全局，都没有则此表没有逻辑删除。)
+      logic-delete-field: deleted
     banner: false
   #原生配置
   configuration:

@@ -92,7 +92,7 @@ public class SqlTest {
     @Test
     public void testOptimisticLocker() {
         //查询
-        UserEntity user = userService.getById(1262946394988118017L);
+        UserEntity user = userService.getById(1263032674497355777L);
 
         //修改数据
         user.setName("Helen Yao");
@@ -108,7 +108,7 @@ public class SqlTest {
     @Test
     public void testOptimisticLockerFail() {
         //查询
-        UserEntity user = userService.getById(1262946394988118017L);
+        UserEntity user = userService.getById(1263032674497355777L);
 
         //修改数据
         user.setName("Helen Yao1");
@@ -151,13 +151,13 @@ public class SqlTest {
     }
 
     /**
-     * 测试page分页:结果集是Map
+     * 测试自定义分页
      */
     @Test
     public void testSelectMapsPage() {
 
         Page<UserEntity> page = new Page<>(1, 5);
-        IPage<Map<String, Object>> mapIPage = userService.pageMaps(page, null);
+        IPage<UserEntity> mapIPage = userService.selectUserPage(page, 1);
 
         //注意：此行必须使用 mapIPage 获取记录列表，否则会有数据类型转换错误
         mapIPage.getRecords().forEach(System.out::println);
@@ -184,7 +184,7 @@ public class SqlTest {
      */
     @Test
     public void testDeleteById() {
-        boolean removeById = userService.removeById(1262946395655012353L);
+        boolean removeById = userService.removeById(1263032674497355777L);
         System.out.println(removeById);
     }
 
