@@ -6,6 +6,7 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.yat.utils.image.ImageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -47,15 +48,17 @@ public class FastDfsClientUtil {
      * 上传图片，并生成缩略图
      *
      * @param file 图片文件
-     * @return
-     * @throws IOException
+     * @return 、
+     * @throws IOException 、
      */
     public String uploadFileImage(MultipartFile file) throws IOException {
-        log.info(file.getOriginalFilename());
+        // 获取文件名称
+        String originalFilename = file.getOriginalFilename();
+        log.info(originalFilename);
         log.info(file.getContentType());
-        if (ImageUtil.isImageByFileName(file.getOriginalFilename())) {
+        if (ImageUtil.isImageByFileName(originalFilename)) {
             StorePath storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(),
-                    FilenameUtils.getExtension(file.getOriginalFilename()), null);
+                    FilenameUtils.getExtension(originalFilename), null);
 
             // 获取略缩图
             String thumbnailsUrl = getThumbnailsUrl(storePath);
@@ -70,13 +73,23 @@ public class FastDfsClientUtil {
      * 上传文件
      *
      * @param file 文件
-     * @return
-     * @throws IOException
+     * @return 、
+     * @throws IOException 、
      */
-    public String uploadFile(MultipartFile file) throws IOException {
-        StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(),
-                FilenameUtils.getExtension(file.getOriginalFilename()), null);
-        return getFilePath(storePath);
+    public FastDfsResponse uploadFile(MultipartFile file) throws IOException {
+        FastDfsResponse fastDfsResponse = new FastDfsResponse(file);
+        StorePath storePath;
+        if (fastDfsResponse.isThumbnails()) {
+            storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(),
+                    FilenameUtils.getExtension(fastDfsResponse.getFileName()), null);
+            fastDfsResponse.setThumbnailsUrl(getThumbnailsUrl(storePath));
+
+        } else {
+            storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(),
+                    FilenameUtils.getExtension(file.getOriginalFilename()), null);
+        }
+        fastDfsResponse.setFileUrl(getFilePath(storePath));
+        return fastDfsResponse;
     }
 
     /**
@@ -117,8 +130,7 @@ public class FastDfsClientUtil {
      * @return 访问略缩图的 URL
      */
     private String getThumbnailsUrl(StorePath storePath) {
-        String path = thumbImageConfig.getThumbImagePath(storePath.getFullPath());
-        return getResAccessUrl(path);
+        return getResAccessUrl(thumbImageConfig.getThumbImagePath(storePath.getFullPath()));
     }
 
     /**

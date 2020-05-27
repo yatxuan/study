@@ -1,6 +1,7 @@
 package com.yat.controller;
 
 import com.yat.utils.FastDfsClientUtil;
+import com.yat.utils.FastDfsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,6 @@ public class UploadController {
      */
     @PostMapping("/upload/Image")
     public String fastDfsUploadImage(@RequestParam("file") MultipartFile file) {
-
         try {
             return dfsClient.uploadFileImage(file);
         } catch (IOException e) {
@@ -53,11 +53,10 @@ public class UploadController {
      * 上传文件
      *
      * @param file 文件
-     * @return 图片访问地址
+     * @return 文件访问地址
      */
     @PostMapping("/upload")
-    public String fastDfsUpload(@RequestParam("file") MultipartFile file) {
-
+    public FastDfsResponse fastDfsUpload(@RequestParam("file") MultipartFile file) {
         try {
             return dfsClient.uploadFile(file);
         } catch (IOException e) {
@@ -68,12 +67,12 @@ public class UploadController {
 
 
     /**
-     * 下载图片
+     * 下载文件
      *
      * @param filePath - http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gup-AOBTfAAClFitxlGY465.jpg
-     * @param request /
-     * @param response /
-     * @throws IOException /
+     * @param request 、
+     * @param response 、
+     * @throws IOException 、
      */
     @RequestMapping("/download")
     public void download(String filePath, HttpServletRequest request, HttpServletResponse response)

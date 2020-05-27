@@ -12,14 +12,26 @@ import java.net.URLEncoder;
  */
 public class FileUtils {
 
-    public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
+    public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-|.\\u4e00-\\u9fa5]+";
+
+    /**
+     * IE浏览器
+     */
+    public final static String MSIE = "MSIE";
+    /**
+     * 火狐浏览器
+     */
+    public final static String FIREFOX = "Firefox";
+    /**
+     * google浏览器
+     */
+    public final static String CHROME = "Chrome";
 
     /**
      * 输出指定文件的byte数组
      *
      * @param filePath 文件路径
      * @param os       输出流
-     * @return
      */
     public static void writeBytes(String filePath, OutputStream os) throws IOException {
         FileInputStream fis = null;
@@ -34,8 +46,6 @@ public class FileUtils {
             while ((length = fis.read(b)) > 0) {
                 os.write(b, 0, length);
             }
-        } catch (IOException e) {
-            throw e;
         } finally {
             if (os != null) {
                 try {
@@ -58,7 +68,7 @@ public class FileUtils {
      * 删除文件
      *
      * @param filePath 文件
-     * @return
+     * @return 、
      */
     public static boolean deleteFile(String filePath) {
         boolean flag = false;
@@ -92,14 +102,15 @@ public class FileUtils {
             throws UnsupportedEncodingException {
         final String agent = request.getHeader("USER-AGENT");
         String filename = fileName;
-        if (agent.contains("MSIE")) {
+
+        if (agent.contains(MSIE)) {
             // IE浏览器
             filename = URLEncoder.encode(filename, "utf-8");
             filename = filename.replace("+", " ");
-        } else if (agent.contains("Firefox")) {
+        } else if (agent.contains(FIREFOX)) {
             // 火狐浏览器
             filename = new String(fileName.getBytes(), "ISO8859-1");
-        } else if (agent.contains("Chrome")) {
+        } else if (agent.contains(CHROME)) {
             // google浏览器
             filename = URLEncoder.encode(filename, "utf-8");
         } else {
