@@ -16,5 +16,6 @@ public class FastDfsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(FastDfsApplication.class);
+        System.out.println("------------------------程序初始化完成--------------------------");
     }
 }

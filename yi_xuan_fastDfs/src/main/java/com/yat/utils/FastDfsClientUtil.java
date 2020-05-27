@@ -6,7 +6,6 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.yat.utils.image.ImageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -77,13 +76,12 @@ public class FastDfsClientUtil {
      * @throws IOException 、
      */
     public FastDfsResponse uploadFile(MultipartFile file) throws IOException {
-        FastDfsResponse fastDfsResponse = new FastDfsResponse(file);
         StorePath storePath;
+        FastDfsResponse fastDfsResponse = new FastDfsResponse(file);
         if (fastDfsResponse.isThumbnails()) {
             storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(),
                     FilenameUtils.getExtension(fastDfsResponse.getFileName()), null);
             fastDfsResponse.setThumbnailsUrl(getThumbnailsUrl(storePath));
-
         } else {
             storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(),
                     FilenameUtils.getExtension(file.getOriginalFilename()), null);
@@ -99,7 +97,6 @@ public class FastDfsClientUtil {
      */
     public void delFile(String filePath) {
         storageClient.deleteFile(filePath);
-
     }
 
 
