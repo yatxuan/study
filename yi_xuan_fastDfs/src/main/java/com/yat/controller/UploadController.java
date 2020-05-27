@@ -82,6 +82,8 @@ public class UploadController {
         //    group1/M00/00/00/wKgIZVzZEF2ATP08ABC9j8AnNSs744.jpg
         String[] paths = filePath.split("/");
         String groupName = null;
+        // 文件名
+        String fileName = paths[paths.length - 1];
         for (String item : paths) {
             if (item.contains("group")) {
                 groupName = item;
@@ -94,9 +96,8 @@ public class UploadController {
         try (InputStream input = dfsClient.download(groupName, path)) {
 
             //根据文件名获取 MIME 类型
-            String fileName = "Yat_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
-                    + StringUtils.substring(
-                    paths[paths.length - 1], StringUtils.indexOf(paths[paths.length - 1], "."));
+            fileName = "Yat_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+                    + StringUtils.substring(fileName, StringUtils.indexOf(fileName, "."));
 
             // 设置头
             response.setHeader("Content-Type", request.getServletContext().getMimeType(fileName));
@@ -108,9 +109,9 @@ public class UploadController {
             IOUtils.copy(input, output);
 
         } catch (FdfsServerException e) {
-            log.error("下载的文件不存在--------------------------->{}", e.getMessage());
+            log.error("下载的文件:'{}',不存在--------------------------->{}", fileName, e.getMessage());
         } catch (IOException e) {
-            log.error("下载的文件不存在--------------------------->{}", e.getMessage());
+            log.error("下载的文件:'{}',不存在--------------------------->{}", fileName, e.getMessage());
         }
     }
 
