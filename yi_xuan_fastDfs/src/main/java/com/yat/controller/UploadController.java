@@ -1,14 +1,13 @@
 package com.yat.controller;
 
+import com.github.tobato.fastdfs.exception.FdfsServerException;
 import com.yat.utils.FastDfsClientUtil;
 import com.yat.utils.FastDfsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
@@ -16,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * <p>Description: 描述 </p>
@@ -69,14 +71,13 @@ public class UploadController {
     /**
      * 下载文件
      *
-     * @param filePath - http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gup-AOBTfAAClFitxlGY465.jpg
-     * @param request 、
+     * @param filePath 文件的访问路径：例 - http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gup-AOBTfAAClFitxlGY465.jpg
+     * @param request  、
      * @param response 、
      * @throws IOException 、
      */
-    @RequestMapping("/download")
-    public void download(String filePath, HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    @GetMapping("/download")
+    public void download(String filePath, HttpServletRequest request, HttpServletResponse response) {
 
         //    group1/M00/00/00/wKgIZVzZEF2ATP08ABC9j8AnNSs744.jpg
         String[] paths = filePath.split("/");
@@ -87,41 +88,42 @@ public class UploadController {
                 break;
             }
         }
+
         String path = filePath.substring(filePath.indexOf(groupName) + groupName.length() + 1);
-        InputStream input;
-        try {
-            input = dfsClient.download(groupName, path);
-        } catch (Exception e) {
+
+        try (InputStream input = dfsClient.download(groupName, path)) {
+
+            //根据文件名获取 MIME 类型
+            String fileName = "Yat_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+                    + StringUtils.substring(
+                    paths[paths.length - 1], StringUtils.indexOf(paths[paths.length - 1], "."));
+            // wKgIZVzZEF2ATP08ABC9j8AnNSs744.jpg
+            log.info("下载的文件：fileName --->{}", fileName);
+
+            // 设置头
+            response.setHeader("Content-Type", request.getServletContext().getMimeType(fileName));
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+
+            // 获取绑定了客户端的流
+            ServletOutputStream output = response.getOutputStream();
+
+            // 把输入流中的数据写入到输出流中
+            IOUtils.copy(input, output);
+        } catch (FdfsServerException e) {
             log.error("下载的文件不存在--------------------------->{}", e.getMessage());
-            return;
+        } catch (IOException e) {
+            log.error("下载的文件不存在--------------------------->{}", e.getMessage());
         }
-        //根据文件名获取 MIME 类型
-        String fileName = paths[paths.length - 1];
-        // wKgIZVzZEF2ATP08ABC9j8AnNSs744.jpg
-        log.info("下载的文件：fileName --->{}", fileName);
-        String contentType = request.getServletContext().getMimeType(fileName);
-        String contentDisposition = "attachment;filename=" + fileName;
-
-        // 设置头
-        response.setHeader("Content-Type", contentType);
-        response.setHeader("Content-Disposition", contentDisposition);
-
-        // 获取绑定了客户端的流
-        ServletOutputStream output = response.getOutputStream();
-
-        // 把输入流中的数据写入到输出流中
-        IOUtils.copy(input, output);
-        input.close();
-
     }
 
     /**
-     * @param filePath http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gv4aAJnmCAACHmWFv_Wg172.jpg
-     * @return 删除的文件名称
+     * @param filePath 文件的访问路径：例：http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gv4aAJnmCAACHmWFv_Wg172.jpg
+     * @return 文件的访问路径
      */
-    @RequestMapping("/deleteFile")
-    public String delFile(String filePath) {
+    @DeleteMapping("/deleteFile")
+    public String delFile(@RequestBody Map<String, String> map) {
 
+        String filePath = map.get("filePath");
         try {
             dfsClient.delFile(filePath);
         } catch (Exception e) {
