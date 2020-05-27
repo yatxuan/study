@@ -97,8 +97,6 @@ public class UploadController {
             String fileName = "Yat_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
                     + StringUtils.substring(
                     paths[paths.length - 1], StringUtils.indexOf(paths[paths.length - 1], "."));
-            // wKgIZVzZEF2ATP08ABC9j8AnNSs744.jpg
-            log.info("下载的文件：fileName --->{}", fileName);
 
             // 设置头
             response.setHeader("Content-Type", request.getServletContext().getMimeType(fileName));
@@ -106,9 +104,9 @@ public class UploadController {
 
             // 获取绑定了客户端的流
             ServletOutputStream output = response.getOutputStream();
-
             // 把输入流中的数据写入到输出流中
             IOUtils.copy(input, output);
+
         } catch (FdfsServerException e) {
             log.error("下载的文件不存在--------------------------->{}", e.getMessage());
         } catch (IOException e) {
