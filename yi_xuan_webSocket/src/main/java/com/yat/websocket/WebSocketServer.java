@@ -32,7 +32,7 @@ public class WebSocketServer {
     /**
      * 接收sid
      */
-    private String sid = "";
+    private String sid;
 
     /**
      * 连接建立成功调用的方法
@@ -48,7 +48,7 @@ public class WebSocketServer {
         }
         webSocketSet.add(this);
         this.sid = sid;
-        sendMessage(this.sid + ",已连接");
+        sendMessage("客户端：" + this.sid + ",已连接");
     }
 
     /**
@@ -56,7 +56,7 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        log.info(this.sid + ",已关闭连接");
+        log.info("客户端：{},已关闭连接", this.sid);
         webSocketSet.remove(this);
     }
 
@@ -67,24 +67,17 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-        log.info("收到来" + sid + "的信息:" + message);
+        log.info("'服务端'收到来自'客户端'：" + sid + "的信息:" + message);
         int size = webSocketSet.size();
+        // 回复当前发送消息的客户端
         sendMessage("当前连接人数：---------->" + size);
         //群发消息
-        // for (WebSocketServer item : webSocketSet) {
-        //     try {
-        //         item.sendMessage("当前连接人数：---------->" + size);
-        //         // 群发消息
-        //         // sendInfo("测试", item.sid);
-        //     } catch (IOException e) {
-        //         e.printStackTrace();
-        //     }
-        // }
+        sendInfo(message, null);
     }
 
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error("发生错误");
+        log.error("'WebSocketServer:'发生错误");
         error.printStackTrace();
     }
 
@@ -100,16 +93,18 @@ public class WebSocketServer {
      * 群发自定义消息
      *
      * @param socketMsg 消息
-     * @param sid       客户端id
+     * @param sid       客户端id（这里可以选择推送给指定的客户端，传进来的sid为空，则推送给全部的客户端，）
      * @throws IOException 、
      */
-    public static void sendInfo(String socketMsg, @PathParam("sid") String sid) throws IOException {
-        log.info("推送消息到" + sid + "，推送内容:" + socketMsg);
+    public static void sendInfo(String socketMsg, String sid) throws IOException {
+        String str = sid == null ? "所有人" : "'客户端：'" + sid;
+        log.info("'服务端'推送消息给" + str + "，推送内容为:" + socketMsg);
         for (WebSocketServer item : webSocketSet) {
-            //这里可以设定只推送给这个sid的，为null则全部推送
             if (sid == null) {
+                // 所有客户端都推送消息
                 item.sendMessage(socketMsg);
             } else if (item.sid.equals(sid)) {
+                // 只给指定的客户端推送消息
                 item.sendMessage(socketMsg);
             }
         }
