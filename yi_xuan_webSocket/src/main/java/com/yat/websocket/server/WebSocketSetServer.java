@@ -1,4 +1,4 @@
-package com.yat.websocket;
+package com.yat.websocket.server;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,18 +11,19 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
+ * CopyOnWriteArraySet 存储
  * @author: yat
  * @date: 2019-08-10 15:46
  */
 @Slf4j
 @Component
 @ServerEndpoint("/websocket/{sid}")
-public class WebSocketServer {
+public class WebSocketSetServer {
 
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
      */
-    private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
+    private static CopyOnWriteArraySet<WebSocketSetServer> webSocketSet = new CopyOnWriteArraySet<>();
 
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -41,7 +42,7 @@ public class WebSocketServer {
     public void onOpen(Session session, @PathParam("sid") String sid) throws IOException {
         this.session = session;
         //如果存在就先删除一个，防止重复推送消息
-        for (WebSocketServer webSocket : webSocketSet) {
+        for (WebSocketSetServer webSocket : webSocketSet) {
             if (webSocket.sid.equals(sid)) {
                 webSocketSet.remove(webSocket);
             }
@@ -99,7 +100,7 @@ public class WebSocketServer {
     public static void sendInfo(String socketMsg, String sid) throws IOException {
         String str = sid == null ? "所有人" : "'客户端：'" + sid;
         log.info("'服务端'推送消息给" + str + "，推送内容为:" + socketMsg);
-        for (WebSocketServer item : webSocketSet) {
+        for (WebSocketSetServer item : webSocketSet) {
             if (sid == null) {
                 // 所有客户端都推送消息
                 item.sendMessage(socketMsg);
@@ -118,7 +119,7 @@ public class WebSocketServer {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        WebSocketServer that = (WebSocketServer) o;
+        WebSocketSetServer that = (WebSocketSetServer) o;
         return Objects.equals(session, that.session) &&
                 Objects.equals(sid, that.sid);
     }
