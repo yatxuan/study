@@ -11,6 +11,8 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 
 import javax.mail.MessagingException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * <p>Description: 邮件测试 </p>
@@ -28,6 +30,16 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
     String to = "yatxuan@163.com";
 
+    @Test
+    public void text() {
+        mailService.testText();
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SS");
+        String workDate = simpleDateFormat.format(date);
+
+        System.out.println("程序执行完，时间：" + workDate);
+    }
+
     /**
      * 测试简单邮件
      */
@@ -38,8 +50,6 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
     /**
      * 测试HTML邮件
-     *
-     * @throws MessagingException 邮件异常
      */
     @Test
     public void sendHtmlMail() {
@@ -53,8 +63,6 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
     /**
      * 测试HTML邮件，自定义模板目录
-     *
-     * @throws MessagingException 邮件异常
      */
     @Test
     public void sendHtmlMail2() {

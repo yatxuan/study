@@ -4,7 +4,7 @@ spring:
     port: 465
     username: yatxuan@qq.com
     # 使用 jasypt 加密密码，使用com.yat.test.testGeneratePassword 生成加密密码，替换 ENC(加密密码)
-    password: ENC(4O9uzXSKgIn5BvXOyUZE4EFXn/IUwB8vNmD9v8/oIL8=)
+    password: ENC(GSu8uMgIZgMNIuNC7TZjHZO9qDtGTptAe6QP5K+AeMc=)
     protocol: smtp
     test-connection: true
     default-encoding: UTF-8

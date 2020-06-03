@@ -14,9 +14,13 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.util.concurrent.Executors;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
 /**
  * <p>Description: 邮件接口 </p>
@@ -32,6 +36,16 @@ public class MailServiceImpl implements MailService {
     private JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String from;
+
+    @Override
+    public void testText() {
+
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SS");
+        String workDate = simpleDateFormat.format(date);
+
+        System.out.println("异步执行完，时间：" + workDate);
+    }
 
     /**
      * 发送文本邮件
@@ -86,7 +100,7 @@ public class MailServiceImpl implements MailService {
 
         MimeMessageHelper helper = getHelper(message, to, subject, content, cc);
         FileSystemResource file = new FileSystemResource(new File(filePath));
-        helper.addAttachment(file.getFilename(), file);
+        helper.addAttachment(Objects.requireNonNull(file.getFilename()), file);
         mailSender.send(message);
     }
 
@@ -152,7 +166,7 @@ public class MailServiceImpl implements MailService {
     private void timedDestruction(String str) {
         int expiration = 5;
         //以下示例为程序调用结束继续运行
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        ScheduledExecutorService executorService = newSingleThreadScheduledExecutor();
         try {
             executorService.schedule(() -> System.out.println(str), expiration * 60 * 1000L, TimeUnit.MILLISECONDS);
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.yat.email.service;
 
+import org.springframework.scheduling.annotation.Async;
+
 import javax.mail.MessagingException;
 
 /**
@@ -9,6 +11,13 @@ import javax.mail.MessagingException;
  * @date 2020/4/8 10:43
  */
 public interface MailService {
+
+    /**
+     * 异步测试
+     */
+    @Async
+    void testText();
+
     /**
      * 发送文本邮件
      *
@@ -17,6 +26,7 @@ public interface MailService {
      * @param content 邮件内容
      * @param cc      抄送地址
      */
+    @Async
     void sendSimpleMail(String to, String subject, String content, String... cc);
 
     /**
@@ -27,6 +37,7 @@ public interface MailService {
      * @param content 邮件内容
      * @param cc      抄送地址
      */
+    @Async
     void sendHtmlMail(String to, String subject, String content, String... cc);
 
     /**
@@ -39,6 +50,7 @@ public interface MailService {
      * @param cc       抄送地址
      * @throws MessagingException 邮件发送异常
      */
+    @Async
     void sendAttachmentsMail(String to, String subject, String content, String filePath, String... cc) throws MessagingException;
 
     /**
@@ -52,6 +64,7 @@ public interface MailService {
      * @param cc      抄送地址
      * @throws MessagingException 邮件发送异常
      */
+    @Async
     void sendResourceMail(String to, String subject, String content, String rscPath, String rscId, String... cc) throws MessagingException;
 
 }

@@ -15,14 +15,14 @@ public @interface RateLimiter {
     /**
      * 限流次数，默认五次
      *
-     * @return
+     * @return 、
      */
     int limit() default 5;
 
     /**
      * 限流时间，单位为毫秒，默认一分钟
      *
-     * @return
+     * @return 、
      */
     int timeout() default 1000;
 }

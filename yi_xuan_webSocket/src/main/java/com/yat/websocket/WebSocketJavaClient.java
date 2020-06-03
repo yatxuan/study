@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 @Slf4j
 @Component
 public class WebSocketJavaClient {
+
     /**
      * 获取客户端连接实例
      *
@@ -31,7 +32,6 @@ public class WebSocketJavaClient {
         try {
             //创建客户端连接对象
             WebSocketClient client = new WebSocketClient(new URI(uri), new Draft_6455()) {
-
                 /**
                  * 建立连接调用
                  * @param serverHandshake 、
@@ -40,7 +40,6 @@ public class WebSocketJavaClient {
                 public void onOpen(ServerHandshake serverHandshake) {
                     log.info("建立连接");
                 }
-
                 /**
                  * 收到服务端消息调用
                  * @param s 、
@@ -49,7 +48,6 @@ public class WebSocketJavaClient {
                 public void onMessage(String s) {
                     log.info("收到来自服务端的消息:::{}", s);
                 }
-
                 /**
                  * 断开连接调用
                  * @param i 、
@@ -60,7 +58,6 @@ public class WebSocketJavaClient {
                 public void onClose(int i, String s, boolean b) {
                     log.info("关闭连接:::i = {} :::s = {} :::b = {}", i, s, b);
                 }
-
                 /**
                  * 连接报错调用
                  * @param e 、
@@ -86,7 +83,6 @@ public class WebSocketJavaClient {
             if (client.getReadyState().ordinal() == 1) {
                 return client;
             }
-
         } catch (URISyntaxException e) {
             log.error(e.getMessage());
         }
