@@ -15,12 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ConcurrentHashMap存储
+ *
  * @author: yat
  * @date: 2019-08-10 15:46
  */
 @Slf4j
 @Component
-@ServerEndpoint("/websocket/{userId}")
+@ServerEndpoint("/websocket/map/{userId}")
 public class WebSocketMapServer {
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
@@ -98,12 +99,7 @@ public class WebSocketMapServer {
                 jsonObject.put("fromUserId", this.userId);
                 String toUserId = jsonObject.getString("toUserId");
                 //传送给对应toUserId用户的websocket
-                if (StringUtils.isNotBlank(toUserId) && webSocketMap.containsKey(toUserId)) {
-                    webSocketMap.get(toUserId).sendMessage(jsonObject.toJSONString());
-                } else {
-                    log.error("请求的userId:" + toUserId + "不在该服务器上");
-                    //否则不在这个服务器上，发送到mysql或者redis
-                }
+                sendInfo(jsonObject.toJSONString(), toUserId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -149,6 +145,7 @@ public class WebSocketMapServer {
             webSocketMap.get(userId).sendMessage(message);
         } else {
             log.error("用户" + userId + ",不在线！");
+            // 当前用户不在线，把数据存储到到mysql或者redis，等当前用户上线后，在推送给该客户
         }
     }
 

@@ -1,6 +1,7 @@
 package com.yat.websocket.server;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -12,12 +13,13 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * CopyOnWriteArraySet 存储
+ *
  * @author: yat
  * @date: 2019-08-10 15:46
  */
 @Slf4j
 @Component
-@ServerEndpoint("/websocket/{sid}")
+@ServerEndpoint("/websocket/set/{sid}")
 public class WebSocketSetServer {
 
     /**
@@ -41,6 +43,10 @@ public class WebSocketSetServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("sid") String sid) throws IOException {
         this.session = session;
+
+        // 判断当前连是否为合法连接
+        isLegalConnection(session, sid);
+
         //如果存在就先删除一个，防止重复推送消息
         for (WebSocketSetServer webSocket : webSocketSet) {
             if (webSocket.sid.equals(sid)) {
@@ -127,5 +133,19 @@ public class WebSocketSetServer {
     @Override
     public int hashCode() {
         return Objects.hash(session, sid);
+    }
+
+    /**
+     * 判断当前连接是否为合法连接
+     *
+     * @param session 、
+     * @param sid     、
+     */
+    private void isLegalConnection(Session session, String sid) throws IOException {
+        if (!StringUtils.contains(sid, "+")) {
+            webSocketSet.remove(this);
+            log.error("WebSocket连接时，sid参数不正确，禁止连接");
+            throw new IOException("webSocket参数错误");
+        }
     }
 }
