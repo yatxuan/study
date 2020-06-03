@@ -1,17 +1,15 @@
 package com.yat.websocket.controller;
 
 import com.yat.websocket.WebSocketJavaClient;
+import com.yat.websocket.server.WebSocketSetServer;
 import org.java_websocket.client.WebSocketClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import java.io.IOException;
 
 /**
- * <p>Description: 描述 </p>
+ * <p>Description: WebSocket客户端 </p>
  *
  * @Created with IDEA
  * @author: Yat
@@ -24,7 +22,6 @@ public class WebSocketController {
 
     @Autowired
     private WebSocketJavaClient webSocketJavaClient;
-
 
     /**
      * 服务端连接WebSocket，并发送消息
@@ -45,4 +42,22 @@ public class WebSocketController {
             client.closeBlocking();
         }
     }
+
+    /**
+     * 服务端直接通过WebSocket，发送消息
+     *
+     * @param sid     指定收信人的客户端id
+     * @param message 、
+     * @return 、
+     */
+    @RequestMapping("/socket/push/{sid}")
+    public String pushToWeb(@PathVariable String sid, @RequestBody String message) {
+        try {
+            WebSocketSetServer.sendInfo(message, sid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
 }

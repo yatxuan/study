@@ -1,5 +1,0 @@
-netty:
-  ws:
-    enabled: true
-    port: 9988 # 这个端口是WebSocket的连接端口
-    endPoint: /ws
