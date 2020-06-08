@@ -7,7 +7,8 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>Description: 中文昵称转拼音 </p>
@@ -192,10 +193,14 @@ public class NameChangeMethod {
     }
 
     public static void main(String[] args) {
-        System.out.println(getPingYin("王大锤"));
-        System.out.println(getPinYinHeadChar("王大锤"));
-        System.out.println(getNameChange1("王大锤"));
-        System.out.println(getNameChange2("王大锤"));
-        System.out.println(getNameChange3("上官大锤"));
+        // System.out.println(getPingYin("王大锤"));
+        // System.out.println(getPinYinHeadChar("王大锤"));
+        // System.out.println(getNameChange1("王大锤"));
+        // System.out.println(getNameChange2("王大锤"));
+        // System.out.println(getNameChange3("上官大锤"));
+
+        // Session session = JschUtil.getSession("119.23.184.126", 22, "root", "lijia@123");
+        // JschUtil.bindPort(session, "172.20.12.123", 8080, 8080);
     }
+
 }

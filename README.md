@@ -12,6 +12,7 @@
 2. [SpringBoot整合FastDfs文件系统---yi_xuan_fastDfs](https://github.com/yatxuan/study/tree/master/yi_xuan_fastDfs)
 3. [文件压缩---yi_xuan_file_compression](https://github.com/yatxuan/study/tree/master/yi_xuan_file_compression)
 4. [springboot整合graphQL---yi_xuan_graphQL]()
+4. [springboot整合Redis限流---yi_xuan_limit]()
 5. [springboot整合Minio文件系统---yi_xuan_minio](https://github.com/yatxuan/study/tree/master/yi_xuan_minio)
 6. [springboot整合Mybatis_plus---yi_xuan_Mybatis_plus](https://github.com/yatxuan/study/tree/master/yi_xuan_mybatis_plus)
 7. [Springboot整合RabbitMQ---yi_xuan_rabbitmq](https://github.com/yatxuan/study/tree/master/yi_xuan_rabbitmq)

@@ -6,8 +6,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * @author Zheng Jie
- * @date 2018-11-23
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/6/8 10:55
  */
 @Data
 class ApiError {
@@ -21,13 +23,13 @@ class ApiError {
         timestamp = LocalDateTime.now();
     }
 
-    public static ApiError error(String message){
+    public static ApiError error(String message) {
         ApiError apiError = new ApiError();
         apiError.setMessage(message);
         return apiError;
     }
 
-    public static ApiError error(Integer status, String message){
+    public static ApiError error(Integer status, String message) {
         ApiError apiError = new ApiError();
         apiError.setStatus(status);
         apiError.setMessage(message);

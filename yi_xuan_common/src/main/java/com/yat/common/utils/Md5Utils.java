@@ -1,5 +1,6 @@
 package com.yat.common.utils;
 
+import com.yat.common.refactoring.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
@@ -19,19 +20,18 @@ public class Md5Utils {
             algorithm = MessageDigest.getInstance("MD5");
             algorithm.reset();
             algorithm.update(s.getBytes(StandardCharsets.UTF_8));
-            byte[] messageDigest = algorithm.digest();
-            return messageDigest;
+            return algorithm.digest();
         } catch (Exception e) {
             log.error("MD5 Error...", e);
         }
         return null;
     }
 
-    private static final String toHex(byte hash[]) {
+    private static String toHex(byte[] hash) {
         if (hash == null) {
             return null;
         }
-        StringBuffer buf = new StringBuffer(hash.length * 2);
+        StringBuilder buf = new StringBuilder(hash.length * 2);
         int i;
 
         for (i = 0; i < hash.length; i++) {
@@ -45,9 +45,13 @@ public class Md5Utils {
 
     public static String hash(String s) {
         try {
-            return new String(toHex(md5(s)).getBytes("UTF-8"), "UTF-8");
+            String str = toHex(md5(s));
+            if (StringUtils.isBlank(str)) {
+                return s;
+            }
+            return new String(str.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            log.error("not supported charset...{}", e);
+            log.error("not supported charset...{}", e.getMessage());
             return s;
         }
     }

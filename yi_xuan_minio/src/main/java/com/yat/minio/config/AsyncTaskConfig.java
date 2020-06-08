@@ -9,6 +9,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
+/**
+ * <p>Description: 描述 </p>
+ * @author Yat-Xuan
+ * @date 2020/6/4 15:50
+*/
 @Configuration
 @EnableAsync
 public class AsyncTaskConfig implements AsyncConfigurer {

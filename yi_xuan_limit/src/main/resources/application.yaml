@@ -1,0 +1,44 @@
+server:
+  port: 8888
+
+# 限流
+yat:
+  # 全局限流
+  rate:
+    limit:
+      enable: true
+      # 每1秒内
+      timeout: 1
+      # 总限制200个请求
+      limit: 200
+  # IP限流
+  ip:
+    limit:
+      enable: true
+      # 每 1秒内
+      timeout: 1
+      # 每个ip限制20个请求
+      limit: 20
+
+# 忽略url
+ignored:
+  # 限流及黑名单不拦截的路径
+  limit-urls:
+    - /limitUrl
+
+
+# 需要验证码校验的接口路径 支持通配符 自动过滤拦截校验 无需开发人员再次校验
+captcha:
+  # 图片接口(可配多个)
+  image:
+    - /image
+  # 短消接口(可配多个)
+  sms:
+    - /sms
+  # 邮箱接口(可配多个)
+  email:
+    - /email
+  # 无需登录认证的请求
+  urls:
+    - /favicon.ico
+    - /shiro
