@@ -2,7 +2,6 @@ package com.yat.json.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.yat.json.entity.User;
-import com.yat.json.gosnjson.GsonJsonUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
