@@ -3,8 +3,8 @@ package com.yat.graphql.model.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.GraphQL;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +20,11 @@ import java.util.Map;
  */
 @Controller
 @CrossOrigin
+@RequiredArgsConstructor
 @RequestMapping("/graphql")
-@SuppressWarnings("all")
-public class GraphQLController {
+public class GraphQlController {
 
-    @Autowired
-    private GraphQL graphQL;
+    private final GraphQL graphQL;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -41,7 +40,7 @@ public class GraphQLController {
     public Map<String, Object> query(String query) {
         if (StringUtils.equals(query, "0")) {
             query = "{userResources{id,name,age}}";
-        }else if (StringUtils.equals(query, "1")) {
+        } else if (StringUtils.equals(query, "1")) {
             query = "{logResources(id:1){id,title,content}}";
         }
         return this.graphQL.execute(query).toSpecification();

@@ -2,6 +2,7 @@ package com.yat.graphql.model.provider;
 
 import com.yat.graphql.model.service.IUserService;
 import graphql.schema.DataFetchingEnvironment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Component;
  * @Time: 16:36
  */
 @Component
+@RequiredArgsConstructor
 public class UserResourcesDataFetcher implements MyDataFetcher {
 
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
 
 
     @Override

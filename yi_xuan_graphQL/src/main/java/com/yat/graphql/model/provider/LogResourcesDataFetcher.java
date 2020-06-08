@@ -3,6 +3,7 @@ package com.yat.graphql.model.provider;
 import com.yat.graphql.model.service.ILogService;
 import com.yat.graphql.model.service.IUserService;
 import graphql.schema.DataFetchingEnvironment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Component;
  * @Time: 17:07
  */
 @Component
+@RequiredArgsConstructor
 public class LogResourcesDataFetcher implements MyDataFetcher {
 
-    @Autowired
-    private ILogService logService;
+    private final ILogService logService;
 
 
     @Override

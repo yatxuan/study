@@ -6,7 +6,7 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
@@ -25,12 +25,12 @@ import java.util.List;
  * @Time: 17:05
  */
 @Component
+@RequiredArgsConstructor
 public class GraphQlProvider {
 
     private GraphQL graphQL;
 
-    @Autowired
-    private List<MyDataFetcher> myDataFetchers;
+    private final List<MyDataFetcher> myDataFetchers;
 
     /**
      * 实现对GraphQL对象的初始化
