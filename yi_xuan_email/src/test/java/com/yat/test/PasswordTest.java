@@ -1,5 +1,6 @@
 package com.yat.test;
 
+import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author yangkai.shen
  * @date Created in 2019/8/27 16:15
  */
+@RequiredArgsConstructor
 public class PasswordTest extends SpringBootDemoEmailApplicationTests {
-    @Autowired
-    private StringEncryptor encryptor;
+
+    private final StringEncryptor encryptor;
 
     /**
      * 生成加密密码

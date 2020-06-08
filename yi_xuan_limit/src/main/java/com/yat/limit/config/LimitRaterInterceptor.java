@@ -5,8 +5,8 @@ import com.yat.limit.config.properties.IpLimitProperties;
 import com.yat.limit.config.properties.LimitProperties;
 import com.yat.limit.exception.BadRequestException;
 import com.yat.limit.service.IRosterService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,24 +24,18 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
+
+    private final LimitProperties limitProperties;
+    private final IpLimitProperties ipLimitProperties;
+    private final RedisRaterLimiter redisRaterLimiter;
+    private final IRosterService rosterService;
 
     /**
      * 限流标识
      */
     private final static String LIMIT_ALL = "YAT_LIMIT_ALL";
-
-    @Autowired
-    private LimitProperties limitProperties;
-
-    @Autowired
-    private IpLimitProperties ipLimitProperties;
-
-    @Autowired
-    private RedisRaterLimiter redisRaterLimiter;
-
-    @Autowired
-    private IRosterService rosterService;
 
     /**
      * 预处理回调方法，实现处理器的预处理（如登录检查）
@@ -123,9 +117,9 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
      * 方法将在整个请求结束之后，也就是在DispatcherServlet渲染了对应的视图之后执行。
      * 这个方法的主要作用是用于进行资源清理工作的。
      */
-    // @Override
-    // public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-    //                             Object handler, Exception ex) throws Exception {
-    // }
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+                                Object handler, Exception ex) throws Exception {
+    }
 
 }

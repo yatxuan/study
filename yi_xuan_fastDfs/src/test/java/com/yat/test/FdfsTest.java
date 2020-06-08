@@ -5,6 +5,7 @@ import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.yat.FastDfsApplication;
 import com.yat.utils.FastDfsClientUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import java.io.FileNotFoundException;
 
 @Slf4j
 @RunWith(SpringRunner.class)
+@RequiredArgsConstructor
 @SpringBootTest(classes = FastDfsApplication.class)
 public class FdfsTest {
 
@@ -34,14 +36,9 @@ public class FdfsTest {
     @Value("${fdfs.reqPort}")
     private String reqPort;
 
-    @Autowired
-    private FastFileStorageClient storageClient;
-
-    @Autowired
-    private ThumbImageConfig thumbImageConfig;
-
-    @Autowired
-    private FastDfsClientUtil fastDfsClientUtil;
+    private final FastFileStorageClient storageClient;
+    private final ThumbImageConfig thumbImageConfig;
+    private final FastDfsClientUtil fastDfsClientUtil;
 
 
     @Test

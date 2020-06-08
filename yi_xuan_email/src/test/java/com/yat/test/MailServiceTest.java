@@ -2,6 +2,7 @@ package com.yat.test;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import com.yat.email.service.MailService;
+import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -20,13 +21,12 @@ import java.util.Date;
  * @author Yat-Xuan
  * @date 2020/4/8 10:51
  */
+@RequiredArgsConstructor
 public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
-    @Autowired
-    private MailService mailService;
-    @Autowired
-    private TemplateEngine templateEngine;
-    @Autowired
-    private ApplicationContext context;
+
+    private final MailService mailService;
+    private final TemplateEngine templateEngine;
+    private final ApplicationContext context;
 
     String to = "yatxuan@163.com";
 

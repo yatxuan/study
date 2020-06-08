@@ -1,12 +1,12 @@
 package cn.yat.mq;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * <p>Description: 描述 </p>
@@ -16,11 +16,10 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class RabbitProducer {
 
-    @Autowired
-    private AmqpTemplate rabbitTemplate;
+    private final AmqpTemplate rabbitTemplate;
 
     public void sendDemoQueue() {
         Date date = new Date();

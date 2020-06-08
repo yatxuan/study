@@ -2,7 +2,7 @@ package com.yat.limit.config;
 
 import com.yat.limit.config.properties.CaptchaProperties;
 import com.yat.limit.config.properties.IgnoredUrlsProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -20,15 +20,12 @@ import org.springframework.web.servlet.config.annotation.*;
  */
 @EnableWebMvc
 @Configuration
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class CorsConfigSupport implements WebMvcConfigurer {
 
-    @Autowired
-    private IgnoredUrlsProperties ignoredUrlsProperties;
-    @Autowired
-    private LimitRaterInterceptor limitRaterInterceptor;
-    @Autowired
-    private CaptchaProperties captchaProperties;
+    private final IgnoredUrlsProperties ignoredUrlsProperties;
+    private final LimitRaterInterceptor limitRaterInterceptor;
+    private final CaptchaProperties captchaProperties;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

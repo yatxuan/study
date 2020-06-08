@@ -4,8 +4,8 @@ import cn.yat.modules.common.id.IdWorker;
 import cn.yat.modules.entity.UserEntity;
 import cn.yat.modules.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,15 +20,13 @@ import java.util.List;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
-@SuppressWarnings("all")
 public class UserController {
 
 
-    @Autowired
-    private IUserService userService;
-    @Autowired
-    private IdWorker idWorker;
+    private final IUserService userService;
+    private final IdWorker idWorker;
 
     @GetMapping
     public List<UserEntity> getUser() {

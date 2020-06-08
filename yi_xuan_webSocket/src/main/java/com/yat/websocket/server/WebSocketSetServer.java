@@ -1,9 +1,13 @@
 package com.yat.websocket.server;
 
+import com.yat.websocket.common.util.RedisUtils;
+import com.yat.websocket.common.util.SpringContextUtils;
+import com.yat.websocket.config.HttpSessionConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -19,9 +23,13 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Slf4j
 @Component
-@ServerEndpoint("/websocket/set/{sid}")
+@ServerEndpoint(value = "/websocket/set/{sid}", configurator = HttpSessionConfig.class)
 public class WebSocketSetServer {
 
+    /**
+     * 弹幕
+     */
+    final static String BARRAGE_REDIS = "BARRAGE:";
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
      */
@@ -37,12 +45,19 @@ public class WebSocketSetServer {
      */
     private String sid;
 
+    private String sessionId;
+
     /**
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("sid") String sid) throws IOException {
+    public void onOpen(Session session, @PathParam("sid") String sid, EndpointConfig config) throws IOException {
+
+        HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+
         this.session = session;
+        this.sid = sid;
+        this.sessionId = httpSession.getId();
 
         // 判断当前连是否为合法连接
         isLegalConnection(session, sid);
@@ -74,6 +89,18 @@ public class WebSocketSetServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
+
+
+        // 发言限制
+        RedisUtils redisUtils = SpringContextUtils.getBean("redisUtils", RedisUtils.class);
+        if (redisUtils.hasKey(BARRAGE_REDIS + this.sessionId)) {
+            log.error("当前用户：‘{}’,弹幕消息发送过快", this.sessionId);
+            sendMessage("当前用户：‘{" + this.sessionId + "}’,弹幕消息发送过快");
+            return;
+        } else {
+            redisUtils.set(BARRAGE_REDIS + this.sessionId, 1, 10L);
+        }
+
         log.info("'服务端'收到来自'客户端'：" + sid + "的信息:" + message);
         int size = webSocketSet.size();
         // 回复当前发送消息的客户端

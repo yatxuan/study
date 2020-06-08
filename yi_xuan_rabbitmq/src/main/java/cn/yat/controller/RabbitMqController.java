@@ -1,6 +1,7 @@
 package cn.yat.controller;
 
 import cn.yat.mq.RabbitProducer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/4/28 13:50
  */
 @RestController
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class RabbitMqController {
 
-    @Autowired
-    private RabbitProducer rabbitProducer;
+    private final RabbitProducer rabbitProducer;
 
     @GetMapping("/sendDemoQueue")
     public Object sendDemoQueue() {

@@ -1,10 +1,11 @@
-package com.yat.limit.common.util;
+package com.yat.websocket.common.util;
 
 import com.google.gson.Gson;
 import io.lettuce.core.RedisConnectionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -36,7 +37,6 @@ public class RedisUtils<V> {
     private final ListOperations<String, V> listOperations;
     private final SetOperations<String, V> setOperations;
     private final ZSetOperations<String, V> zSetOperations;
-
     /**
      * 默认过期时长，单位：秒
      */
@@ -50,6 +50,15 @@ public class RedisUtils<V> {
      */
     public final static long EARLY_WARNING_TIME = 60L;
     private final static Gson GSON = new Gson();
+
+    // public RedisUtils(RedisTemplate<String, V> redisTemplate, ValueOperations<String, String> valueOperations, HashOperations<String, String, V> hashOperations, ListOperations<String, V> listOperations, SetOperations<String, V> setOperations, ZSetOperations<String, V> zSetOperations) {
+    //     this.redisTemplate = redisTemplate;
+    //     this.valueOperations = valueOperations;
+    //     this.hashOperations = hashOperations;
+    //     this.listOperations = listOperations;
+    //     this.setOperations = setOperations;
+    //     this.zSetOperations = zSetOperations;
+    // }
 
     //=============================common============================
 

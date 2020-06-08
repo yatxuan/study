@@ -1,5 +1,6 @@
 package com.yat.social.justauth.cache;
 
+import lombok.RequiredArgsConstructor;
 import me.zhyd.oauth.cache.AuthCacheConfig;
 import me.zhyd.oauth.cache.AuthStateCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,10 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/4/10 13:03
  */
 @Component
+@RequiredArgsConstructor
 public class AuthStateRedisCache implements AuthStateCache {
 
-
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     private ValueOperations<String, String> valueOperations;
 

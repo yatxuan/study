@@ -3,20 +3,19 @@ package cn.yat.test;
 import cn.yat.ReadWriterApplication;
 import cn.yat.entity.OrderDO;
 import cn.yat.mapper.OrderMapper;
+import lombok.RequiredArgsConstructor;
 import org.apache.shardingsphere.api.hint.HintManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ReadWriterApplication.class)
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class OrderMapperTest {
 
-    @Autowired
-    private OrderMapper orderMapper;
+    private final OrderMapper orderMapper;
 
     @Test
     public void testSelectById() { // 测试从库的负载均衡

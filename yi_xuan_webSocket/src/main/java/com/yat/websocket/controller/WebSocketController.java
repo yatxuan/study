@@ -2,6 +2,7 @@ package com.yat.websocket.controller;
 
 import com.yat.websocket.WebSocketJavaClient;
 import com.yat.websocket.server.WebSocketSetServer;
+import lombok.RequiredArgsConstructor;
 import org.java_websocket.client.WebSocketClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,11 @@ import java.io.IOException;
  * @Time: 15:41
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/web/client")
 public class WebSocketController {
 
-    @Autowired
-    private WebSocketJavaClient webSocketJavaClient;
+    private final WebSocketJavaClient webSocketJavaClient;
 
     /**
      * 服务端连接WebSocket，并发送消息

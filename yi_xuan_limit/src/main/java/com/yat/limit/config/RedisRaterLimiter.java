@@ -1,6 +1,7 @@
 package com.yat.limit.config;
 
 import com.yat.limit.common.util.RedisUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,10 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class RedisRaterLimiter {
+
+    private final RedisUtils<Integer> redisUtils;
 
     /**
      * 限流时： 最大请求数量
@@ -26,8 +30,6 @@ public class RedisRaterLimiter {
      */
     private final static String CURR_COUNT_KEY = "BUCKET:CURR_COUNT:";
 
-    @Resource
-    private RedisUtils<Integer> redisUtils;
 
     /**
      * 限流方法

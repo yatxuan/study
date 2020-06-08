@@ -3,6 +3,7 @@ package com.yat.social.controller;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.yat.social.justauth.cache.AuthStateRedisCache;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.enums.AuthResponseStatus;
@@ -13,7 +14,6 @@ import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.request.*;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import me.zhyd.oauth.utils.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +35,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/oauth")
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class OauthController {
 
-    @Autowired
-    private AuthStateRedisCache authStateCache;
+    private final AuthStateRedisCache authStateCache;
 
     static Map<String, String> map = new HashMap<>(8);
 

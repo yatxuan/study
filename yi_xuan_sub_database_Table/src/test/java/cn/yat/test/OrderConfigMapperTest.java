@@ -4,6 +4,7 @@ import cn.yat.SubDataTableApplication;
 import cn.yat.modules.entity.OrderConfigDO;
 import cn.yat.modules.mapper.OrderConfigMapper;
 import cn.yat.modules.service.IOrderConfigService;
+import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @Time: 14:34
  */
 @RunWith(SpringRunner.class)
+@RequiredArgsConstructor
 @SpringBootTest(classes = SubDataTableApplication.class)
 public class OrderConfigMapperTest {
 
-    @Autowired
-    private IOrderConfigService orderConfigService;
+   private final IOrderConfigService orderConfigService;
 
     @Test
     public void testSelectById() {

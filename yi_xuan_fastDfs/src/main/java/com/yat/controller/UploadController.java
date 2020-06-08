@@ -3,10 +3,10 @@ package com.yat.controller;
 import com.github.tobato.fastdfs.exception.FdfsServerException;
 import com.yat.utils.FastDfsClientUtil;
 import com.yat.utils.FastDfsResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,11 +29,10 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class UploadController {
 
-    @Autowired
-    private FastDfsClientUtil dfsClient;
+    private final FastDfsClientUtil dfsClient;
 
     /**
      * 上传图片
@@ -74,7 +73,6 @@ public class UploadController {
      * @param filePath 文件的访问路径：例 - http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gup-AOBTfAAClFitxlGY465.jpg
      * @param request  、
      * @param response 、
-     * @throws IOException 、
      */
     @GetMapping("/download")
     public void download(String filePath, HttpServletRequest request, HttpServletResponse response) {
@@ -91,6 +89,7 @@ public class UploadController {
             }
         }
 
+        assert groupName != null;
         String path = filePath.substring(filePath.indexOf(groupName) + groupName.length() + 1);
 
         try (InputStream input = dfsClient.download(groupName, path)) {
@@ -108,15 +107,13 @@ public class UploadController {
             // 把输入流中的数据写入到输出流中
             IOUtils.copy(input, output);
 
-        } catch (FdfsServerException e) {
-            log.error("下载的文件:'{}',不存在--------------------------->{}", fileName, e.getMessage());
-        } catch (IOException e) {
+        } catch (FdfsServerException | IOException e) {
             log.error("下载的文件:'{}',不存在--------------------------->{}", fileName, e.getMessage());
         }
     }
 
     /**
-     * @param filePath 文件的访问路径：例：http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gv4aAJnmCAACHmWFv_Wg172.jpg
+     * @param map: filePath 文件的访问路径：例：http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gv4aAJnmCAACHmWFv_Wg172.jpg
      * @return 文件的访问路径
      */
     @DeleteMapping("/deleteFile")

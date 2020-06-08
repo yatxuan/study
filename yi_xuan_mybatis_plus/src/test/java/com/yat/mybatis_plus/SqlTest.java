@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yat.MybatisPlusApplication;
 import com.yat.modules.entity.UserEntity;
 import com.yat.modules.service.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,11 @@ import java.util.*;
  * @Time: 10:45
  */
 @RunWith(SpringRunner.class)
+@RequiredArgsConstructor
 @SpringBootTest(classes = MybatisPlusApplication.class)
 public class SqlTest {
 
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
 
     /**
      * 插入测试数据

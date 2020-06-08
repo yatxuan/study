@@ -3,18 +3,18 @@ package cn.yat.test;
 import cn.yat.ReadWriterApplication;
 import cn.yat.entity.OrderDO;
 import cn.yat.service.IOrderService;
+import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
+@RequiredArgsConstructor
 @SpringBootTest(classes = ReadWriterApplication.class)
 public class OrderServiceTest {
 
-    @Autowired
-    private IOrderService orderService;
+    private final IOrderService orderService;
 
     @Test
     public void testAdd() {

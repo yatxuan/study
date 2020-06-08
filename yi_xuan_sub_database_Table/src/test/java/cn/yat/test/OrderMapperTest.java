@@ -4,6 +4,7 @@ import cn.yat.SubDataTableApplication;
 import cn.yat.modules.common.id.IdWorker;
 import cn.yat.modules.entity.OrderDO;
 import cn.yat.modules.service.IOrderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,15 +23,13 @@ import java.util.List;
  * @Time: 14:44
  */
 @Slf4j
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SubDataTableApplication.class)
 public class OrderMapperTest {
 
-    @Autowired
-    private IOrderService orderService;
-    @Autowired
-    private IdWorker idWorker;
+    private final IOrderService orderService;
+    private final IdWorker idWorker;
 
     @Test
     public void testSelectById() {

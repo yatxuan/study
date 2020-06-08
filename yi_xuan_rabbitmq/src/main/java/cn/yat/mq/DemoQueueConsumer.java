@@ -13,14 +13,12 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@SuppressWarnings("all")
 @RabbitListener(queues = "demoQueue")
 public class DemoQueueConsumer {
 
     /**
      * 消息消费
-     * <p>
-     * @RabbitHandler 代表此方法为接受到消息后的处理方法
+     * <p> @RabbitHandler 代表此方法为接受到消息后的处理方法</p>
      */
     @RabbitHandler
     public void received(String msg) {

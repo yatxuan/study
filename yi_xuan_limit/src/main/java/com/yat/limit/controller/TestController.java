@@ -2,6 +2,7 @@ package com.yat.limit.controller;
 
 import com.yat.limit.config.AddressUtils;
 import com.yat.limit.service.IRosterService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class TestController {
 
-    @Autowired
-    private IRosterService rosterService;
+    private final IRosterService rosterService;
 
 
     @GetMapping("/image")

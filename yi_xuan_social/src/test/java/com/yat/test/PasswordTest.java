@@ -1,6 +1,7 @@
 package com.yat.test;
 
 import com.yat.social.SocialApplication;
+import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,11 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @date Created in 2019/8/27 16:15
  */
 @RunWith(SpringRunner.class)
+@RequiredArgsConstructor
 @SpringBootTest(classes = SocialApplication.class)
 public class PasswordTest {
 
-    @Autowired
-    private StringEncryptor encryptor;
+    private final StringEncryptor encryptor;
 
     /**
      * 生成加密密码

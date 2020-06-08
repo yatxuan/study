@@ -2,6 +2,7 @@ package com.yat.limit.service.impl;
 
 import com.yat.limit.service.IRosterService;
 import com.yat.limit.common.util.RedisUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +17,10 @@ import java.util.Set;
  * @Time: 9:52
  */
 @Service
+@RequiredArgsConstructor
 public class RosterServiceImpl implements IRosterService {
+
+    private final RedisUtils<String> redisUtils;
 
     /**
      * ip黑名单key
@@ -26,9 +30,6 @@ public class RosterServiceImpl implements IRosterService {
      * ip白名单key
      */
     private final static String ROSTER_IP_WHITE = "ROSTER:IP:WHITE";
-
-    @Resource
-    private RedisUtils<String> redisUtils;
 
     @Override
     public Set<String> getBlackList() {

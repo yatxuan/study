@@ -14,7 +14,18 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IOrderService extends IService<OrderDO> {
 
 
+    /**
+     * 添加
+     *
+     * @param order 、
+     */
     void add(OrderDO order);
 
+    /**
+     * 查询
+     *
+     * @param id 、
+     * @return 、
+     */
     OrderDO findById(Integer id);
 }

@@ -1,4 +1,4 @@
-package com.yat.limit.config;
+package com.yat.websocket.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

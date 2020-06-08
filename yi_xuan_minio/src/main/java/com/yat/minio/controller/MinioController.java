@@ -1,13 +1,14 @@
 package com.yat.minio.controller;
 
+import com.yat.minio.common.utils.id.UUID;
 import com.yat.minio.model.MinioItem;
 import com.yat.minio.model.MinioObject;
 import com.yat.minio.service.MinioService;
 import io.minio.messages.Bucket;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.yat.minio.common.utils.id.UUID;
-
 /**
  * <p>Description: Minio文件 </p>
  *
@@ -32,11 +31,10 @@ import com.yat.minio.common.utils.id.UUID;
 @CrossOrigin
 @RestController
 @RequestMapping("/minio-endpoint")
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class MinioController {
 
-    @Autowired
-    private MinioService minioService;
+    private final MinioService minioService;
 
     /**
      * 上传文件到minio服务

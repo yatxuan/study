@@ -13,17 +13,16 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@SuppressWarnings("all")
-@RabbitListener(queues = "fanout.b")
-public class FanoutBConsumer {
+@RabbitListener(queues = "topic.c")
+public class TopicConsumerC {
 
     /**
      * 消息消费
      *
-     * @RabbitHandler 代表此方法为接受到消息后的处理方法
+     * <p> @RabbitHandler 代表此方法为接受到消息后的处理方法</p>
      */
     @RabbitHandler
     public void received(String msg) {
-        log.info("广播模式：[fanout.b] 收到消息: {}", msg);
+        log.info("主题模式:[topic.c] 收到消息: {}", msg);
     }
 }
