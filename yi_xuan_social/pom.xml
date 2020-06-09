@@ -66,7 +66,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
         </dependency>
 
 
@@ -82,11 +81,24 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>${alipay-sdk-version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>fastjson</artifactId>
+                    <groupId>com.alibaba</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.5.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>kotlin-stdlib-common</artifactId>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

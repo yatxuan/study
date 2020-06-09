@@ -28,7 +28,7 @@ public class JsonCodeUtils {
             "}";
 
     public static void main(String[] argv) {
-        // 直接去值
+        // 直接取值
         String value = JsonCode.getValue(JSON, "$.json.b.www");
         System.out.println(value);
 
