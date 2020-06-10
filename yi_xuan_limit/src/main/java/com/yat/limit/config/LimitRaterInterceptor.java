@@ -7,6 +7,8 @@ import com.yat.limit.exception.BadRequestException;
 import com.yat.limit.service.IRosterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,6 +49,20 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) {
 
+        // 跨域配置
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Max-Age", "86400");
+        response.setHeader("Access-Control-Allow-Headers", "*");
+
+        // 如果是OPTIONS则结束请求
+        if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return false;
+        }
+
+
         String ip = AddressUtils.getIpAddr(request);
         // 获取浏览器信息
         String browser = AddressUtils.getBrowser(request);
@@ -83,18 +99,21 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
 
         // 注解限流
         try {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Method method = handlerMethod.getMethod();
-            RateLimiter rateLimiter = method.getAnnotation(RateLimiter.class);
-            if (rateLimiter != null) {
-                int limit = rateLimiter.limit();
-                int timeout = rateLimiter.timeout();
-                boolean rateToken = redisRaterLimiter.acquireToken(method.getName(), limit, timeout);
-                if (rateToken) {
-                    log.error("该方法:{}当前访问人数太多，！！！！！！！！！！！！！！", method.getName());
-                    throw new BadRequestException("当前访问人数太多啦，请稍后再试");
+            if (handler instanceof HandlerMethod) {
+                HandlerMethod handlerMethod = (HandlerMethod) handler;
+                Method method = handlerMethod.getMethod();
+                RateLimiter rateLimiter = method.getAnnotation(RateLimiter.class);
+                if (rateLimiter != null) {
+                    int limit = rateLimiter.limit();
+                    int timeout = rateLimiter.timeout();
+                    boolean rateToken = redisRaterLimiter.acquireToken(method.getName(), limit, timeout);
+                    if (rateToken) {
+                        log.error("该方法:{}当前访问人数太多，！！！！！！！！！！！！！！", method.getName());
+                        throw new BadRequestException("当前访问人数太多啦，请稍后再试");
+                    }
                 }
             }
+
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         }
@@ -109,8 +128,7 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
-                           Object handler, ModelAndView modelAndView) throws Exception {
-
+                           Object handler, ModelAndView modelAndView) {
     }
 
     /**
@@ -119,7 +137,7 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-                                Object handler, Exception ex) throws Exception {
+                                Object handler, Exception ex) {
     }
 
 }

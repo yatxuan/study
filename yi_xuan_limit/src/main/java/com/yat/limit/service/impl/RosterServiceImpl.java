@@ -1,11 +1,10 @@
 package com.yat.limit.service.impl;
 
-import com.yat.limit.service.IRosterService;
 import com.yat.limit.common.util.RedisUtils;
+import com.yat.limit.service.IRosterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Set;
 
 /**

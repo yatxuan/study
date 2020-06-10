@@ -2,8 +2,8 @@ package com.yat.common.redis.algorithm;
 
 import com.yat.common.redis.RedisUtils;
 import com.yat.common.refactoring.toolkit.StringUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class RedisRaterLimiter {
 
     /**
@@ -25,8 +26,7 @@ public class RedisRaterLimiter {
      */
     private final static String CURR_COUNT_KEY = "BUCKET:CURR_COUNT:";
 
-    @Autowired
-    private RedisUtils<Integer> redisUtils;
+    private final RedisUtils<Integer> redisUtils;
 
     public String acquireToken(String point, int limit, long timeout) {
 

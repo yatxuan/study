@@ -1,10 +1,10 @@
 package com.yat.config;
 
 import com.yat.config.properties.IgnoredUrlsProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yat.config.redis.interceptor.LimitRaterInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
-import com.yat.config.redis.interceptor.LimitRaterInterceptor;
 
 /**
  * <p>Description: 跨域处理:一 </p>
@@ -20,20 +20,17 @@ import com.yat.config.redis.interceptor.LimitRaterInterceptor;
  */
 @EnableWebMvc
 @Configuration
-@SuppressWarnings("all")
+@RequiredArgsConstructor
 public class CorsConfigSupport implements WebMvcConfigurer {
 
 
-    @Autowired
-    private IgnoredUrlsProperties ignoredUrlsProperties;
-
-    @Autowired
-    private LimitRaterInterceptor limitRaterInterceptor;
+    private final IgnoredUrlsProperties ignoredUrlsProperties;
+    private final LimitRaterInterceptor limitRaterInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        // 注册拦截器
+        // 跨域+限流拦截器需放在最上面
         InterceptorRegistration ir = registry.addInterceptor(limitRaterInterceptor);
         // 配置拦截的路径
         ir.addPathPatterns("/**");
@@ -55,13 +52,14 @@ public class CorsConfigSupport implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/favicon.ico");
 
     }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(true)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .maxAge(3600);
-    }
+    //
+    // @Override
+    // public void addCorsMappings(CorsRegistry registry) {
+    //     registry.addMapping("/**")
+    //             .allowedHeaders("*")
+    //             .allowedOrigins("*")
+    //             .allowCredentials(true)
+    //             .allowedMethods("*")
+    //             .maxAge(3600);
+    // }
 }

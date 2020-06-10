@@ -84,7 +84,7 @@ public class FileCompress {
 
     /**
      * Version 1 没有使用Buffer
-     * 100兆文件压缩，耗时：秒
+     * 100兆文件压缩，耗时：秒(超级慢)
      */
     public static void zipFileNoBuffer() {
 

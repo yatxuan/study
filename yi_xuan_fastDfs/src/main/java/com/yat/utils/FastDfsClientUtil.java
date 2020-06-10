@@ -4,9 +4,9 @@ import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.yat.utils.image.ImageUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +24,7 @@ import java.io.InputStream;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class FastDfsClientUtil {
 
 
@@ -33,14 +34,11 @@ public class FastDfsClientUtil {
     @Value("${fdfs.reqPort}")
     private String reqPort;
 
-    @Autowired
-    private FastFileStorageClient storageClient;
-
+    private final FastFileStorageClient storageClient;
     /**
      * 创建缩略图
      */
-    @Autowired
-    private ThumbImageConfig thumbImageConfig;
+    private final ThumbImageConfig thumbImageConfig;
 
 
     /**

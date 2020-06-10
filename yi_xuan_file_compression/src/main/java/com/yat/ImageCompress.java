@@ -16,7 +16,7 @@ import java.io.File;
  * @Date: 2020/4/3
  * @Time: 11:13
  */
-public class imageCompress {
+public class ImageCompress {
 
     /**
      * 压缩后的图片路径

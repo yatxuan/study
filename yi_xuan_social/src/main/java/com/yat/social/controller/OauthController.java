@@ -153,10 +153,10 @@ public class OauthController {
                         .build(), authStateCache);
             case "wechatMp":
                 return new AuthWeChatMpRequest(AuthConfig.builder()
-                                .clientId("wx3a9c99cd8dab548f")
-                                .clientSecret("8cbd676499edb5372a545d164dd7e2ed")
-                                .redirectUri(redirectUri)
-                                .build(), authStateCache);
+                        .clientId("wx3a9c99cd8dab548f")
+                        .clientSecret("8cbd676499edb5372a545d164dd7e2ed")
+                        .redirectUri(redirectUri)
+                        .build(), authStateCache);
             default:
                 throw new AuthException(AuthResponseStatus.UNSUPPORTED);
         }

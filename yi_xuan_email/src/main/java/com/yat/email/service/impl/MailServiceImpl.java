@@ -2,8 +2,8 @@ package com.yat.email.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.yat.email.service.MailService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,10 +30,10 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final  JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String from;
 

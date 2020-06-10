@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-
 /**
  * <p>Description: 令牌桶算法限流 </p>
  *

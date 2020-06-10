@@ -30,17 +30,18 @@ public class CorsConfigSupport implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        // 注册拦截器
+        // 跨域+限流拦截器需放在最上面
         InterceptorRegistration ir = registry.addInterceptor(limitRaterInterceptor);
         // 配置拦截的路径
         ir.addPathPatterns("/**");
+
         // 配置不拦截的路径 避免加载css也拦截（可根据实际情况放开限流配置或拦截路径）,
         // 把接口配置在这里后，就不会被上面配置的限流处理拦截了（就是说，把接口的路径如果配置在这里，这里设置的接口就不会进行限流操作）
         ir.excludePathPatterns(ignoredUrlsProperties.getLimitUrls());
-        // ir.excludePathPatterns(ignoredUrlsProperties.getUrls());
-        // ir.excludePathPatterns(captchaProperties.getImage());
-        // ir.excludePathPatterns(captchaProperties.getSms());
-        // ir.excludePathPatterns(captchaProperties.getEmail());
+        ir.excludePathPatterns(captchaProperties.getUrls());
+        ir.excludePathPatterns(captchaProperties.getImage());
+        ir.excludePathPatterns(captchaProperties.getSms());
+        ir.excludePathPatterns(captchaProperties.getEmail());
 
     }
 
@@ -52,20 +53,10 @@ public class CorsConfigSupport implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // registry.addResourceHandler("接口访问的路径")
-        //         .addResourceLocations("项目里对应的静态文件的路径");
+        // registry.addResourceHandler("接口访问的路径").addResourceLocations("项目里对应的静态文件的路径");
 
         registry.addResourceHandler("/favicon.ico")
                 .addResourceLocations("classpath:/static/favicon.ico");
-
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(true)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .maxAge(3600);
-    }
 }

@@ -2,9 +2,9 @@ package com.yat.common.redis;
 
 import com.google.gson.Gson;
 import io.lettuce.core.RedisConnectionException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -27,20 +27,15 @@ import static org.springframework.util.CollectionUtils.arrayToList;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class RedisUtils<V> {
 
-    @Autowired
-    private RedisTemplate<String, V> redisTemplate;
-    @Autowired
-    private ValueOperations<String, String> valueOperations;
-    @Autowired
-    private HashOperations<String, String, V> hashOperations;
-    @Autowired
-    private ListOperations<String, V> listOperations;
-    @Autowired
-    private SetOperations<String, V> setOperations;
-    @Autowired
-    private ZSetOperations<String, V> zSetOperations;
+    private final RedisTemplate<String, V> redisTemplate;
+    private final ValueOperations<String, String> valueOperations;
+    private final HashOperations<String, String, V> hashOperations;
+    private final ListOperations<String, V> listOperations;
+    private final SetOperations<String, V> setOperations;
+    private final ZSetOperations<String, V> zSetOperations;
     /**
      * 默认过期时长，单位：秒
      */

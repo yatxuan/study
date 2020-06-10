@@ -4,11 +4,13 @@ import com.yat.common.annotation.RateLimiter;
 import com.yat.common.exception.BadRequestException;
 import com.yat.common.ip.AddressUtils;
 import com.yat.common.redis.algorithm.RedisRaterLimiter;
+import com.yat.common.refactoring.toolkit.StringUtils;
 import com.yat.config.properties.IpLimitProperties;
 import com.yat.config.properties.LimitProperties;
-import com.yat.common.refactoring.toolkit.StringUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +28,7 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
 
     /**
@@ -33,14 +36,9 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
      */
     private final static String LIMIT_ALL = "YAT_LIMIT_ALL";
 
-    @Autowired
-    private LimitProperties limitProperties;
-
-    @Autowired
-    private IpLimitProperties ipLimitProperties;
-
-    @Autowired
-    private RedisRaterLimiter redisRaterLimiter;
+    private final LimitProperties limitProperties;
+    private final IpLimitProperties ipLimitProperties;
+    private final RedisRaterLimiter redisRaterLimiter;
 
 
     /**
@@ -52,6 +50,18 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
+        // 跨域配置
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Max-Age", "86400");
+        response.setHeader("Access-Control-Allow-Headers", "*");
+
+        // 如果是OPTIONS则结束请求
+        if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return false;
+        }
 
         String ip = AddressUtils.getIpAddr(request);
         if (ipLimitProperties.getEnable()) {

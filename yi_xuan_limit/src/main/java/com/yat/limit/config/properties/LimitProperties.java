@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * <p>Description: 限流配置 </p>
+ * <p>Description: 全局限流配置 </p>
  * @author Yat-Xuan
  * @date 2020/3/13 16:53
 */

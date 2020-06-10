@@ -20,9 +20,9 @@ public @interface RateLimiter {
     int limit() default 5;
 
     /**
-     * 限流时间，单位为毫秒，默认一分钟
+     * 限流时间，单位为秒，默认一分钟
      *
      * @return 、
      */
-    int timeout() default 1000;
+    int timeout() default +0;
 }

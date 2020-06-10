@@ -4,7 +4,6 @@ import com.yat.websocket.WebSocketJavaClient;
 import com.yat.websocket.server.WebSocketSetServer;
 import lombok.RequiredArgsConstructor;
 import org.java_websocket.client.WebSocketClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

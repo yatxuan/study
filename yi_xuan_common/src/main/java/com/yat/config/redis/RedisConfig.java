@@ -1,12 +1,11 @@
 package com.yat.config.redis;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import javax.annotation.Resource;
 
 /**
  * Redis配置
@@ -14,10 +13,10 @@ import javax.annotation.Resource;
  * @author Yat
  */
 @Configuration
+@RequiredArgsConstructor
 public class RedisConfig {
 
-    @Resource
-    private RedisConnectionFactory factory;
+    private final RedisConnectionFactory factory;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {

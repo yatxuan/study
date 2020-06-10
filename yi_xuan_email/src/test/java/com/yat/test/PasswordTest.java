@@ -3,7 +3,6 @@ package com.yat.test;
 import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>

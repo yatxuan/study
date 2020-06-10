@@ -7,7 +7,7 @@
 // import io.netty.handler.codec.http.HttpObjectAggregator;
 // import io.netty.handler.codec.http.HttpServerCodec;
 // import io.netty.handler.stream.ChunkedWriteHandler;
-// import org.springframework.beans.factory.annotation.Autowired;
+// import lombok.RequiredArgsConstructor;
 // import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 // import org.springframework.stereotype.Component;
 //
@@ -18,11 +18,11 @@
 //  * @date 2020/6/2 15:06
 //  */
 // @Component
+// @RequiredArgsConstructor
 // @ConditionalOnProperty(value = {"netty.http.enabled"})
 // public class HttpPipeline extends ChannelInitializer<SocketChannel> {
 //
-//     @Autowired
-//     HttpServerHandler httpServerHandler;
+//     private final HttpServerHandler httpServerHandler;
 //
 //
 //     @Override
