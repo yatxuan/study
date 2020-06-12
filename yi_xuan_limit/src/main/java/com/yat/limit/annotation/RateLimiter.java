@@ -25,4 +25,10 @@ public @interface RateLimiter {
      * @return 、
      */
     int timeout() default 60;
+
+    /**
+     * 是否为全局限流，true-全局  false-ip
+     * @return 、
+     */
+    boolean isGlobal() default true;
 }

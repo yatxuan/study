@@ -42,7 +42,6 @@ public class TestController {
     }
 
     @GetMapping("/shiro")
-    @RateLimiter
     public String shiro() {
         return "shiro";
     }
@@ -61,9 +60,15 @@ public class TestController {
         String browser = AddressUtils.getBrowser(request);
         // 获取详细地址
         String cityInfo = AddressUtils.getCityInfo(ip);
-        rosterService.setBlackList(ip);
+        // 把当前ip设置为黑名单用户
+        // rosterService.setBlackList(ip);
         log.warn("当前ip'{}'为黑名单ip，禁止访问,浏览器为：'{}',消息地址为：'{}'", ip, browser, cityInfo);
+    }
 
+    @GetMapping("/limit/num")
+    @RateLimiter
+    public String limitNum() {
+        return "LimitNum";
     }
 
 }

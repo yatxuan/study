@@ -24,8 +24,8 @@ import java.util.*;
  * @Date: 2020/5/20
  * @Time: 10:45
  */
-@RunWith(SpringRunner.class)
 @RequiredArgsConstructor
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = MybatisPlusApplication.class)
 public class SqlTest {
 

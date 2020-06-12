@@ -106,18 +106,19 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
                 if (rateLimiter != null) {
                     int limit = rateLimiter.limit();
                     int timeout = rateLimiter.timeout();
-                    boolean rateToken = redisRaterLimiter.acquireToken(method.getName(), limit, timeout);
+
+                    // 判断该注解是全局限流还是ip限流
+                    String methodName = rateLimiter.isGlobal() ? method.getName() : method.getName() + ":" + ip;
+                    boolean rateToken = redisRaterLimiter.acquireToken(methodName, limit, timeout);
                     if (rateToken) {
                         log.error("该方法:{}当前访问人数太多，！！！！！！！！！！！！！！", method.getName());
                         throw new BadRequestException("当前访问人数太多啦，请稍后再试");
                     }
                 }
             }
-
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         }
-
         return true;
     }
 
