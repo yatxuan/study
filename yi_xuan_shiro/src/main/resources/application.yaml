@@ -1,0 +1,121 @@
+server:
+  port: 9003
+spring:
+  profiles:
+    active: dev
+  redis:
+    database: 5
+    host: 127.0.0.1
+    port: 6379
+    password:    # 密码（默认为空）
+    timeout: 6000ms  # 连接超时时长（毫秒）
+    jedis:
+      pool:
+        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+
+
+
+
+# 忽略url
+ignored:
+  # 无需登录认证的请求
+  urls:
+    - /oauth/captchaImage
+    - /oauth/login
+    - /oauth/logout
+    - /druid/**
+    - /swagger-ui.html
+    - /swagger-resources/**
+    - /swagger/**
+    - /**/v2/api-docs
+    - /**/*.js
+    - /**/*.css
+    - /**/*.png
+    - /**/*.ico
+    - /test/**
+  # 限流及黑名单不拦截的路径
+  limitUrls:
+    - /**/*.js
+    - /**/*.css
+    - /**/*.png
+    - /**/*.ico
+
+# 需要验证码校验的接口路径 支持通配符 自动过滤拦截校验 无需开发人员再次校验
+captcha:
+  # 图片验证码验证
+  image:
+    - /oauth2/login # 登录接口
+    - /oauth2/code # 获取图片验证码
+  sms:
+    - /sms #短信接口
+  email:
+    - /email #邮箱接口
+
+# 限流
+yat:
+  # 全局限流
+  rate:
+    limit:
+      enable: true
+      # 每1秒内
+      timeout: 1
+      # 总限制200个请求
+      limit: 200
+  # IP限流
+  ip:
+    second:
+      limit:
+        enable: true
+        # 每 1秒内
+        timeout: 1
+        # 每个ip限制20个请求
+        limit: 20
+    # 腾讯位置服务key配置 腾讯位置服务官网注册添加key ip定位所需
+  token:
+    # 默认为true，token将存入redis，并具有单点登录功能 设为false使用JWT交互
+    enable: true
+    # 是否开启单设备登陆 仅当token交互方式为redis时生效
+    sdl: true
+    # token中存储用户权限数据 设为true开启后可避免每次请求再获取用户权限，但有可能导致编辑权限菜单后无法读取到最新权限数据（需用户重新登录）
+    storePerms: true
+    # token过期时间（分钟）
+    tokenExpireTime: 90
+    # 用户选择保存登录状态对应token过期时间（天）
+    saveLoginTime: 7
+    # 限制用户登陆错误次数（次）
+    loginTimeLimit: 10
+    # 错误超过次数后多少分钟后才能继续登录（分钟）
+    loginAfterTime: 10
+    # 使用Spring @Cacheable注解失效时间
+  cache:
+    # 过期时间单位 支持day、hour、minute对应天、小时、分钟
+    unit: day
+    # 过期时间 永久不过期设为-1
+    time: 15
+
+#密码加密传输，前端公钥加密，后端私钥解密
+rsa:
+  private_key: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMFB3hTyj0OjrhL3rHmJJwl8+lol2Pqi3TjsFThp9fmiUAO7fCWhGRscjCSvdVPdbpTnEsT+WbPWNQne1JBUwZSAkp/v4YVGZkaiOkz05jIk3vw3qwt7lqYl+AXFYDOSiexHr8yjN45dWgb1xb5Ej7JsNH5mcNOqKXOKeoFkqBhnAgMBAAECgYEAp2zyAoHVngrKv0H1GWG6AR1WIw1Q+mpob20QQUyDPh7hZSpjNpJnlrZXr1yWr+5RZA0AlMuqWQPF9WQoEVZsUUIpKwZc0w9y3uUKxckGH6Ta4N5bP9PjOzzoqgFEIl6uSIpUuZrPrlXuAky1xipVVoOFd40LoZVCX55h5fhAkqkCQQDsZJygD5KAz0cfDroTnBEa+ZK3FDJG+9nvv8Eboce0V+FTpGlKShR6S/55JlzudITOfQhLEq3jbBFgqv4qNRxFAkEA0UlYSJWEwRTOt8I2F8w09qQTSqvy+kFRkw/1lju7xBPBdwoYJWPWdvruu8Fi/HHvGxOoinFiUmgbl3R1fTbKuwJAI4/DLCULkgsclOR/Q6HvxNIUqywDoEAU+gcrwr9krpGl2RJbsIxSZk92Wb1Wr5yhufp/O+P0esjwGE3A7JKOzQJBAJDMfR9jC4GHQurSnRhj+fT3Wj2csDTDQoxMS29RDr0/qegRfNlJtRWG0evnhfQBZBxIwqBeiFdZnlVwhuVGJocCQExkmHJmChOFuMMqS28oIG2KGRrT8NS/VGHvkfoKzDViCjnc71D0RBv1dJi04MIqeDnmJ7C2KOnFyWbrwhtnVJA=
+  public_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBQd4U8o9Do64S96x5iScJfPpaJdj6ot047BU4afX5olADu3wloRkbHIwkr3VT3W6U5xLE/lmz1jUJ3tSQVMGUgJKf7+GFRmZGojpM9OYyJN78N6sLe5amJfgFxWAzkonsR6/MozeOXVoG9cW+RI+ybDR+ZnDTqilzinqBZKgYZwIDAQAB
+
+jwt:
+  config:
+    # 存储token的 Key
+    header: Authorization
+    # 令牌前缀
+    bearer: Bearer_
+    # 令牌过期时间 此处单位/毫秒 ，默认4小时，
+    ttl: 14400000
+    # 必须使用最少88位的Base64对该令牌进行编码
+    base64Secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
+    # 在线用户key
+    online-key: online-tokenf
+    # 验证码
+    code-key: code-key
+#登录图形验证码有效时间：秒
+loginCode:
+  expiration: 120
+

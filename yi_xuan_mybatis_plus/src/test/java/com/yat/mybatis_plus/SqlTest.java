@@ -8,12 +8,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yat.MybatisPlusApplication;
 import com.yat.modules.entity.UserEntity;
 import com.yat.modules.service.IUserService;
-import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -24,12 +24,12 @@ import java.util.*;
  * @Date: 2020/5/20
  * @Time: 10:45
  */
-@RequiredArgsConstructor
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MybatisPlusApplication.class)
 public class SqlTest {
 
-    private final IUserService userService;
+    @Resource
+    private IUserService userService;
 
     /**
      * 插入测试数据
@@ -56,11 +56,11 @@ public class SqlTest {
     public void saveOrUpdateTestData() {
         for (int i = 1; i < 10; i++) {
             UserEntity userEntity = UserEntity.builder()
-                    .id(1262946394988118017L)
                     .name("name:" + i)
                     .age(i)
                     .email("email:" + i)
                     .build();
+            userEntity.setId(1262946394988118017L);
             userService.saveOrUpdate(userEntity);
             System.out.println(userEntity);
         }

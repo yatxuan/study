@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Yat
  */
 @Configuration
-@MapperScan("com.yat.graphql.model.mapper")
+@MapperScan("com.yat.graphql.modules.mapper")
 public class MybatisPlusConfig {
 
     /**
