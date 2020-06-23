@@ -2,7 +2,7 @@ spring:
   datasource:
     # mybatis_plus 配置执行 SQL 分析打印，需要改变 driver-class-name，url 参数，（未配置版本——prod）
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://127.0.0.1:3306/mybatis_plus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/mybatis_plus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
     username: root
     password: root
