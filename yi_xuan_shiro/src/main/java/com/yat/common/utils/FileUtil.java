@@ -5,9 +5,8 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.poi.excel.BigExcelWriter;
 import cn.hutool.poi.excel.ExcelUtil;
-import com.yat.common.exception.CustomException;
+import com.yat.common.exception.file.FileSizeLimitExceededException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.util.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -118,7 +117,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     /**
      * inputStream 转 File
      */
-    public static File inputStreamToFile(InputStream ins, String name) throws Exception {
+   public static File inputStreamToFile(InputStream ins, String name) throws Exception {
         File file = new File(System.getProperty("java.io.tmpdir") + File.separator + name);
         if (file.exists()) {
             return file;
@@ -220,8 +219,8 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         // 1M
         int len = 1024 * 1024;
         if (size > (maxSize * len)) {
-            log.error("");
-            throw new CustomException("文件超出规定大小:'" + len + "'");
+            log.error("文件超出规定大小");
+            throw new FileSizeLimitExceededException(len);
         }
     }
 
@@ -294,7 +293,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         try {
             fis = new FileInputStream(file);
             response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
-            IOUtils.copy(fis, response.getOutputStream());
+            IoUtil.copy(fis, response.getOutputStream());
             response.flushBuffer();
         } catch (Exception e) {
             e.printStackTrace();

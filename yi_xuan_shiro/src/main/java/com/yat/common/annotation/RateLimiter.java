@@ -4,10 +4,11 @@ import java.lang.annotation.*;
 
 /**
  * 限流注解
+ * <p>ElementType.METHOD:作用于方法上</p>
  *
  * @author Yat
  */
-@Target(ElementType.METHOD)//作用于方法上
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RateLimiter {

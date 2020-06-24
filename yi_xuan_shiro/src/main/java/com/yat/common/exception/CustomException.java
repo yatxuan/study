@@ -1,8 +1,9 @@
 package com.yat.common.exception;
 
 
+import com.yat.common.constant.HttpStatus;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>Description: 自定义异常 </p>
@@ -10,18 +11,18 @@ import lombok.Getter;
  * @author Yat-Xuan
  * @date 2020/3/27 11:08
  */
-@AllArgsConstructor
 public class CustomException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
 
-    @Getter
-    private Integer code;
-
+    private Integer code = HttpStatus.ACCEPTED;
     private String message;
-
 
     public CustomException(String message) {
         this.message = message;
+    }
+
+    public CustomException(String message, Integer code) {
+        this.message = message;
+        this.code = code;
     }
 
     public CustomException(String message, Throwable e) {
@@ -34,4 +35,7 @@ public class CustomException extends RuntimeException {
         return message;
     }
 
+    public Integer getCode() {
+        return code;
+    }
 }

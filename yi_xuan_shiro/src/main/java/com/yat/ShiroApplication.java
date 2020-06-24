@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * <p>Description: 描述 </p>
+ * <p>Description: Shiro整合 </p>
  *
  * @Created with IDEA
  * @author: Yat

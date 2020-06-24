@@ -1,10 +1,11 @@
 package com.yat.config.shiro;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.yat.config.properties.CaptchaProperties;
 import com.yat.config.properties.IgnoredUrlsProperties;
-import com.yat.config.shiro.realm.AuthFilter;
-import com.yat.config.shiro.realm.UserRealm;
-import com.yat.modules.authority.service.ShiroService;
+import com.yat.config.shiro.jwt.JwtUtil;
+import com.yat.config.shiro.realm.ShiroAuthFilter;
+import com.yat.config.shiro.realm.ShiroRealm;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -24,10 +25,8 @@ import java.util.Map;
 /**
  * <p>Description: Shiro配置 </p>
  *
- * @Created with IDEA
- * @author: Yat
- * @Date: 2019/9/10
- * @Time: 14:21
+ * @author Yat-Xuan
+ * @date 2020/6/23 9:43
  */
 @Configuration
 public class ShiroConfig {
@@ -36,16 +35,16 @@ public class ShiroConfig {
      * 配置使用自定义Realm，关闭Shiro自带的session
      * 详情见文档 http://shiro.apache.org/session-management.html#SessionManagement-StatelessApplications%28Sessionless%29
      *
-     * @param userRealm 自定义用户授权
+     * @param shiroRealm 自定义用户授权
      * @return org.apache.shiro.web.mgt.DefaultWebSecurityManager
      * @author Yat
      * @date 2018/8/31 10:55
      */
     @Bean("securityManager")
-    public DefaultWebSecurityManager securityManager(UserRealm userRealm) {
+    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         // 使用自定义Realm
-        defaultWebSecurityManager.setRealm(userRealm);
+        defaultWebSecurityManager.setRealm(shiroRealm);
         // 关闭Shiro自带的session
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
@@ -77,8 +76,9 @@ public class ShiroConfig {
      * @date 2018/8/31 10:57
      */
     @Bean("shiroFilter")
+    @DependsOn("shiroAuthFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager,
-                                                         ShiroService shiroService,
+                                                         JwtUtil jwtUtil,
                                                          IgnoredUrlsProperties ignoredUrlsProperties,
                                                          CaptchaProperties captchaProperties) {
 
@@ -87,18 +87,17 @@ public class ShiroConfig {
 
         Map<String, Filter> filterMap = new LinkedHashMap<>(16);
         // 添加自己的权限验证过滤器取名为jwt
-        filterMap.put("jwt", new AuthFilter(shiroService));
-        // 设置用户账号登陆人数限制
-        //  filterMap.put("loginRestrictions",loginRestrictions());
+        filterMap.put("jwt", new ShiroAuthFilter(jwtUtil));
+
         factoryBean.setFilters(filterMap);
 
         // 权限控制：自定义url规则使用LinkedHashMap有序Map
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>(16);
-        ignoredUrlsProperties.getLimitUrls().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
         ignoredUrlsProperties.getUrls().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
         captchaProperties.getImage().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
-        captchaProperties.getUrls().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
+        ignoredUrlsProperties.getLimitUrls().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
         filterChainDefinitionMap.put("/**", "jwt");
+
 
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 

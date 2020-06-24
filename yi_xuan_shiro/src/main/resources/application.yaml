@@ -1,5 +1,5 @@
 server:
-  port: 9003
+  port: 9013
 spring:
   profiles:
     active: dev
@@ -17,24 +17,11 @@ spring:
         min-idle: 5       # 连接池中的最小空闲连接
 
 
-
-
 # 忽略url
 ignored:
   # 无需登录认证的请求
   urls:
-    - /oauth/captchaImage
     - /oauth/login
-    - /oauth/logout
-    - /druid/**
-    - /swagger-ui.html
-    - /swagger-resources/**
-    - /swagger/**
-    - /**/v2/api-docs
-    - /**/*.js
-    - /**/*.css
-    - /**/*.png
-    - /**/*.ico
     - /test/**
   # 限流及黑名单不拦截的路径
   limitUrls:
@@ -47,8 +34,7 @@ ignored:
 captcha:
   # 图片验证码验证
   image:
-    - /oauth2/login # 登录接口
-    - /oauth2/code # 获取图片验证码
+    - /oauth/captchaImage # 登录接口
   sms:
     - /sms #短信接口
   email:
@@ -73,23 +59,6 @@ yat:
         timeout: 1
         # 每个ip限制20个请求
         limit: 20
-    # 腾讯位置服务key配置 腾讯位置服务官网注册添加key ip定位所需
-  token:
-    # 默认为true，token将存入redis，并具有单点登录功能 设为false使用JWT交互
-    enable: true
-    # 是否开启单设备登陆 仅当token交互方式为redis时生效
-    sdl: true
-    # token中存储用户权限数据 设为true开启后可避免每次请求再获取用户权限，但有可能导致编辑权限菜单后无法读取到最新权限数据（需用户重新登录）
-    storePerms: true
-    # token过期时间（分钟）
-    tokenExpireTime: 90
-    # 用户选择保存登录状态对应token过期时间（天）
-    saveLoginTime: 7
-    # 限制用户登陆错误次数（次）
-    loginTimeLimit: 10
-    # 错误超过次数后多少分钟后才能继续登录（分钟）
-    loginAfterTime: 10
-    # 使用Spring @Cacheable注解失效时间
   cache:
     # 过期时间单位 支持day、hour、minute对应天、小时、分钟
     unit: day
@@ -102,20 +71,40 @@ rsa:
   public_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBQd4U8o9Do64S96x5iScJfPpaJdj6ot047BU4afX5olADu3wloRkbHIwkr3VT3W6U5xLE/lmz1jUJ3tSQVMGUgJKf7+GFRmZGojpM9OYyJN78N6sLe5amJfgFxWAzkonsR6/MozeOXVoG9cW+RI+ybDR+ZnDTqilzinqBZKgYZwIDAQAB
 
 jwt:
-  config:
-    # 存储token的 Key
+  secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
+  # 过期时间 单位：毫秒
+  expire: 3600000
+  online:
+    # 存在redis中，在线用户的key的前缀
+    keyPrefix: 'ONLINE:TOKEN:'
+  # 前端token配置；例如：Authorization：'Bearer token值'
+  web:
+    # 存储在前端请求头里的key
     header: Authorization
-    # 令牌前缀
-    bearer: Bearer_
-    # 令牌过期时间 此处单位/毫秒 ，默认4小时，
-    ttl: 14400000
-    # 必须使用最少88位的Base64对该令牌进行编码
-    base64Secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
-    # 在线用户key
-    online-key: online-tokenf
-    # 验证码
-    code-key: code-key
+    # 存储在前端token的前缀
+    tokenPrefix: 'Bearer '
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.yat.modules.entity,com.yat.modules.entity.base,
+  global-config:
+    #数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: ID_WORKER
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: NOT_NULL
+    banner: false
+  #原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+
+
 #登录图形验证码有效时间：秒
 loginCode:
   expiration: 120
-

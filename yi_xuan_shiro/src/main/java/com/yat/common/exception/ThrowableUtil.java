@@ -28,9 +28,9 @@ public class ThrowableUtil {
             t = t.getCause();
         }
         if (t != null) {
-            throw new CustomException(msg);
+            throw new BadRequestException(msg);
         }
         assert false;
-        throw new CustomException("删除失败：" + t.getMessage());
+        throw new BadRequestException("删除失败：" + t.getMessage());
     }
 }

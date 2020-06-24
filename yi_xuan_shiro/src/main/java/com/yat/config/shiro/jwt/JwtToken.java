@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import org.apache.shiro.authc.AuthenticationToken;
 
 /**
- * <p>Description: 重写shiro的token类 </p>
+ * <p>Description: 这里一定要重写shiro的token类，不然会有bug </p>
  *
- * @Created with IDEA
- * @author: Yat
- * @Date: 2019/9/10
- * @Time: 11:34
+ * @author Yat-Xuan
+ * @date 2020/6/20 13:44
  */
 @AllArgsConstructor
 public class JwtToken implements AuthenticationToken {

@@ -1,14 +1,15 @@
 package com.yat.common.utils;
 
-import cn.hutool.core.text.StrFormatter;
+import com.yat.common.core.text.StrFormatter;
 
 import java.util.*;
 
 /**
  * <p>Description: 字符串工具类 </p>
+ *
  * @author Yat-Xuan
  * @date 2020/3/27 11:19
-*/
+ */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 空字符串

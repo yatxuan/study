@@ -1,7 +1,6 @@
 package com.yat.common.utils;
 
-
-import cn.hutool.http.HttpStatus;
+import com.yat.common.constant.HttpStatus;
 
 import java.util.HashMap;
 
@@ -16,17 +15,17 @@ public class ResultResponse extends HashMap<String, Object> {
     /**
      * 状态码
      */
-    public static final String CODE_TAG = "code";
+    private static final String CODE_TAG = "code";
 
     /**
      * 返回内容
      */
-    public static final String MSG_TAG = "msg";
+    private static final String MSG_TAG = "msg";
 
     /**
      * 数据对象
      */
-    public static final String DATA_TAG = "data";
+    private static final String DATA_TAG = "data";
 
     /**
      * 初始化一个新创建的 ResultResponse 对象，使其表示一个空消息。
@@ -96,13 +95,13 @@ public class ResultResponse extends HashMap<String, Object> {
      * @return 成功消息
      */
     public static ResultResponse success(String msg, Object data) {
-        return new ResultResponse(HttpStatus.HTTP_OK, msg, data);
+        return new ResultResponse(HttpStatus.SUCCESS, msg, data);
     }
 
     /**
      * 返回错误消息
      *
-     * @return
+     * @return 、
      */
     public static ResultResponse error() {
         return ResultResponse.error("操作失败");
@@ -126,7 +125,7 @@ public class ResultResponse extends HashMap<String, Object> {
      * @return 警告消息
      */
     public static ResultResponse error(String msg, Object data) {
-        return new ResultResponse(HttpStatus.HTTP_INTERNAL_ERROR, msg, data);
+        return new ResultResponse(HttpStatus.ERROR, msg, data);
     }
 
     /**
