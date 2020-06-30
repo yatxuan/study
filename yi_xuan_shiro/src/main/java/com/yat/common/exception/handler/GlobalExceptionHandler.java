@@ -57,7 +57,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResultResponse handle401(UnauthorizedException e) {
         log.error(ThrowableUtil.getStackTrace(e));
-        log.error("");
         return ResultResponse.error(HttpStatus.UNAUTHORIZED.value(),
                 "权限不足");
     }

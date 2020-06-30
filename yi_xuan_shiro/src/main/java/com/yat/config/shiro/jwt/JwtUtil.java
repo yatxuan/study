@@ -1,7 +1,6 @@
 package com.yat.config.shiro.jwt;
 
 import com.google.gson.Gson;
-import com.yat.common.constant.HttpStatus;
 import com.yat.common.exception.CustomException;
 import com.yat.common.exception.CustomUnauthorizedException;
 import com.yat.common.utils.StringUtils;
@@ -22,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
 
+import static com.yat.common.constant.CommonConstant.EXPIRE;
 import static com.yat.common.constant.JwtConstant.ONLINE_USER_LOGIN_TIMES;
 
 /**
@@ -40,7 +40,7 @@ public class JwtUtil implements InitializingBean {
      * jwt有效时间
      */
     @Value("${jwt.expire}")
-    private long expire;
+    private int expire;
     /**
      * 秘钥
      */
@@ -85,17 +85,17 @@ public class JwtUtil implements InitializingBean {
      */
     public String createToken(LoginUser loginUser) {
 
-        expire = expire > 0L ? expire : 60 * 60 * 1000L;
+        expire = expire > 0 ? expire : EXPIRE;
         String token = Jwts.builder()
                 .setSubject(loginUser.getUsername())
                 .claim("logIp", loginUser.getLogIp())
                 .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(new Date(System.currentTimeMillis() + expire))
+                .setExpiration(new Date(System.currentTimeMillis() + expire * 1000 - 1))
                 .compact();
 
         // 把当前登陆的用户存入redis，过期时间需要比token的失效时间长，防止意外
         // 因为token的时间单位为毫秒，redis的时间单位为秒，所以这里除以1000
-        long redisExpire = expire / 1000 + 10L;
+        long redisExpire = expire;
 
         // 因为ip要作为redis的key值，这里去除小数点
         String ip = StringUtils.remove(loginUser.getLogIp(), ".");
@@ -229,6 +229,18 @@ public class JwtUtil implements InitializingBean {
      */
     public Object getClaim(Claims claims, String key) {
         return claims.get(key);
+    }
+
+    /**
+     * 获取存储在token里面，自定义的key的数据
+     *
+     * @param token token数据
+     * @param key   自定义key
+     * @return key值对应的value
+     */
+    public String getClaim(String token, String key) {
+        Claims claims = parseJwt(token);
+        return claims.get(key).toString();
     }
 
 

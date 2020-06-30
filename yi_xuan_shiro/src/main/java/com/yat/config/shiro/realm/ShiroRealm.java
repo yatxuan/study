@@ -8,7 +8,6 @@ import com.yat.models.entity.RoleEntity;
 import com.yat.models.entity.UserEntity;
 import com.yat.models.entity.dto.authority.LoginUser;
 import com.yat.models.service.IUserService;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -21,14 +20,13 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * <p>Description: 自定义：登陆、权限认证  </p>
+ * <p>Description: 自定义：登陆、权限认证 566 </p>
  *
  * @author Yat-Xuan
  * @date 2020/6/20 - 12:56
@@ -64,7 +62,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        log.debug("进入ShiroRealm登陆认证------------------------->");
+        log.info("进入ShiroRealm登陆认证------------------------->");
         // 获取token,这里获取的accessToken
         // 是在自定义的权限验证过滤器:AuthFilter-executeLogin() 中,调用  subject.login(token)放入的数据
         String accessToken = (String) token.getPrincipal();
@@ -90,7 +88,7 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
-        // 这里要把 用户的消息，jwt令牌 存入shiro的SecurityManager
+        // 这里要把 用户的消息，jwt令牌 存入shiro的SecurityManager getAuthorizationInfo
         return new SimpleAuthenticationInfo(userEntity, accessToken, getName());
     }
 
@@ -107,7 +105,7 @@ public class ShiroRealm extends AuthorizingRealm {
         // 查询角色列表 - 没有数据演示，所以现在是默认添加为所有角色
         List<RoleEntity> userRoles = userService.findUserRoles(user.getId());
         roles = userRoles.stream().map(RoleEntity::getRole).collect(Collectors.toSet());
-        roles.add("*");
+        // roles.add("*");
 
         // 查询权限列表（功能列表-菜单列表） - 没有数据演示，所以现在是默认添加为所有权限
         // List<PermissionEntity> userPermissions = shiroService.findUserPermissions(user.getId());
@@ -119,9 +117,21 @@ public class ShiroRealm extends AuthorizingRealm {
         info.setRoles(roles);
         // 权限加入AuthorizationInfo认证对象
         info.setStringPermissions(permissions);
-
         return info;
     }
+
+    /**
+     * 这里是shiro获取的用户权限信息，
+     * @param principals 、
+     * @return 、
+     */
+    @Override
+    protected AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
+        return super.getAuthorizationInfo(principals);
+    }
+
+
+
 
     /**
      * 重写方法,清除当前用户的的 授权缓存

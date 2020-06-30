@@ -15,7 +15,6 @@ import com.yat.models.entity.UserEntity;
 import com.yat.models.entity.dto.authority.LoginUser;
 import com.yat.models.service.ILoginService;
 import com.yat.models.service.IUserService;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.LockedAccountException;

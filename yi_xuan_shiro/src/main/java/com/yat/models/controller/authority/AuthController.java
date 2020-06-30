@@ -10,23 +10,17 @@ import com.yat.common.utils.ResultResponse;
 import com.yat.common.utils.StringUtils;
 import com.yat.config.properties.RsaSecret;
 import com.yat.config.redis.RedisUtils;
-import com.yat.config.shiro.realm.ShiroRealm;
 import com.yat.models.entity.UserEntity;
 import com.yat.models.entity.from.LoginFrom;
 import com.yat.models.service.ILoginService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
-import org.springframework.http.HttpRequest;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import static com.yat.common.constant.JwtConstant.ONLINE_USER_LOGIN_TIMES;
 
 /**
  * <p>Description: 系统用户登陆接口 </p>
@@ -51,8 +45,8 @@ public class AuthController {
     @GetMapping("/login")
     public ResultResponse login(@RequestParam(value = "squeeze", required = false, defaultValue = "-1") int squeeze,
                                 HttpServletRequest request) {
-        log.debug("进入登录方法-------------------------->");
-        String username = "admin", password = "d82494f05d6917ba02f7aaa29689ccb444bb73f20380876cb05d1f37537b7892";
+        log.info("进入登录方法-------------------------->");
+        String username = "admin", password = "admin";
         return loginService.login(username, password, squeeze, request);
     }
 
@@ -108,7 +102,7 @@ public class AuthController {
      * @return 、
      */
     @GetMapping("info")
-    @RequiresPermissions(value = {"user:info", "user"}, logical = Logical.OR)
+    @RequiresRoles(value = {"user:info", "user"}, logical = Logical.OR)
     public ResultResponse info() {
         UserEntity principal = (UserEntity) SecurityUtils.getSubject().getPrincipal();
 

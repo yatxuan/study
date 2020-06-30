@@ -1,12 +1,11 @@
 package com.yat.config.shiro;
 
-import cn.hutool.extra.spring.SpringUtil;
 import com.yat.config.properties.CaptchaProperties;
 import com.yat.config.properties.IgnoredUrlsProperties;
 import com.yat.config.shiro.jwt.JwtUtil;
 import com.yat.config.shiro.realm.ShiroAuthFilter;
 import com.yat.config.shiro.realm.ShiroRealm;
-import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import com.yat.config.shiro.redis.RedisCacheManager;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -22,6 +21,8 @@ import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.yat.common.constant.CommonConstant.*;
+
 /**
  * <p>Description: Shiro配置 </p>
  *
@@ -30,6 +31,7 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+
 
     /**
      * 配置使用自定义Realm，关闭Shiro自带的session
@@ -41,20 +43,37 @@ public class ShiroConfig {
      * @date 2018/8/31 10:55
      */
     @Bean("securityManager")
-    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
+    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm, RedisCacheManager redisCacheManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
+
         // 使用自定义Realm
+        shiroRealm.setCachingEnabled(true);
+        //启用身份验证缓存，即缓存AuthenticationInfo(登录认证)信息，默认false
+        shiroRealm.setAuthenticationCachingEnabled(true);
+        //缓存AuthenticationInfo信息的缓存名称 - 用户信息
+        shiroRealm.setAuthenticationCacheName(AUTHENTICATION_CACHE);
+        //启用授权缓存，即缓存AuthorizationInfo(权限)信息，默认false
+        shiroRealm.setAuthorizationCachingEnabled(true);
+        //缓存AuthorizationInfo信息的缓存名称 - 角色和权限
+        shiroRealm.setAuthorizationCacheName(AUTHORIZATION_CACHE);
         defaultWebSecurityManager.setRealm(shiroRealm);
+
         // 关闭Shiro自带的session
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
         defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
         subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
         defaultWebSecurityManager.setSubjectDAO(subjectDAO);
-        // 设置自定义Cache缓存
-        defaultWebSecurityManager.setCacheManager(new MemoryConstrainedCacheManager());
+
+        // 设置自定义redis缓存
+        //redis中针对不同用户缓存
+        redisCacheManager.setPrincipalIdFieldName("username");
+        //用户权限信息缓存时间
+        redisCacheManager.setExpire(EXPIRE);
+        defaultWebSecurityManager.setCacheManager(redisCacheManager);
         return defaultWebSecurityManager;
     }
+
 
     /**
      * 添加自己的过滤器，自定义url规则
@@ -132,6 +151,5 @@ public class ShiroConfig {
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
-
 
 }

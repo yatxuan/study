@@ -25,12 +25,12 @@ import static org.springframework.util.CollectionUtils.arrayToList;
  */
 @Slf4j
 @Component
-@SuppressWarnings({"unused", "unchecked"})
 @RequiredArgsConstructor
+@SuppressWarnings({"unused", "unchecked"})
 public class RedisUtils<V> {
 
     private final RedisTemplate<String, V> redisTemplate;
-    private final ValueOperations<String, String> valueOperations;
+    private final ValueOperations<String, V> valueOperations;
     private final HashOperations<String, String, V> hashOperations;
     private final ListOperations<String, V> listOperations;
     private final SetOperations<String, V> setOperations;
@@ -260,7 +260,7 @@ public class RedisUtils<V> {
     //============================String=============================
     // 应用场景：String是最常用的一种数据类型，普通的key/ value 存储都可以归为此类.
 
-    public ValueOperations<String, String> getValueOperations() {
+    public ValueOperations<String, V> getValueOperations() {
         return valueOperations;
     }
 
@@ -283,7 +283,7 @@ public class RedisUtils<V> {
      * @return 值-String（Json
      */
     public String get(String key, long expire) {
-        String value = valueOperations.get(key);
+        String value = (String) valueOperations.get(key);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, SECONDS);
         }
@@ -312,11 +312,11 @@ public class RedisUtils<V> {
      * @return 存储类型
      */
     public <T> T get(String key, Class<T> clazz, long expire) {
-        String value = valueOperations.get(key);
+        Object value = valueOperations.get(key);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, SECONDS);
         }
-        return value == null ? null : fromJson(value, clazz);
+        return value == null ? null : fromJson(value.toString(), clazz);
     }
 
     /**
@@ -347,7 +347,8 @@ public class RedisUtils<V> {
      */
     public boolean set(String key, V value, long expire) {
         try {
-            valueOperations.set(key, toJson(value));
+            // valueOperations.set(key, toJson(value));
+            valueOperations.set(key, value);
             if (expire != NOT_EXPIRE) {
                 expire(key, expire);
             }
