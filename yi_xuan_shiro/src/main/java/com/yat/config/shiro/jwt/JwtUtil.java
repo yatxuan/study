@@ -106,7 +106,7 @@ public class JwtUtil implements InitializingBean {
             String json = new Gson().toJson(loginUser);
             redisUtils.set(onlineKey, json, redisExpire);
             // 记录每个账号同时在线人数
-            redisUtils.listRightPush(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername(), loginUser.getLogIp());
+            redisUtils.listRightPush(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername(), loginUser.getLogIp(), redisExpire);
         }
         return token;
     }

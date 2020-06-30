@@ -25,6 +25,9 @@ public class RedisConfig {
 
     private final RedisConnectionFactory factory;
 
+    /**
+     * 配置 存储shiro数据的 序列化方式
+     */
     @Bean("shiroRedisTemplate")
     public RedisTemplate<String, Object> shiroRedisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
