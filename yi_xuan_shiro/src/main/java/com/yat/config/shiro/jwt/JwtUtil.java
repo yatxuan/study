@@ -20,8 +20,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
-import static com.yat.common.constant.CommonConstant.EXPIRE;
+import static com.yat.common.constant.CommonConstant.*;
 import static com.yat.common.constant.JwtConstant.ONLINE_USER_LOGIN_TIMES;
 
 /**
@@ -243,5 +244,27 @@ public class JwtUtil implements InitializingBean {
         return claims.get(key).toString();
     }
 
+
+    /**
+     * 根据token 删除当前用户的所有权限数据
+     *
+     * @param token 用户令牌
+     */
+    public void remove(String token) {
+        String userNem = parseJwt(token).getSubject();
+        redisUtils.del(PREFIX_SHIRO_CACHE + AUTHORIZATION_CACHE + userNem,
+                PREFIX_SHIRO_CACHE + AUTHENTICATION_CACHE + userNem);
+    }
+
+
+    /**
+     * 根据token 删除所有用户的所有权限数据
+     */
+    public void remove() {
+        List<String> authorizationCache = redisUtils.scan(PREFIX_SHIRO_CACHE + AUTHORIZATION_CACHE + "*");
+        authorizationCache.forEach(o -> redisUtils.del(o));
+        List<String> authenticationCache = redisUtils.scan(PREFIX_SHIRO_CACHE + AUTHENTICATION_CACHE + "*");
+        authenticationCache.forEach(o -> redisUtils.del(o));
+    }
 
 }
