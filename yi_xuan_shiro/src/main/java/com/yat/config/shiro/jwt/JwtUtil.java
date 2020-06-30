@@ -262,9 +262,9 @@ public class JwtUtil implements InitializingBean {
      */
     public void remove() {
         List<String> authorizationCache = redisUtils.scan(PREFIX_SHIRO_CACHE + AUTHORIZATION_CACHE + "*");
-        authorizationCache.forEach(o -> redisUtils.del(o));
         List<String> authenticationCache = redisUtils.scan(PREFIX_SHIRO_CACHE + AUTHENTICATION_CACHE + "*");
-        authenticationCache.forEach(o -> redisUtils.del(o));
+        authorizationCache.forEach(redisUtils::del);
+        authenticationCache.forEach(redisUtils::del);
     }
 
 }
