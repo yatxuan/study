@@ -3,12 +3,16 @@ package com.yat.limit.controller;
 import com.yat.limit.annotation.RateLimiter;
 import com.yat.limit.config.AddressUtils;
 import com.yat.limit.service.IRosterService;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * <p>Description: 描述 </p>
@@ -24,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 public class TestController {
 
     private final IRosterService rosterService;
-
+    private final RedisTemplate redisTemplate;
 
     @GetMapping("/image")
     public String image() {
@@ -71,4 +75,12 @@ public class TestController {
         return "LimitNum";
     }
 
+
+    @Data
+    @NoArgsConstructor
+    class User {
+        private String username;
+        private String password;
+        private int age;
+    }
 }
