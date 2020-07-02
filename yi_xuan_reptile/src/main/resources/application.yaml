@@ -1,0 +1,53 @@
+server:
+  port: 9015
+spring:
+  redis:
+    database: 3
+    host: 127.0.0.1
+    port: 6379
+    password:    # 密码（默认为空）
+    timeout: 6000ms  # 连接超时时长（毫秒）
+    jedis:
+      pool:
+        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+  # 需要有 Redisson 连接
+  redisson:
+    address: redis://127.0.0.1:6379
+
+anti:
+  reptile:
+    manager:
+      # 是否启用反爬虫插件
+      enabled: true
+      # 是否启用全局拦截，默认为false，可设置为true全局拦截
+      globalFilterMode: true
+      # 非全局拦截下，需要反爬的接口列表，以'/'开头，以','分隔,支持正则表达式匹配（如：^/admin/.*$）
+      # 也可以用注解模式，参考 TestController 类
+      # 全局拦截模式下无需配置
+      include-urls: /client/list,/user/list,^/admin/.*$
+      ip-rule:
+        # 是否启用IP Rule：默认启用
+        enabled: true
+        # 最大请求数，默认20
+        request-max-size: 10
+        # 时间窗口：默认5000ms
+        expiration-time: 3000
+        # IP白名单，支持后缀'*'通配，以','分隔
+        ignore-ip: 192.168.*,192.168.1.1
+      ua-rule:
+        # 是否启用User-Agent(请求头里，获取ip和浏览器信息的部分) Rule：默认启用
+        # 如果启用该选项，不能利用postMan进行访问，除非在请求时，在请求头里加上 User-Agent 的参数配置
+        enabled: true
+        # 是否允许Linux系统访问：默认否
+        allowed-linux: false
+        # 是否允许移动端设备访问：默认是
+        allowed-mobile: true
+        # 是否允许移PC设备访问: 默认是
+        allowed-pc: true
+        # 是否允许Iot设备访问：默认否
+        allowed-iot: false
+        # 是否允许代理访问：默认否
+        allowed-proxy: false
