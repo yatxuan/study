@@ -60,7 +60,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         jackson2JsonRedisSerializer.setObjectMapper(om);
 
-        // Use String RedisSerializer to serialize and deserialize the key value of redis
+        // 使用String RedisSerializer序列化和反序列化redis的Key
         RedisSerializer redisSerializer = new StringRedisSerializer();
         // key
         redisTemplate.setKeySerializer(redisSerializer);
