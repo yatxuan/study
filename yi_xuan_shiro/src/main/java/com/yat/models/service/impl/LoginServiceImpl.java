@@ -66,57 +66,27 @@ public class LoginServiceImpl implements ILoginService {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
+        // 获取登陆的浏览器名称
+        String browser = AddressUtils.getBrowser(request);
         // 获取当前客户端的ip
         String logIp = AddressUtils.getIpAddr(request);
-        Date date = new Date();
-        // 判断当前账号是否在其他客户端进行登陆
-        if (redisUtils.hasKey(ONLINE_USER_LOGIN_TIMES + username)) {
-            // 获取当前账号 客户端登陆地点的ip
-            List<String> list = redisUtils.listRange(ONLINE_USER_LOGIN_TIMES + username);
-            if (null != list && !list.isEmpty()) {
-                // 判断用户是否为 重复登陆
-                if (!list.contains(logIp)) {
-                    // 如果不是重复登陆，判断该账号是否允许多地点登陆
-                    // (这里可以到数据库查询，也可以到配置文件中设置，每个账号的同时登陆人数)
-                    // 判断 允许的最大的登陆人数 小于等于 当前已经登录的人数
-                    if (user.getLogNumber() <= list.size()) {
-                        // 判断是否挤退别人
-                        if (1 == squeeze) {
-                            //  挤掉最先登录的用户: 获取当前账号，第一个客户端的ip
-                            String fistLogIp = redisUtils.listGetIndex(ONLINE_USER_LOGIN_TIMES + username, 0);
-                            String ip = StringUtils.remove(fistLogIp, ".");
+        // 获取登录地点
+        String address = AddressUtils.getCityInfo(logIp);
+        //
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS");
+        String loginTime = simpleDateFormat.format(System.currentTimeMillis());
 
-                            // 挤掉最先登录的用户: 把当前账号的客户端的ip进行覆盖
-                            redisUtils.listUpdateIndex(ONLINE_USER_LOGIN_TIMES + username, 0, logIp);
-                            String onlineKey = jwtUtil.getOnlineKeyPrefix() + ip + username;
-                            redisUtils.del(onlineKey);
-
-                            // 在给退出的客户端一个友好提示
-                            StrBuilder strBuilder = new StrBuilder("您的账号于");
-                            strBuilder.append(new SimpleDateFormat("HH:mm").format(date));
-                            strBuilder.append("在另一台设备上进行登陆，已经被迫下线，若非本人操作，请立即修改密码");
-                            String friendlyTips = jwtUtil.getOnlineKeyPrefix() + username + ip;
-                            redisUtils.set(friendlyTips, strBuilder.toString());
-
-                        } else if (-1 == squeeze) {
-                            throw new CustomException("当前您的账号在另一台设备上登陆，是否重新登陆？");
-                        } else {
-                            throw new CustomException("登陆失败！");
-                        }
-                    }
-                } else {
-                    log.info("重复登陆");
-                }
-            }
-        }
         LoginUser loginUser = LoginUser.builder()
                 .username(user.getUsername())
                 .nickName(user.getNickName())
                 .logIp(logIp)
-                .browser(AddressUtils.getBrowser(request))
-                .address(AddressUtils.getCityInfo(logIp))
-                .loginTime(date)
+                .address(address)
+                .browser(browser)
+                .loginTime(loginTime)
+                .logNumber(user.getLogNumber())
+                .squeeze(squeeze)
                 .build();
+
 
         // 生成令牌
         String token = jwtUtil.createToken(loginUser);

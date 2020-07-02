@@ -72,8 +72,8 @@ rsa:
 
 jwt:
   secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
-  # 过期时间 单位：毫秒
-  expire: 3600000
+  # 过期时间 单位：秒
+  expire: 3600
   online:
     # 存在redis中，在线用户的key的前缀
     keyPrefix: 'ONLINE:TOKEN:'

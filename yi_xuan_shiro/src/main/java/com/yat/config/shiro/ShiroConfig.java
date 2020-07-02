@@ -117,7 +117,6 @@ public class ShiroConfig {
         ignoredUrlsProperties.getLimitUrls().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
         filterChainDefinitionMap.put("/**", "jwt");
 
-
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return factoryBean;

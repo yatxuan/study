@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yat.common.constant.UserConstant;
 import com.yat.config.shiro.jwt.JwtToken;
 import com.yat.config.shiro.jwt.JwtUtil;
+import com.yat.models.entity.PermissionEntity;
 import com.yat.models.entity.RoleEntity;
 import com.yat.models.entity.UserEntity;
 import com.yat.models.entity.dto.authority.LoginUser;
 import com.yat.models.service.IUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -32,12 +34,11 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ShiroRealm extends AuthorizingRealm {
 
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private IUserService userService;
+    private final JwtUtil jwtUtil;
+    private final IUserService userService;
 
     /**
      * 必须重写此方法，不然Shiro会报错

@@ -44,8 +44,13 @@ public class LoginUser {
     /**
      * 登陆时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date loginTime;
-
+    private String loginTime;
+    /**
+     * 设置每个账号最多同时几个客户端登录：允许最大的登陆人数
+     */
+    private Integer logNumber;
+    /**
+     *1-挤调第一个地方的登陆，0-不挤掉，-1-返回报错提示
+     */
+    private Integer squeeze;
 }

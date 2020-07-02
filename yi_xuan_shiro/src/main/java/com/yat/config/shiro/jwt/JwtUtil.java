@@ -1,5 +1,6 @@
 package com.yat.config.shiro.jwt;
 
+import cn.hutool.core.text.StrBuilder;
 import com.google.gson.Gson;
 import com.yat.common.exception.CustomException;
 import com.yat.common.exception.CustomUnauthorizedException;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -86,29 +88,70 @@ public class JwtUtil implements InitializingBean {
      */
     public String createToken(LoginUser loginUser) {
 
+        // 判断当前账号是否在其他客户端进行登陆
+        if (redisUtils.hasKey(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername())) {
+            // 获取当前账号 客户端登陆地点的ip
+            List<String> list = redisUtils.listRange(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername());
+            if (null != list && !list.isEmpty()) {
+                // 判断用户是否为 重复登陆
+                if (!list.contains(loginUser.getLogIp())) {
+                    // 如果不是重复登陆，判断该账号是否允许多地点登陆
+                    // (这里可以到数据库查询，也可以到配置文件中设置，每个账号的同时登陆人数)
+                    // 判断 允许的最大的登陆人数 小于等于 当前已经登录的人数
+                    if (loginUser.getLogNumber() <= list.size()) {
+                        // 判断是否挤退别人
+                        if (1 == loginUser.getSqueeze()) {
+                            //  挤掉最先登录的用户: 获取当前账号，第一个客户端的ip
+                            String fistLogIp = redisUtils.listGetIndex(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername(), 0);
+                            String ip = StringUtils.remove(fistLogIp, ".");
+
+                            // 挤掉最先登录的用户: 把当前账号的客户端的ip进行覆盖
+                            redisUtils.listUpdateIndex(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername(),
+                                    0, loginUser.getLogIp());
+                            String onlineKey = onlineKeyPrefix + ip + loginUser.getUsername();
+                            redisUtils.del(onlineKey);
+
+                            // 在给退出的客户端一个友好提示
+                            StrBuilder strBuilder = new StrBuilder("您的账号于");
+                            strBuilder.append(loginUser.getLoginTime());
+                            strBuilder.append("在另一台设备上进行登陆，已经被迫下线，若非本人操作，请立即修改密码");
+                            String friendlyTips = onlineKeyPrefix + loginUser.getUsername() + ip;
+                            redisUtils.set(friendlyTips, strBuilder.toString());
+
+                        } else if (-1 == loginUser.getSqueeze()) {
+                            throw new CustomException("当前您的账号在另一台设备上登陆，是否重新登陆？");
+                        } else {
+                            throw new CustomException("登陆失败！");
+                        }
+                    }
+                } else {
+                    log.info("重复登陆");
+                }
+            }
+        }
+
         expire = expire > 0 ? expire : EXPIRE;
         String token = Jwts.builder()
                 .setSubject(loginUser.getUsername())
                 .claim("logIp", loginUser.getLogIp())
                 .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(new Date(System.currentTimeMillis() + expire * 1000 - 1))
+                // 因为token的时间单位为毫秒，所以这里要化单位为毫秒
+                .setExpiration(new Date(System.currentTimeMillis() + expire * 1000))
                 .compact();
-
-        // 把当前登陆的用户存入redis，过期时间需要比token的失效时间长，防止意外
-        // 因为token的时间单位为毫秒，redis的时间单位为秒，所以这里除以1000
-        long redisExpire = expire;
 
         // 因为ip要作为redis的key值，这里去除小数点
         String ip = StringUtils.remove(loginUser.getLogIp(), ".");
 
-        // 这里的key值 等于 前缀+ip+用户名 这样做的目的是为了防止一个用户在同一个客户端多次登陆，影响程序效率
+        // 这里的key值 等于 前缀+ip+用户名 这里添加ip的作用是为了区分一个账号多个地点进行登录
         String onlineKey = onlineKeyPrefix + ip + loginUser.getUsername();
-        if (redisUtils.notHasKey(onlineKey)) {
-            String json = new Gson().toJson(loginUser);
-            redisUtils.set(onlineKey, json, redisExpire);
-            // 记录每个账号同时在线人数
-            redisUtils.listRightPush(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername(), loginUser.getLogIp(), redisExpire);
-        }
+        String json = new Gson().toJson(loginUser);
+        redisUtils.set(onlineKey, json, expire);
+        // 记录每个账号同时在线人数
+        // 先删除，在添加，防止重复添加
+        redisUtils.listRemove(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername(), 1L,
+                loginUser.getLogIp());
+        redisUtils.listRightPush(ONLINE_USER_LOGIN_TIMES + loginUser.getUsername(),
+                loginUser.getLogIp(), expire);
         return token;
     }
 
@@ -181,7 +224,7 @@ public class JwtUtil implements InitializingBean {
             log.error("Invalid JWT signature.");
             throw new CustomUnauthorizedException("Invalid JWT signature");
         } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token.");
+            log.error("Expired JWT token.'{}'", e.getMessage());
             throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported JWT token.");
