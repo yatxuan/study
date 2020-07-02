@@ -1,12 +1,7 @@
 package com.yat.config.shiro.redis;
 
-import com.google.gson.Gson;
 import com.yat.config.shiro.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.SimpleAccount;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -17,7 +12,6 @@ import org.crazycake.shiro.exception.PrincipalInstanceException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -59,9 +53,9 @@ public class RedisCache<K, V> implements Cache<K, V> {
     /**
      * 获取用户信息、用户权限
      *
-     * @param key
-     * @return
-     * @throws CacheException
+     * @param key 、
+     * @return 、
+     * @throws CacheException 、
      */
     @Override
     public V get(K key) throws CacheException {
@@ -97,10 +91,10 @@ public class RedisCache<K, V> implements Cache<K, V> {
     /**
      * 存储用户信息、用户权限
      *
-     * @param key
-     * @param value
-     * @return
-     * @throws CacheException
+     * @param key   、
+     * @param value 、
+     * @return 、
+     * @throws CacheException 、
      */
     @Override
     public V put(K key, V value) throws CacheException {
@@ -240,7 +234,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
             return Collections.emptySet();
         }
 
-        Set<K> convertedKeys = new HashSet<K>();
+        Set<K> convertedKeys = new HashSet<>(16);
         for (String key : keys) {
             try {
                 convertedKeys.add((K) key);

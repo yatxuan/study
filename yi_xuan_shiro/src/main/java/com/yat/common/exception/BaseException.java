@@ -2,7 +2,6 @@ package com.yat.common.exception;
 
 import com.yat.common.utils.MessageUtils;
 import com.yat.common.utils.StringUtils;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

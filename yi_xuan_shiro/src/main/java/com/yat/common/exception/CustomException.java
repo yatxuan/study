@@ -2,8 +2,6 @@ package com.yat.common.exception;
 
 
 import com.yat.common.constant.HttpStatus;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 /**
  * <p>Description: 自定义异常 </p>

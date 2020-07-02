@@ -3,7 +3,6 @@ package com.yat.graphql.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * <p>Description: 自定义异常 </p>

@@ -14,7 +14,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * <p>Description: 自定义：登陆、权限认证 566 </p>
+ * <p>Description: 自定义：登陆、权限认证 </p>
  *
  * @author Yat-Xuan
  * @date 2020/6/20 - 12:56

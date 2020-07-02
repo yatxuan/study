@@ -1,6 +1,5 @@
 package com.yat.config.shiro.redis;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -67,7 +66,7 @@ public class RedisManager {
     /**
      * 批量删除key
      *
-     * @param keys
+     * @param keys 、
      */
     public void del(Collection keys) {
         shiroRedisTemplate.delete(keys);
@@ -113,8 +112,8 @@ public class RedisManager {
     /**
      * 使用scan命令 查询某些前缀的key
      *
-     * @param key
-     * @return
+     * @param key 、
+     * @return 、
      */
     public Set<String> scan(String key) {
         return this.shiroRedisTemplate.execute((RedisCallback<Set<String>>) connection -> {
@@ -131,8 +130,8 @@ public class RedisManager {
      * 使用scan命令 查询某些前缀的key 有多少个
      * 用来获取当前session数量,也就是在线用户
      *
-     * @param key
-     * @return
+     * @param key 、
+     * @return 、
      */
     public Long scanSize(String key) {
         return this.shiroRedisTemplate.execute((RedisCallback<Long>) connection -> {

@@ -1,7 +1,5 @@
 package com.yat.websocket.config;
 
-import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
