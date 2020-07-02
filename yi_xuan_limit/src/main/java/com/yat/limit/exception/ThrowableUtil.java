@@ -1,6 +1,5 @@
 package com.yat.limit.exception;
 
-import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -20,17 +19,5 @@ public class ThrowableUtil {
             throwable.printStackTrace(pw);
             return sw.toString();
         }
-    }
-
-    public static void throwForeignKeyException(Throwable e, String msg){
-        Throwable t = e.getCause();
-        while ((t != null) && !(t instanceof ConstraintViolationException)) {
-            t = t.getCause();
-        }
-        if (t != null) {
-            throw new CustomException(msg);
-        }
-        assert false;
-        throw new CustomException("删除失败：" + t.getMessage());
     }
 }

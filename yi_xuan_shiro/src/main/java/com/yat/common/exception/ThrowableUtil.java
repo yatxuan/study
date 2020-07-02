@@ -1,6 +1,5 @@
 package com.yat.common.exception;
 
-import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -22,15 +21,4 @@ public class ThrowableUtil {
         }
     }
 
-    public static void throwForeignKeyException(Throwable e, String msg){
-        Throwable t = e.getCause();
-        while ((t != null) && !(t instanceof ConstraintViolationException)) {
-            t = t.getCause();
-        }
-        if (t != null) {
-            throw new BadRequestException(msg);
-        }
-        assert false;
-        throw new BadRequestException("删除失败：" + t.getMessage());
-    }
 }

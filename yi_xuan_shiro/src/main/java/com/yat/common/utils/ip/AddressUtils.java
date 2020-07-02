@@ -37,6 +37,11 @@ public class AddressUtils {
     private static final String UNKNOWN = "unknown";
 
 
+    public static void main(String[] args) {
+        String cityInfo = getCityInfo("117.132.192.68");
+        System.out.println(cityInfo);
+    }
+
     /**
      * 获取ip地址
      * @param request /
