@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.text.SimpleDateFormat;
+import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
 import java.util.List;
 
@@ -220,18 +220,21 @@ public class JwtUtil implements InitializingBean {
         try {
             parseJwt(token);
             return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+        } catch (SecurityException | MalformedJwtException e) {
             log.error("Invalid JWT signature.");
-            throw new CustomUnauthorizedException("Invalid JWT signature");
+            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
         } catch (ExpiredJwtException e) {
             log.error("Expired JWT token.'{}'", e.getMessage());
             throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported JWT token.");
-            throw new CustomUnauthorizedException("Unsupported JWT token.");
+            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
         } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
-            throw new CustomUnauthorizedException("JWT token compact of handler are invalid.");
+            log.error("JWT token compact of handler are invalid.");
+            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
+        }catch (SignatureException e){
+            log.error("JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted");
+            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
         }
     }
 

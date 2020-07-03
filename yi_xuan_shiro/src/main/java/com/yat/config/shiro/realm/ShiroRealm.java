@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yat.common.constant.UserConstant;
 import com.yat.config.shiro.jwt.JwtToken;
 import com.yat.config.shiro.jwt.JwtUtil;
-import com.yat.models.entity.PermissionEntity;
 import com.yat.models.entity.RoleEntity;
 import com.yat.models.entity.UserEntity;
 import com.yat.models.entity.dto.authority.LoginUser;
@@ -18,7 +17,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -92,6 +90,12 @@ public class ShiroRealm extends AuthorizingRealm {
         return new SimpleAuthenticationInfo(userEntity, accessToken, getName());
     }
 
+    /**
+     * 授权认证
+     *
+     * @param principals 、
+     * @return 、
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         // 获取用户信息
@@ -122,6 +126,7 @@ public class ShiroRealm extends AuthorizingRealm {
 
     /**
      * 这里是shiro获取的用户权限信息，
+     *
      * @param principals 、
      * @return 、
      */
@@ -129,8 +134,6 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
         return super.getAuthorizationInfo(principals);
     }
-
-
 
 
     /**
@@ -186,6 +189,6 @@ public class ShiroRealm extends AuthorizingRealm {
     public void clearUserCache() {
         getAuthorizationCache().remove(SecurityUtils.getSubject().getPrincipal());
         // 清除用户的认证缓存
-        // getAuthenticationCache().remove(SecurityUtils.getSubject().getPrincipal());
+        getAuthenticationCache().remove(SecurityUtils.getSubject().getPrincipal());
     }
 }

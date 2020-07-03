@@ -50,7 +50,7 @@ public class LoginUser {
      */
     private Integer logNumber;
     /**
-     *1-挤调第一个地方的登陆，0-不挤掉，-1-返回报错提示
+     * 1-挤调第一个地方的登陆，0-不挤掉，-1-返回报错提示
      */
-    private Integer squeeze;
+    private Integer squeeze = -1;
 }

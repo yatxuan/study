@@ -112,8 +112,6 @@ public class LoginServiceImpl implements ILoginService {
         // 删除用户登陆信息
         String onlineKey = jwtUtil.getOnlineKeyPrefix() + StringUtils.remove(logIp, ".") + userName;
         redisUtils.del(onlineKey);
-        // 清楚shiro的session缓存
-        shiroRealm.clearUserCache();
 
     }
 
