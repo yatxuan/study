@@ -21,6 +21,7 @@
 7. [Springboot整合RabbitMQ---yi_xuan_rabbitmq](https://github.com/yatxuan/study/tree/master/yi_xuan_rabbitmq)
 8. [SpringBoot整合MySQL读写分离---yi_xuan_read_write_database](https://github.com/yatxuan/study/tree/master/yi_xuan_read_write_database)
 4. [springboot整合Redis---yi_xuan_redis]()
+4. [springboot整合Redisson分布式琐---yi_xuan_redisson]()
 4. [springboot整合反爬虫处理---yi_xuan_reptile]()
 9. [SpringBoot整合scheduler(定时任务)---yi_xuan_scheduler](https://github.com/yatxuan/study/tree/master/yi_xuan_scheduler)
 4. [springboot整shiro---yi_xuan_shiro]()
