@@ -19,10 +19,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <apollo.version>1.5.0</apollo.version>
+        <bitwalker.version>1.21</bitwalker.version>
+        <oshi.version>3.9.1</oshi.version>
+        <ip2region.version>1.7.2</ip2region.version>
+        <redisson.version>3.11.0</redisson.version>
+        <hutool.version>5.3.7</hutool.version>
+        <easyCaptcha.version>1.6.2</easyCaptcha.version>
     </properties>
 
     <dependencies>
+
         <!--   SpringBootWeb访问，排除Tomcat，使用jetty   -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -44,15 +50,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <artifactId>wildfly-common</artifactId>
+            <groupId>org.wildfly.common</groupId>
+            <version>1.5.2.Final</version>
+        </dependency>
 
         <!--  redis所需依赖 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>${redisson.version}</version>
         </dependency>
 
         <dependency>
@@ -63,12 +71,46 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-
-        <!-- 反爬虫依赖: https://mvnrepository.com/artifact/cn.keking.project/kk-anti-reptile -->
+        <!--  User-Agent库：解析客户端操作系统、浏览器等 -->
         <dependency>
-            <groupId>cn.keking.project</groupId>
-            <artifactId>kk-anti-reptile</artifactId>
-            <version>1.0.0-RELEASE</version>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${bitwalker.version}</version>
         </dependency>
+        <!--获取ip工具类-https://gitee.com/lionsoul/ip2region/tree/v1.4-release/-->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>${ip2region.version}</version>
+        </dependency>
+        <!-- 获取系统信息 -->
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>${oshi.version}</version>
+        </dependency>
+        <!-- Hutool工具包 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!--图形验证码-->
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>${easyCaptcha.version}</version>
+        </dependency>
+        <!-- GsonJson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        <!-- 参考的反爬虫依赖: https://mvnrepository.com/artifact/cn.keking.project/kk-anti-reptile -->
+        <!--        <dependency>-->
+        <!--            <groupId>cn.keking.project</groupId>-->
+        <!--            <artifactId>kk-anti-reptile</artifactId>-->
+        <!--            <version>1.0.0-RELEASE</version>-->
+        <!--        </dependency>-->
     </dependencies>
 </project>

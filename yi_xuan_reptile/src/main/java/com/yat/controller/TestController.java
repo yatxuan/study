@@ -1,6 +1,6 @@
 package com.yat.controller;
 
-import cn.keking.anti_reptile.annotation.AntiReptile;
+import com.yat.reptile.annotation.AntiReptile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,4 +26,11 @@ public class TestController {
     public String demo() {
         return "Hello，World!";
     }
+
+    @GetMapping("/1")
+    public String demo1() {
+        return "Hello，World!";
+    }
+
+
 }
