@@ -48,13 +48,13 @@ public class ShiroConfig {
 
         // 使用自定义Realm
         shiroRealm.setCachingEnabled(true);
-        //启用身份验证缓存，即缓存AuthenticationInfo(登录认证)信息，默认false
+        // 启用身份验证缓存，即缓存AuthenticationInfo(登录认证)信息，默认false
         shiroRealm.setAuthenticationCachingEnabled(true);
-        //缓存AuthenticationInfo信息的缓存名称 - 用户信息
+        // 缓存AuthenticationInfo信息的缓存名称 - 用户信息
         shiroRealm.setAuthenticationCacheName(AUTHENTICATION_CACHE);
-        //启用授权缓存，即缓存AuthorizationInfo(权限)信息，默认false
+        // 启用授权缓存，即缓存AuthorizationInfo(权限)信息，默认false
         shiroRealm.setAuthorizationCachingEnabled(true);
-        //缓存AuthorizationInfo信息的缓存名称 - 角色和权限
+        // 缓存AuthorizationInfo信息的缓存名称 - 角色和权限
         shiroRealm.setAuthorizationCacheName(AUTHORIZATION_CACHE);
         defaultWebSecurityManager.setRealm(shiroRealm);
 

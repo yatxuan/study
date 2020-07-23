@@ -21,6 +21,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
 
 /**
  * <p>Description: 系统用户登陆接口 </p>
@@ -135,4 +136,5 @@ public class AuthController {
         return response;
 
     }
+
 }

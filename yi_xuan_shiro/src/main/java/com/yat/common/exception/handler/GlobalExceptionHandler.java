@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
     public ResultResponse handleException(Throwable e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.BAD_REQUEST.value(), "未知异常，请联系管理员");
     }
 
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "无权限访问")
     @ExceptionHandler(ShiroException.class)
     public ResultResponse handle401(ShiroException e) {
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.UNAUTHORIZED.value(), "无权访问");
     }
 
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "权限不足")
     @ExceptionHandler(UnauthorizedException.class)
     public ResultResponse handle401(UnauthorizedException e) {
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.UNAUTHORIZED.value(),
                 "权限不足");
     }
@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthenticatedException.class)
     public ResultResponse handle401(UnauthenticatedException e) {
         log.error("无权访问(Unauthorized):当前Subject是匿名Subject，请先登录");
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.UNAUTHORIZED.value(),
                 "无权访问，请先登录");
     }
@@ -80,7 +80,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "无权限访问")
     @ExceptionHandler(CustomUnauthorizedException.class)
     public ResultResponse handle401(CustomUnauthorizedException e) {
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.UNAUTHORIZED.value(), "无权访问");
     }
 
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "参数列表错误")
     @ExceptionHandler(BindException.class)
     public ResultResponse validException(BindException e) {
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.BAD_REQUEST.value(), "参数列表错误");
     }
 
@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "资源，服务未找到")
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResultResponse handle(NoHandlerFoundException e) {
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.NOT_FOUND.value(), "资源，服务未找到");
     }
 
@@ -111,7 +111,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "未知异常，请联系管理员")
     @ExceptionHandler(Exception.class)
     public ResultResponse globalException(Throwable e) {
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "未知异常，请联系管理员");
     }
 
@@ -122,7 +122,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = BadRequestException.class)
     public ResultResponse badRequestException(BadRequestException e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(e.getStatus(), e.getMessage());
     }
 
@@ -132,7 +132,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = CustomException.class)
     public ResultResponse entityExistException(CustomException e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         return ResultResponse.error(e.getCode(), e.getMessage());
     }
 
@@ -142,7 +142,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResultResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        // log.error(ThrowableUtil.getStackTrace(e));
         String[] str = Objects.requireNonNull(e.getBindingResult().getAllErrors().get(0).getCodes())[1].split("\\.");
         String message = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         String msg = "不能为空";

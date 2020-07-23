@@ -1,30 +1,29 @@
 package com.yat.config.redis;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
 import java.io.*;
 
 /**
- * @author: wangsaichao
- * @date: 2018/6/20
- * @description: redis的value序列化工具
+ * <p>Description: redis的value序列化工具 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/7/21 13:42
  */
+@Slf4j
 public class SerializeUtils implements RedisSerializer {
 
-    private static Logger logger = LoggerFactory.getLogger(SerializeUtils.class);
-
-    public static boolean isEmpty(byte[] data) {
+    private static boolean isEmpty(byte[] data) {
         return (data == null || data.length == 0);
     }
 
     /**
      * 序列化
-     * @param object
-     * @return
-     * @throws SerializationException
+     * @param object 、
+     * @return 、
+     * @throws SerializationException 、
      */
     @Override
     public byte[] serialize(Object object) throws SerializationException {
@@ -47,16 +46,16 @@ public class SerializeUtils implements RedisSerializer {
             objectOutputStream.flush();
             result =  byteStream.toByteArray();
         } catch (Exception ex) {
-            logger.error("Failed to serialize",ex);
+            log.error("Failed to serialize",ex);
         }
         return result;
     }
 
     /**
      * 反序列化
-     * @param bytes
-     * @return
-     * @throws SerializationException
+     * @param bytes 、
+     * @return 、
+     * @throws SerializationException 、
      */
     @Override
     public Object deserialize(byte[] bytes) throws SerializationException {
@@ -73,7 +72,7 @@ public class SerializeUtils implements RedisSerializer {
         ){
             result = objectInputStream.readObject();
         } catch (Exception e) {
-            logger.error("Failed to deserialize",e);
+            log.error("Failed to deserialize",e);
         }
         return result;
     }

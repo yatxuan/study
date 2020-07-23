@@ -7,7 +7,7 @@
     <groupId>com.yat</groupId>
     <artifactId>yi_xuan_json</artifactId>
     <version>1.0.0</version>
-    <description>springboot整合webSocket</description>
+    <description>springboot整合Json</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

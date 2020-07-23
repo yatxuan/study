@@ -5,6 +5,7 @@ import com.yat.limit.common.util.FileUtil;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
@@ -37,6 +38,7 @@ public class AddressUtils {
 
     /**
      * 获取ip地址
+     *
      * @param request /
      * @return /
      */
@@ -63,11 +65,11 @@ public class AddressUtils {
         }
 
         String comma = ",";
-        String localhost = "127.0.0.1";
+        String localhost = "127.0.0.1", localhost2 = "0:0:0:0:0:0:0:1";
         if (ip.contains(comma)) {
             ip = ip.split(",")[0];
         }
-        if (localhost.equals(ip)) {
+        if (StringUtils.equals(localhost, ip) || StringUtils.equals(localhost2, ip)) {
             // 获取本机真正的ip地址
             try {
                 ip = InetAddress.getLocalHost().getHostAddress();
@@ -126,7 +128,7 @@ public class AddressUtils {
      * 获得当天是周几
      */
     public static String getWeekDay() {
-        String[] weekDays = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        String[] weekDays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
 

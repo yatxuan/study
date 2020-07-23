@@ -1,6 +1,7 @@
 package com.yat.json.fastjson;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.yat.json.entity.User;
 
 import java.util.ArrayList;
@@ -92,6 +93,10 @@ public class FastJsonTest {
                 .build();
         String json = JSON.toJSONString(user);
         System.out.println(json);
+
+
+        JSONObject jsonObject = JSON.parseObject(json);
+        System.out.println(jsonObject);
 
         User user1 = JSON.parseObject(json, User.class);
         System.out.println(user1);

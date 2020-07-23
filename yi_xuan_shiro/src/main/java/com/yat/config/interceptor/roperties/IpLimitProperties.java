@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class IpLimitProperties {
 
     /**
-     * 是否开启全局限流
+     * 是否开启IP限流
      */
     private Boolean enable = false;
 

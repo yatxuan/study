@@ -20,9 +20,14 @@ public class RsaSecret {
      */
     @Value("${rsa.private_key}")
     private String privateKey;
+    /**
+     * 后端公钥
+     */
+    @Value("${rsa.public_key}")
+    private String publicKey;
 
     /**
-     *登录图形验证码有效时间/秒
+     * 登录图形验证码有效时间/秒
      */
     @Value("${loginCode.expiration}")
     private Long expiration;
