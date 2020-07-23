@@ -22,7 +22,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <jasypt.version>2.1.1</jasypt.version>
-        <hutool.version>5.0.0</hutool.version>
+        <hutool.version>5.3.7</hutool.version>
         <alipay-sdk-version>4.8.10.ALL</alipay-sdk-version>
     </properties>
 
