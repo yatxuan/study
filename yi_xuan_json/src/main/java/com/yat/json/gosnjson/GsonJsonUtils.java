@@ -1,6 +1,8 @@
 package com.yat.json.gosnjson;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
@@ -59,6 +61,20 @@ public class GsonJsonUtils {
         }
         return new Gson().fromJson(jsonStr, classOfT);
     }
+
+    /**
+     * Json --->  Object
+     *
+     * @param jsonStr Json字符串
+     * @return Object对象
+     */
+    public static JsonObject getJsonToObject(String jsonStr) {
+        if (StringUtils.isBlank(jsonStr)) {
+            return null;
+        }
+        return (JsonObject) JsonParser.parseString(jsonStr);
+    }
+
 
     /**
      * Object ---> Json

@@ -1,5 +1,9 @@
 package com.yat.json.gosnjson;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.yat.json.entity.User;
 
 import java.util.ArrayList;
@@ -22,22 +26,20 @@ public class GsonJsonTest {
         //---------------------List--------------------------------
 
         // list-json简单类型相互转换
-        listStrToJson();
+        // listStrToJson();
         // list-json对象类型相互转换
-        listUserToJson();
+        // listUserToJson();
 
-        System.out.println();
         //---------------------Object--------------------------------
 
         // Object-json
         objectToJson();
 
-        System.out.println();
         //---------------------Map--------------------------------
 
         // Map-json
-        mapStrToJson();
-        mapObjectToJson();
+        // mapStrToJson();
+        // mapObjectToJson();
 
     }
 
@@ -93,6 +95,8 @@ public class GsonJsonTest {
 
         User jsonToObject = GsonJsonUtils.getJsonToObject(userJson, User.class);
         System.out.println(jsonToObject);
+
+        System.out.println(GsonJsonUtils.getJsonToObject(userJson));
     }
 
     private static void mapStrToJson() {
