@@ -1,14 +1,24 @@
 package com.yat.config.shiro.redis;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.yat.config.shiro.jwt.JwtUtil;
+import com.yat.config.shiro.realm.ShiroRealm;
+import com.yat.models.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.CollectionUtils;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.exception.PrincipalIdNullException;
 import org.crazycake.shiro.exception.PrincipalInstanceException;
+import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -48,6 +58,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
         if (principalIdFieldName != null && !"".equals(principalIdFieldName)) {
             this.principalIdFieldName = principalIdFieldName;
         }
+
     }
 
     /**
@@ -67,20 +78,12 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
         try {
             String redisCacheKey = getRedisCacheKey(key);
+
             Object rawValue = redisManager.get(redisCacheKey);
             if (rawValue == null) {
                 return null;
             }
-            //
-            // if (key instanceof PrincipalCollection) {
-            //     SimpleAccount simpleAuthenticationInfo
-            //             = new Gson().fromJson(rawValue.toString(), SimpleAccount.class);
-            //     return (V) simpleAuthenticationInfo;
-            // } else {
-            //     SimpleAuthorizationInfo simpleAuthorizationInfo
-            //             = new Gson().fromJson(rawValue.toString(), SimpleAuthorizationInfo.class);
-            //     return (V) simpleAuthorizationInfo;
-            // }
+
             V value = (V) rawValue;
             return value;
         } catch (Exception e) {
@@ -105,18 +108,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
         }
         try {
             String redisCacheKey = getRedisCacheKey(key);
-            String valueStr = null;
-
-            // if (value != null) {
-            //     if (value instanceof String) {
-            //         valueStr = (String) value;
-            //     } else {
-            //         valueStr = new Gson().toJson(value);
-            //     }
-            // }
-            // redisManager.set(redisCacheKey, valueStr, expire);
-
-            redisManager.set(redisCacheKey, value != null ? value : null, expire);
+            redisManager.set(redisCacheKey, value, expire);
             return value;
         } catch (Exception e) {
             throw new CacheException(e);

@@ -17,28 +17,36 @@ spring:
         min-idle: 5       # 连接池中的最小空闲连接
 
 
-# 忽略url
+# 无需登陆，可以直接访问的url
 ignored:
-  # 无需登录认证的请求
   urls:
     - /oauth/login
     - /test/**
-  # 限流及黑名单不拦截的路径
-  limitUrls:
+    - /oauth/captchaImage
     - /**/*.js
     - /**/*.css
     - /**/*.png
     - /**/*.ico
+    - /**/*.html
 
-# 需要验证码校验的接口路径 支持通配符 自动过滤拦截校验 无需开发人员再次校验
+# 不会进行限流的接口：支持通配符 自动过滤拦截校验 无需开发人员再次校验
 captcha:
   # 图片验证码验证
   image:
-    - /oauth/captchaImage # 登录接口
+    - /oauth/captchaImage
+  # 短信接口
   sms:
-    - /sms #短信接口
+    - /sms
+  # 邮箱接口
   email:
-    - /email #邮箱接口
+    - /email
+  # 其他接口
+  urls:
+    - /**/*.js
+    - /**/*.css
+    - /**/*.png
+    - /**/*.ico
+    - /**/*.html
 
 # 限流
 yat:
@@ -77,7 +85,7 @@ jwt:
   expire: 3600
   online:
     # 存在redis中，在线用户的key的前缀
-    keyPrefix: 'ONLINE:TOKEN:'
+    keyPrefix: 'online:token:'
   # 前端token配置；例如：Authorization：'Bearer token值'
   web:
     # 存储在前端请求头里的key

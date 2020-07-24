@@ -22,9 +22,4 @@ public class IgnoredUrlsProperties {
      * 无需登录认证的请求
      */
     private List<String> urls = new ArrayList<>();
-
-    /**
-     * 无限流及黑名单不拦截的路径
-     */
-    private List<String> limitUrls = new ArrayList<>();
 }

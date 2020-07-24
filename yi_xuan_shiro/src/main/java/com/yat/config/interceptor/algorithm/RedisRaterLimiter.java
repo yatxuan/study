@@ -75,7 +75,8 @@ public class RedisRaterLimiter {
                 return false;
             }
         } catch (Exception e) {
-            log.error("限流出错，请检查Redis运行状态\n" + e.toString());
+            e.printStackTrace();
+            log.error("限流出错，请检查Redis运行状态\n" + e.getMessage());
             return false;
         }
         return true;

@@ -12,6 +12,6 @@ public interface JwtConstant {
     /**
      * 记录每个账号同时在线人数
      */
-    String ONLINE_USER_LOGIN_TIMES = "ONLINE:USER:LOGIN_TIMES:";
+    String ONLINE_USER_LOGIN_TIMES = "online:user:login_times:";
 
 }

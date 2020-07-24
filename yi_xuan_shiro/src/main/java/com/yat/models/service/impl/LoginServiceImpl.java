@@ -55,9 +55,13 @@ public class LoginServiceImpl implements ILoginService {
                 false
         );
 
+        if (null == user) {
+            throw new BadRequestException("账号或密码不正确");
+        }
+
+        String cipher = new Sha256Hash(password, user.getUsername()).toHex();
         // 账号不存在、密码错误  当前加密的盐为：用户的账号
-        if (null == user || !StringUtils.equals(user.getPassword(),
-                new Sha256Hash(password, user.getUsername()).toHex())) {
+        if (!StringUtils.equals(user.getPassword(), cipher)) {
             throw new BadRequestException("账号或密码不正确");
         }
 

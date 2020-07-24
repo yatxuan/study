@@ -1,16 +1,19 @@
 package com.yat.config.interceptor;
 
+import com.google.gson.Gson;
 import com.yat.common.annotation.RateLimiter;
+import com.yat.common.constant.HttpStatus;
 import com.yat.common.exception.BadRequestException;
+import com.yat.common.utils.ResultResponse;
 import com.yat.common.utils.ip.AddressUtils;
 import com.yat.config.interceptor.algorithm.RedisRaterLimiter;
 import com.yat.config.interceptor.roperties.IpLimitProperties;
 import com.yat.config.interceptor.roperties.LimitProperties;
+import com.yat.config.shiro.utils.CrossUtil;
 import com.yat.models.service.IRosterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
@@ -49,18 +53,13 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) {
+                             Object handler) throws IOException {
 
-        // 跨域配置
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Max-Age", "86400");
-        response.setHeader("Access-Control-Allow-Headers", "*");
 
         // 如果是OPTIONS则结束请求
         if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {
-            response.setStatus(HttpStatus.NO_CONTENT.value());
+            String json = new Gson().toJson(new ResultResponse(HttpStatus.NO_CONTENT, "success"));
+            CrossUtil.setCrossHeader(response, json);
             return false;
         }
 
@@ -72,7 +71,9 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
         // 判断当前ip是否为黑名单数据
         if (rosterService.isBlackPresence(ip)) {
             log.error("当前ip'{}'为黑名单ip，禁止访问,浏览器为：'{}',消息地址为：'{}'", ip, browser, cityInfo);
-            throw new BadRequestException("禁止访问");
+            String json = new Gson().toJson(ResultResponse.error(HttpStatus.FORBIDDEN, "禁止访问"));
+            CrossUtil.setCrossHeader(response, json);
+            return false;
         }
 
         // 判断当前ip是否为白名单数据,ip白名单不进行限速
@@ -83,7 +84,9 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
                         ipLimitProperties.getLimit(), ipLimitProperties.getTimeout());
                 if (ipToken) {
                     log.error("当前IP:{}访问速度过快！浏览器为：'{}',消息地址为：'{}'！！！！！！！！！！！！！", ip, browser, cityInfo);
-                    throw new BadRequestException("你手速怎么这么快，请点慢一点");
+                    String json = new Gson().toJson(ResultResponse.error(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED, "你手速怎么这么快，请点慢一点"));
+                    CrossUtil.setCrossHeader(response, json);
+                    return false;
                 }
             }
         }
@@ -94,7 +97,9 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
                     limitProperties.getLimit(), limitProperties.getTimeout());
             if (allToken) {
                 log.error("当前访问人数过多！！！！！！！！！！！！！！");
-                throw new BadRequestException("当前访问总人数太多啦，请稍后再试");
+                String json = new Gson().toJson(ResultResponse.error(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED, "当前访问总人数太多啦，请稍后再试"));
+                CrossUtil.setCrossHeader(response, json);
+                return false;
             }
         }
 
@@ -113,7 +118,9 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
                     boolean rateToken = redisRaterLimiter.acquireToken(methodName, limit, timeout);
                     if (rateToken) {
                         log.error("该方法:{}当前访问人数太多，！！！！！！！！！！！！！！", method.getName());
-                        throw new BadRequestException("当前访问人数太多啦，请稍后再试");
+                        String json = new Gson().toJson(ResultResponse.error(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED, "当前访问总人数太多啦，请稍后再试"));
+                        CrossUtil.setCrossHeader(response, json);
+                        return false;
                     }
                 }
             }

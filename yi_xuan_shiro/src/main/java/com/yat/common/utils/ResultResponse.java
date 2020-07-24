@@ -2,6 +2,7 @@ package com.yat.common.utils;
 
 import com.yat.common.constant.HttpStatus;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -9,7 +10,7 @@ import java.util.HashMap;
  *
  * @author ruoyi
  */
-public class ResultResponse extends HashMap<String, Object> {
+public class ResultResponse extends HashMap<String, Object> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

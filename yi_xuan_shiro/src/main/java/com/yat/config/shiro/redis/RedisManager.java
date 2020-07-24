@@ -1,9 +1,6 @@
 package com.yat.config.shiro.redis;
 
-import org.springframework.data.redis.core.Cursor;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -26,6 +23,11 @@ public class RedisManager {
     private RedisTemplate<String, Object> shiroRedisTemplate;
 
     //=============================common============================
+
+
+    private ValueOperations<String, Object> getValueRedisTemplate() {
+        return shiroRedisTemplate.opsForValue();
+    }
 
     /**
      * 指定缓存失效时间
@@ -81,7 +83,7 @@ public class RedisManager {
      * @return 值
      */
     public Object get(String key) {
-        return shiroRedisTemplate.opsForValue().get(key);
+        return getValueRedisTemplate().get(key);
     }
 
     /**
@@ -91,7 +93,7 @@ public class RedisManager {
      * @param value 值
      */
     public void set(String key, Object value) {
-        shiroRedisTemplate.opsForValue().set(key, value);
+        getValueRedisTemplate().set(key, value);
     }
 
     /**
@@ -103,7 +105,7 @@ public class RedisManager {
      */
     public void set(String key, Object value, long time) {
         if (time > 0) {
-            shiroRedisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+            getValueRedisTemplate().set(key, value, time, TimeUnit.SECONDS);
         } else {
             set(key, value);
         }

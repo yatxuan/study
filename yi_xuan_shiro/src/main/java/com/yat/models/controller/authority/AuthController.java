@@ -6,6 +6,7 @@ import cn.hutool.crypto.asymmetric.RSA;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.yat.common.constant.CommonConstant;
 import com.yat.common.exception.BadRequestException;
+import com.yat.common.exception.CustomUnauthorizedException;
 import com.yat.common.utils.ResultResponse;
 import com.yat.common.utils.StringUtils;
 import com.yat.config.properties.RsaSecret;
@@ -45,9 +46,10 @@ public class AuthController {
      */
     @GetMapping("/login")
     public ResultResponse login(@RequestParam(value = "squeeze", required = false, defaultValue = "-1") int squeeze,
+                                @RequestParam(value = "username", required = false, defaultValue = "admin") String username,
                                 HttpServletRequest request) {
         log.info("进入登录方法-------------------------->");
-        String username = "admin", password = "admin";
+        String password = "admin";
         return loginService.login(username, password, squeeze, request);
     }
 

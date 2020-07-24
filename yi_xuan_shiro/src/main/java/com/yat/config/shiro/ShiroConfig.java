@@ -1,6 +1,5 @@
 package com.yat.config.shiro;
 
-import com.yat.config.properties.CaptchaProperties;
 import com.yat.config.properties.IgnoredUrlsProperties;
 import com.yat.config.shiro.jwt.JwtUtil;
 import com.yat.config.shiro.realm.ShiroAuthFilter;
@@ -98,8 +97,7 @@ public class ShiroConfig {
     @DependsOn("shiroAuthFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager,
                                                          JwtUtil jwtUtil,
-                                                         IgnoredUrlsProperties ignoredUrlsProperties,
-                                                         CaptchaProperties captchaProperties) {
+                                                         IgnoredUrlsProperties ignoredUrlsProperties) {
 
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager(securityManager);
@@ -113,8 +111,6 @@ public class ShiroConfig {
         // 权限控制：自定义url规则使用LinkedHashMap有序Map
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>(16);
         ignoredUrlsProperties.getUrls().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
-        captchaProperties.getImage().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
-        ignoredUrlsProperties.getLimitUrls().forEach(url -> filterChainDefinitionMap.put(url, "anon"));
         filterChainDefinitionMap.put("/**", "jwt");
 
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

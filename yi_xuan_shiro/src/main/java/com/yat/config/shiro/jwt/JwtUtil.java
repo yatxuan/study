@@ -3,7 +3,6 @@ package com.yat.config.shiro.jwt;
 import cn.hutool.core.text.StrBuilder;
 import com.google.gson.Gson;
 import com.yat.common.exception.CustomException;
-import com.yat.common.exception.CustomUnauthorizedException;
 import com.yat.common.utils.StringUtils;
 import com.yat.common.utils.ip.AddressUtils;
 import com.yat.config.redis.RedisUtils;
@@ -11,16 +10,19 @@ import com.yat.models.entity.dto.authority.LoginUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
-import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +39,7 @@ import static com.yat.common.constant.JwtConstant.ONLINE_USER_LOGIN_TIMES;
 @Data
 @Configuration
 @RequiredArgsConstructor
-public class JwtUtil implements InitializingBean {
+public class JwtUtil implements InitializingBean, HandlerExceptionResolver {
 
     /**
      * jwt有效时间
@@ -185,9 +187,7 @@ public class JwtUtil implements InitializingBean {
 
             String token = requestHeader.substring(tokenPrefix.length());
             // 查看redis是否包含用户的登陆消息，判断token是否正确，时间是否过期
-            if (StringUtils.isNotBlank(token) &&
-                    org.springframework.util.StringUtils.hasText(token) &&
-                    validateToken(token)) {
+            if (StringUtils.isNotBlank(token) && validateToken(token)) {
                 LoginUser currUser = getLoginUser(token);
 
                 if (null == currUser) {
@@ -222,19 +222,19 @@ public class JwtUtil implements InitializingBean {
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.error("Invalid JWT signature.");
-            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
+            return false;
         } catch (ExpiredJwtException e) {
             log.error("Expired JWT token.'{}'", e.getMessage());
-            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
+            return false;
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported JWT token.");
-            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
+            return false;
         } catch (IllegalArgumentException e) {
             log.error("JWT token compact of handler are invalid.");
-            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
-        }catch (SignatureException e){
+            return false;
+        } catch (SignatureException e) {
             log.error("JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted");
-            throw new CustomUnauthorizedException("登陆状态已过期，请重新登陆.");
+            return false;
         }
     }
 
@@ -313,4 +313,9 @@ public class JwtUtil implements InitializingBean {
         authenticationCache.forEach(redisUtils::del);
     }
 
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        System.out.println("-----------------------------------------------------");
+        return null;
+    }
 }

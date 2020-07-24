@@ -283,7 +283,13 @@ public class RedisUtils<V> {
      * @return 值-String（Json
      */
     public String get(String key, long expire) {
-        String value = (String) valueOperations.get(key);
+        V v = valueOperations.get(key);
+
+        if (null == v) {
+            return null;
+        }
+
+        String value = String.valueOf(v);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, SECONDS);
         }

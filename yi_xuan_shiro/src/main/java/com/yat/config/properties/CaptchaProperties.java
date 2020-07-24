@@ -9,9 +9,10 @@ import java.util.List;
 
 /**
  * <p>Description: 这里配置的是不被 'SpringMVC' 的Web拦截器拦截的URL</p>
+ *
  * @author Yat-Xuan
  * @date 2020/3/13 16:52
-*/
+ */
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "captcha")
@@ -31,4 +32,9 @@ public class CaptchaProperties {
      * 邮箱接口
      */
     private List<String> email = new ArrayList<>();
+
+    /**
+     * url
+     */
+    private List<String> urls = new ArrayList<>();
 }

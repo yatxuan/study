@@ -6,6 +6,7 @@ import com.yat.common.utils.ResultResponse;
 import com.yat.common.utils.StringUtils;
 import com.yat.config.shiro.jwt.JwtToken;
 import com.yat.config.shiro.jwt.JwtUtil;
+import com.yat.config.shiro.utils.CrossUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
@@ -51,12 +52,8 @@ public class ShiroAuthFilter extends AuthenticatingFilter {
         this.token = jwtUtil.getToken(httpRequest);
         if (StringUtils.isBlank(token)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setContentType("application/json;charset=utf-8");
-            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-            httpResponse.setHeader("Access-Control-Allow-Origin", "*");
-            httpResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-            String json = new Gson().toJson(ResultResponse.error(HttpStatus.FORBIDDEN, "请先登录"));
-            httpResponse.getWriter().print(json);
+            String json = new Gson().toJson(ResultResponse.error(HttpStatus.UNAUTHORIZED, "登陆状态已过期，请重新登陆."));
+            CrossUtil.setCrossHeader(httpResponse, json);
             return false;
         }
 
@@ -71,7 +68,7 @@ public class ShiroAuthFilter extends AuthenticatingFilter {
      */
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        JwtToken token = new JwtToken(this.token);
+        AuthenticationToken token = createToken(request, response);
         try {
             // 提交给UserRealm进行认证，如果错误他会抛出异常并被捕获
             Subject subject = getSubject(request, response);
@@ -87,31 +84,27 @@ public class ShiroAuthFilter extends AuthenticatingFilter {
 
     /**
      * <p>重写createToken方法，只是防止发生不必要的因素，</p>
-     * <p>因为前面已经进行了token的处理，基本上不会进来这个方法内部</p>
-     * <p>所以createToken方法可以不用关心内部的处理方式</p>
+     * <p>因为前面(onAccessDenied方法)已经进行了token的处理</p>
+     * <p>所以这里不需要对token，进行过多的重复处理，createToken方法可以不用关心内部的处理方式</p>
      */
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
-        HttpServletRequest httpRequest = WebUtils.toHttp(request);
-        this.token = jwtUtil.getToken(httpRequest);
-        return StringUtils.isBlank(token) ? null : new JwtToken(token);
+        return new JwtToken(this.token);
     }
 
     /**
      * <p>登陆失败的处理</p>
      */
     @Override
-    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
+    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
+                                     ServletRequest request, ServletResponse response) {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setContentType("application/json;charset=utf-8");
-        httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         try {
             //处理登录失败的异常
             Throwable throwable = e.getCause() == null ? e : e.getCause();
-            String json = new Gson().toJson(ResultResponse.error(HttpStatus.FORBIDDEN, throwable.getMessage()));
-            httpResponse.getWriter().print(json);
+            String json = new Gson().toJson(ResultResponse.error(HttpStatus.UNAUTHORIZED, throwable.getMessage()));
+            CrossUtil.setCrossHeader(httpResponse, json);
+            return false;
         } catch (IOException e1) {
             e1.getMessage();
         }
