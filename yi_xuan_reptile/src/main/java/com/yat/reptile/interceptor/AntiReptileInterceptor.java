@@ -36,8 +36,14 @@ public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
 
     private RuleActuator actuator;
 
+    /**
+     * 非全局拦截下，需要反爬的接口列表，以'/'开头，以','分隔
+     */
     private List<String> includeUrls;
 
+    /**
+     * 是否启用全局拦截，默认为false，可设置为true全局拦截
+     */
     private boolean globalFilterMode;
 
     private VerifyImageUtil verifyImageUtil;
@@ -49,7 +55,7 @@ public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
         this.verifyImageUtil = SpringUtils.getBean(VerifyImageUtil.class);
         this.includeUrls = SpringUtils.getBean(AntiReptileProperties.class).getIncludeUrls();
         this.globalFilterMode = SpringUtils.getBean(AntiReptileProperties.class).isGlobalFilterMode();
-        if (this.includeUrls == null) {
+        if (null == this.includeUrls) {
             this.includeUrls = new ArrayList<>();
         }
     }
@@ -98,6 +104,7 @@ public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
             return true;
         } else {
             for (String includeUrl : includeUrls) {
+                // 匹配正则表达式
                 if (Pattern.matches(includeUrl, requestUrl)) {
                     return true;
                 }
