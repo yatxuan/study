@@ -23,17 +23,22 @@ public class Encode {
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final long SLEEP_TIME = 100;
 
+    /**
+     * true - 加密  false - 解密
+     */
     boolean isEncode;
     MappedByteBuffer mappedBuffer;
 
+    /**
+     * 文件路径
+     */
     private String filename;
     private byte[] keyBytes;
 
     /**
-     *
      * @param isEncode true - 加密  false - 解密
      * @param filename 文件路径
-     * @param key 秘钥
+     * @param key      秘钥
      */
     public Encode(boolean isEncode, String filename, String key) {
         this.isEncode = isEncode;
@@ -46,11 +51,19 @@ public class Encode {
         this.keyBytes = key.getBytes(Charset.forName(DEFAULT_CHARSET));
     }
 
+    /**
+     * @param isEncode true - 加密  false - 解密
+     * @param filename 文件路径
+     */
+    public Encode(boolean isEncode, String filename) {
+        this(isEncode, filename, null);
+    }
+
     public void run() {
         RandomAccessFile raf = null;
         FileChannel channel = null;
         try {
-            // 读取文件
+            // 读取文件,rw : 设为读写模式
             raf = new RandomAccessFile(filename, "rw");
             channel = raf.getChannel();
             long fileLength = channel.size();
@@ -62,7 +75,7 @@ public class Encode {
             }
             int bufferIndex = 0;
             long preLength = 0;
-            // repeat part
+            // 重复部分
             long regionSize = Integer.MAX_VALUE;
             if (fileLength - preLength < Integer.MAX_VALUE) {
                 regionSize = fileLength - preLength;
@@ -120,7 +133,7 @@ public class Encode {
                 preLength += regionSize;
 
                 // 重新启动线程
-                System.out.println("Buffer " + bufferIndex + " start ...");
+                System.out.println("Buffer " + bufferIndex + " Restart ...");
                 for (EncodeThread workThread : workThreads) {
                     workThread.restart();
                 }
@@ -162,98 +175,3 @@ public class Encode {
         }
     }
 }
-//
-// class EncodeThread extends Thread {
-//
-//     private static final long SLEEP_TIME = 50;
-//
-//     boolean flag;
-//     private Encode encoder;
-//     private int key;
-//     private long dataIndex;
-//     private int interval;
-//     private int regionSize;
-//     private boolean completed;
-//
-//     EncodeThread(Encode encoder, byte key, int interval, int index) {
-//         this.encoder = encoder;
-//         this.key = key & 0xff;
-//         this.dataIndex = index;
-//         this.interval = interval;
-//         this.regionSize = encoder.mappedBuffer.limit();
-//         this.completed = false;
-//         this.flag = true;
-//     }
-//
-//     void restart() {
-//         this.dataIndex -= regionSize;
-//         regionSize = encoder.mappedBuffer.limit();
-//         completed = false;
-//     }
-//
-//     boolean isCompleted() {
-//         return completed;
-//     }
-//
-//     @Override
-//     public void run() {
-//         try {
-//             if (encoder.isEncode) {
-//                 encode();
-//             } else {
-//                 decode();
-//             }
-//         } catch (InterruptedException e) {
-//             e.printStackTrace();
-//         }
-//     }
-//
-//     /**
-//      * 加密
-//      *
-//      * @throws InterruptedException 、
-//      */
-//     private void encode() throws InterruptedException {
-//         while (flag) {
-//             if (completed) {
-//                 Thread.sleep(SLEEP_TIME);
-//                 continue;
-//             }
-//             if (dataIndex >= regionSize) {
-//                 completed = true;
-//                 System.out.println("encode: Encode thread " + this.getName() + " is completed!");
-//                 continue;
-//             }
-//
-//             byte b = encoder.mappedBuffer.get((int) dataIndex);
-//             b = (byte) (((b & 0xff) + key) % 256);
-//             encoder.mappedBuffer.put((int) dataIndex, b);
-//             dataIndex += interval;
-//         }
-//     }
-//
-//     /**
-//      * 解密
-//      *
-//      * @throws InterruptedException 、
-//      */
-//     private void decode() throws InterruptedException {
-//         while (flag) {
-//             if (completed) {
-//                 Thread.sleep(SLEEP_TIME);
-//                 continue;
-//             }
-//             if (dataIndex >= regionSize) {
-//                 completed = true;
-//                 System.out.println("decode:Encode thread " + this.getName() + " is completed!");
-//                 continue;
-//             }
-//
-//             byte b = encoder.mappedBuffer.get((int) dataIndex);
-//             b = (byte) (((b & 0xff) + 256 - key) % 256);
-//             encoder.mappedBuffer.put((int) dataIndex, b);
-//             dataIndex += interval;
-//         }
-//     }
-//
-// }

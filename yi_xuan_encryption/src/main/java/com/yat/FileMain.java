@@ -12,9 +12,7 @@ import com.yat.file.Encode;
 public class FileMain {
 
     public static void main(String[] args) {
-
-        String filename = "D:\\01 谷粒商城的简介.avi";
-        String key = "KEY1";
-        new Encode(false, filename, key).run();
+        String filename = "D:\\json.txt";
+        new Encode(true, filename).run();
     }
 }
