@@ -19,6 +19,8 @@ import lombok.*;
 @TableName("tb_user")
 @EqualsAndHashCode(callSuper = false)
 public class UserEntity extends BaseEntity {
+
+    private static final long serialVersionUID = 2180152431279445394L;
     /**
      * 用户名
      */

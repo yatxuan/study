@@ -19,7 +19,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @TableName("tb_role_permissions")
 public class RolePermissionsEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -5224481815939464955L;
 
     @TableId
     private Long id;

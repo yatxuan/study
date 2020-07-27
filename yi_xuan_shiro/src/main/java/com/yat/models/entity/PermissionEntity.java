@@ -21,6 +21,7 @@ import lombok.Setter;
 @TableName(value = "tb_permission")
 public class PermissionEntity extends BaseEntity {
 
+    private static final long serialVersionUID = -9180928048447375376L;
     /**
      * 权限名称
      */

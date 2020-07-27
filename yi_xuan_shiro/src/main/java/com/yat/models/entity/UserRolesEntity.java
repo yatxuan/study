@@ -19,8 +19,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @TableName("tb_user_roles")
 public class UserRolesEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = -7979431676529939628L;
     @TableId
     private Long id;
     /**

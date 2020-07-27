@@ -19,6 +19,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @TableName("tb_role")
 public class RoleEntity extends BaseEntity {
+
+    private static final long serialVersionUID = 5280356300586846191L;
     /**
      * 角色名称
      */
