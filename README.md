@@ -12,6 +12,7 @@
 4. [springboot整合加密---yi_xuan_encryption]()
 2. [SpringBoot整合FastDfs文件系统---yi_xuan_fastDfs](https://github.com/yatxuan/study/tree/master/yi_xuan_fastDfs)
 3. [文件压缩---yi_xuan_file_compression](https://github.com/yatxuan/study/tree/master/yi_xuan_file_compression)
+4. [Java语法Lambda练习---yi_xuan_grammar]()
 4. [springboot整合graphQL---yi_xuan_graphQL]()
 4. [springboot整Json---yi_xuan_json]()
 4. [springboot整合Redis限流---yi_xuan_limit]()
