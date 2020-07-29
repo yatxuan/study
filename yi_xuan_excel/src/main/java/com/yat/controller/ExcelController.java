@@ -46,9 +46,6 @@ public class ExcelController {
 
     /**
      * 导入：注解测试
-     *
-     * @return
-     * @throws Exception
      */
     @PostMapping(value = "/test2")
     @ResponseBody
@@ -59,15 +56,10 @@ public class ExcelController {
 
     /**
      * 导入：注解测试
-     *
-     * @param file
-     * @return
-     * @throws Exception
      */
     @PostMapping(value = "/test1")
     @ResponseBody
     public List<PhoneModel> testImport1(MultipartFile file) throws Exception {
-
         return ExcelUtil.readXls(file.getBytes(), PhoneModel.class);
     }
 
@@ -172,7 +164,7 @@ public class ExcelController {
         model.setColor("金色");
         model.setPhoneName("苹果12 S");
         model.setPrice(9999);
-        model.setSj(new Date());
+        model.setSaleTime(new Date());
         ExcelUtil.templateWrite(response, "D:\\导出标题多萨法撒旦法带表头.xlsx", model, "ce测试时");
     }
 
@@ -185,7 +177,7 @@ public class ExcelController {
         PhoneModel model = new PhoneModel();
         model.setColor("土豪金");
         model.setPhoneName("Iphone X");
-        model.setSj(new Date());
+        model.setSaleTime(new Date());
 
         list.add(model);
 
@@ -206,7 +198,7 @@ public class ExcelController {
             model.setColor("金色" + i);
             model.setPhoneName("苹果" + i + "S");
             model.setPrice(i);
-            model.setSj(new Date());
+            model.setSaleTime(new Date());
             list.add(model);
         }
         return list;

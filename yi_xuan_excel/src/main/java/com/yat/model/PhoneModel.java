@@ -32,7 +32,7 @@ public class PhoneModel implements Serializable {
     private double price;
 
     @Excel(title = "时间")
-    private Date sj;
+    private Date saleTime;
 
     /**
      * 解析字段注解
