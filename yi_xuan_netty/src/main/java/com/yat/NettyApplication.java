@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * <p>Description: 描述 </p>
+ * <p>Description: SpringBoot+Netty+Websocket整合案例（实现基本的聊天功能） </p>
  *
  * @author Yat-Xuan
  * @version 1.0
