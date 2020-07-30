@@ -5,6 +5,7 @@ import com.yat.util.AbstractExcelParam;
 import com.yat.util.ExcelParam;
 import com.yat.util.ExcelUtil;
 import com.yat.util.ExcelUtilBase;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author Yat-Xuan
  * @date 2020/7/29 14:34
  */
+@Slf4j
 @Controller
 public class ExcelController {
 
@@ -47,7 +49,7 @@ public class ExcelController {
     /**
      * 导入：注解测试
      */
-    @PostMapping(value = "/test2")
+    @GetMapping(value = "/test2")
     @ResponseBody
     public List<PhoneModel> testImport2() throws Exception {
         return ExcelUtil.readXls("D://test.xlsx", PhoneModel.class);
@@ -140,7 +142,7 @@ public class ExcelController {
 
         List<PhoneModel> list = getList(10);
 
-        ExcelUtil.exportExcelOutputStream(response, list, PhoneModel.class, "导出标题多萨法撒旦法带表头", true);
+        ExcelUtil.exportExcelOutputStream(response, list, PhoneModel.class, "导出带表头", true);
 
         ExcelParam excelParam = new ExcelParam();
         excelParam.setWaterMark("水印文字");
@@ -148,9 +150,9 @@ public class ExcelController {
         excelParam.setRowNumIndex(2);
         excelParam.setHeaderName("要设置的表头文字");
 
-        //读取
+        // 读取
         ExcelUtilBase.getResult(excelParam);
-        //导出
+        // 导出
         ExcelUtilBase.commonExportExcel(excelParam);
 
     }

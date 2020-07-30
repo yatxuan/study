@@ -1,5 +1,9 @@
 package com.yat.util;
 
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
@@ -116,12 +120,6 @@ public class ExcelUtil extends ExcelUtilBase implements Serializable {
 
     /**
      * 导出Excel到浏览器中
-     *
-     * @param response
-     * @param keyValue
-     * @param list
-     * @param clazz
-     * @throws Exception
      */
     public static void exportExcelOutputStream(HttpServletResponse response, String keyValue, List<?> list,
                                                Class clazz) throws Exception {
@@ -182,6 +180,26 @@ public class ExcelUtil extends ExcelUtilBase implements Serializable {
         templateWrite(excelParam);
     }
 
+
+    /**
+     * 设置单元格样式
+     */
+    private static CellStyle getCellStyle(XSSFCellStyle cellStyle) {
+        // 设置单元格的水平对齐方式
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        return cellStyle;
+    }
+
+    /**
+     * 设置头部样式
+     */
+    private static CellStyle getHeadStyle(XSSFCellStyle headerStyle) {
+        // 设置 头部 单元格的水平对齐方式
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        // 设置是否应该换行。
+        headerStyle.setWrapText(true);
+        return headerStyle;
+    }
 
 }
 

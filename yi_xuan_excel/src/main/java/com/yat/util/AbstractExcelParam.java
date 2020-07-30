@@ -1,9 +1,12 @@
 package com.yat.util;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +20,7 @@ public abstract class AbstractExcelParam implements Serializable {
 
     private static final long serialVersionUID = -3943944536174199072L;
     /**
-     * 	文件地址,本地读取时用
+     * 文件地址,本地读取时用
      */
     protected String filePath;
 
@@ -45,4 +48,12 @@ public abstract class AbstractExcelParam implements Serializable {
      */
     protected List<ExcelParam> list;
 
+
+    public String getFileName() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        if (StringUtils.isEmpty(this.fileName)) {
+            this.fileName = df.format(new Date());
+        }
+        return this.fileName;
+    }
 }
