@@ -1,0 +1,8 @@
+netty:
+   https:
+     enabled: true
+     port: 3443
+#     https的证书路径
+     certFile: F:\cert\test\server.crt
+#     https的证书密钥路径
+     keyFile: F:\cert\test\server.pem

@@ -1,0 +1,8 @@
+#spring.profiles.active: https
+#logging:
+#  config: ./logback-spring.xml
+
+spring:
+  profiles:
+    active: http
+
