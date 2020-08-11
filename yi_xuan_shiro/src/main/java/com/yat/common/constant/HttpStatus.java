@@ -1,7 +1,5 @@
 package com.yat.common.constant;
 
-import sun.security.util.Length;
-
 /**
  * <p>Description: 返回状态码 </p>
  *
@@ -127,7 +125,7 @@ public interface HttpStatus {
     int BANDWIDTH_LIMIT_EXCEEDED = 509;
 
 
-            // · 401.2 - 服务器配置导致登录失败。
+    // · 401.2 - 服务器配置导致登录失败。
     //         · 401.3 - 由于 ACL 对资源的限制而未获得授权。
     //         · 401.4 - 筛选器授权失败。
     //         · 401.5 - ISAPI/CGI 应用程序授权失败。
