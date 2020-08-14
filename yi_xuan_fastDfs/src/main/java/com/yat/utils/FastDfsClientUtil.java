@@ -51,10 +51,10 @@ public class FastDfsClientUtil {
     public String uploadFileImage(MultipartFile file) throws IOException {
         // 获取文件名称
         String originalFilename = file.getOriginalFilename();
-        log.info(originalFilename);
-        log.info(file.getContentType());
+        long size = file.getSize();
+        log.info("文件名称：'{}',大小为：'{}',类型为：'{}'", originalFilename, size,file.getContentType());
         if (ImageUtil.isImageByFileName(originalFilename)) {
-            StorePath storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(),
+            StorePath storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), size,
                     FilenameUtils.getExtension(originalFilename), null);
 
             // 获取略缩图

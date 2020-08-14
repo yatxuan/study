@@ -212,10 +212,10 @@ public class ClassLoaderUtil {
     /**
      * 获取所有实现BaseActionController接口类中,有ActionMapping注解的方法
      *
-     * @return
+     * @return 、
      */
     public static Map<String, Action> buildActionMapping() {
-        Map<String, Action> actionMapping = new HashMap<String, Action>();
+        Map<String, Action> actionMapping = new HashMap<>(16);
         List<Class<?>> list = ClassReader.getAllClassByInterface(BaseActionController.class);
         if (list != null && list.size() > 0) {
             list.forEach(clz -> {

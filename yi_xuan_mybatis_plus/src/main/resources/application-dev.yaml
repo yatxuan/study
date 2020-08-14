@@ -1,3 +1,6 @@
+server:
+  port: 9999
+
 spring:
   datasource:
     # mybatis_plus 配置执行 SQL 分析打印，需要改变 driver-class-name，url 参数，（未配置版本——prod）

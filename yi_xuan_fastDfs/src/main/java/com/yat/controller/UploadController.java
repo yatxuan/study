@@ -1,10 +1,14 @@
 package com.yat.controller;
 
+import cn.hutool.core.io.FileUtil;
+import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.exception.FdfsServerException;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.yat.utils.FastDfsClientUtil;
 import com.yat.utils.FastDfsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -33,6 +36,30 @@ import java.util.Map;
 public class UploadController {
 
     private final FastDfsClientUtil dfsClient;
+
+    private final FastFileStorageClient storageClient;
+
+    /**
+     * 文件上传测试
+     *
+     * @return 、
+     */
+    @GetMapping("/test/file")
+    public String testUpdateFile() throws IOException {
+
+        String path = "D:\\img\\1582787548492.jpg";
+        File file = new File(path);
+        boolean exist = FileUtil.exist(file);
+        if (exist) {
+            FileInputStream inputStream = new FileInputStream(file);
+            int size = inputStream.available();
+            String name = file.getName();
+            StorePath storePath = storageClient.uploadImageAndCrtThumbImage(inputStream, size,
+                    FilenameUtils.getExtension(name), null);
+            return "http://192.168.1.117:8888/" + storePath.getFullPath();
+        }
+        return "文件不存在";
+    }
 
     /**
      * 上传图片

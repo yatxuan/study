@@ -34,6 +34,9 @@ public class PhoneModel implements Serializable {
     @Excel(title = "时间")
     private Date saleTime;
 
+    @Excel(title = "图片")
+    private String image;
+
     /**
      * 解析字段注解
      *

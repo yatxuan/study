@@ -2,6 +2,7 @@ package com.yat.controller;
 
 import com.yat.mvc.annotation.ActionMapping;
 import com.yat.mvc.annotation.ResponseType;
+import com.yat.utils.ResultResponse;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Component;
 public class HttpNettyController implements BaseActionController {
 
     @ActionMapping(actionKey = "method")
-    public String method(String a, String b) {
-        return String.format("a:%s,b:%s", a, b);
+    public ResultResponse method(String a, String b) {
+        String format = String.format("a:%s,b:%s", a, b);
+        return ResultResponse.success(format);
+
     }
 
     public static void main(String[] args) {
