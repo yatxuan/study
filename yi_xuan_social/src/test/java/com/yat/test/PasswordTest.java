@@ -9,12 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * <p>
- * 数据库密码测试
- * </p>
+ * <p>Description: 数据库密码测试 </p>
  *
- * @author yangkai.shen
- * @date Created in 2019/8/27 16:15
+ * @author Yat-Xuan
+ * @date 2020/8/24 22:42
  */
 @RunWith(SpringRunner.class)
 @RequiredArgsConstructor

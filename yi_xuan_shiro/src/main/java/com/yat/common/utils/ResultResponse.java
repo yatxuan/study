@@ -6,9 +6,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * 操作消息提醒
+ * <p>Description: 操作消息提醒 </p>
  *
- * @author ruoyi
+ * @author Yat-Xuan
+ * @date 2020/8/24 14:23
  */
 public class ResultResponse extends HashMap<String, Object> implements Serializable {
     private static final long serialVersionUID = 1L;
