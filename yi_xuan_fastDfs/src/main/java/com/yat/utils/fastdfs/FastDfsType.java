@@ -1,4 +1,4 @@
-package com.yat.utils;
+package com.yat.utils.fastdfs;
 
 /**
  * <p>Description: 文件类型 </p>

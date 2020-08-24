@@ -1,13 +1,15 @@
-package com.yat.utils;
+package com.yat.utils.fastdfs;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yat.utils.image.ImageUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -22,7 +24,10 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FastDfsResponse {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class FastDfsResponse implements Serializable {
+
+    private static final long serialVersionUID = 3698477140179228909L;
 
     private final long thousand = 1024L;
 
@@ -65,29 +70,30 @@ public class FastDfsResponse {
     /**
      * 上传日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date uploadDate;
 
 
-    public FastDfsResponse(MultipartFile file) {
+    public FastDfsResponse(FastDfsRequest fastDfsRequest) {
         this.code = 200;
-        this.fileName = file.getOriginalFilename();
+        this.fileName = fastDfsRequest.getFileName();
         this.fileSuffix = StringUtils.substring(this.fileName, StringUtils.indexOf(this.fileName, ".") + 1);
         this.uploadDate = new Date();
-        if (file.getSize() > thousand) {
+        if (fastDfsRequest.getSize() > thousand) {
             this.fileUnit = "KB";
-            this.fileSize = file.getSize() / thousand;
+            this.fileSize = fastDfsRequest.getSize() / thousand;
             if (this.fileSize > thousand) {
                 this.fileUnit = "MB";
                 this.fileSize = this.fileSize / thousand;
             }
         } else {
             this.fileUnit = "Byte";
-            this.fileSize = file.getSize();
+            this.fileSize = fastDfsRequest.getSize();
         }
 
         if (ImageUtil.isImageByFileName(this.getFileName())) {
-            this.fileType = file.getContentType();
-            this.isThumbnails = true;
+            this.fileType = fastDfsRequest.getFileType();
+            this.isThumbnails = fastDfsRequest.isThumbnails();
         } else {
             this.fileType = this.fileSuffix;
         }

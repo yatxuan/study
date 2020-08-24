@@ -1,14 +1,13 @@
 package com.yat.controller;
 
-import cn.hutool.core.io.FileUtil;
-import com.github.tobato.fastdfs.domain.fdfs.StorePath;
+import com.github.tobato.fastdfs.domain.fdfs.FileInfo;
 import com.github.tobato.fastdfs.exception.FdfsServerException;
-import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import com.yat.utils.FastDfsClientUtil;
-import com.yat.utils.FastDfsResponse;
+import com.yat.entity.bo.FileVo;
+import com.yat.service.FastDfsClientUtil;
+import com.yat.utils.fastdfs.Base64DecodedMultipartFile;
+import com.yat.utils.fastdfs.FastDfsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -37,62 +37,28 @@ public class UploadController {
 
     private final FastDfsClientUtil dfsClient;
 
-    private final FastFileStorageClient storageClient;
-
-    /**
-     * 文件上传测试
-     *
-     * @return 、
-     */
-    @GetMapping("/test/file")
-    public String testUpdateFile() throws IOException {
-
-        String path = "D:\\img\\1582787548492.jpg";
-        File file = new File(path);
-        boolean exist = FileUtil.exist(file);
-        if (exist) {
-            FileInputStream inputStream = new FileInputStream(file);
-            int size = inputStream.available();
-            String name = file.getName();
-            StorePath storePath = storageClient.uploadImageAndCrtThumbImage(inputStream, size,
-                    FilenameUtils.getExtension(name), null);
-            return "http://192.168.1.117:8888/" + storePath.getFullPath();
-        }
-        return "文件不存在";
-    }
-
-    /**
-     * 上传图片
-     *
-     * @param file 图片
-     * @return 图片访问地址
-     */
-    @PostMapping("/upload/Image")
-    public String fastDfsUploadImage(@RequestParam("file") MultipartFile file) {
-        try {
-            return dfsClient.uploadFileImage(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     /**
      * 上传文件
      *
-     * @param file 文件
+     * @param file         文件
+     * @param isThumbnails 是否包含略缩图
      * @return 文件访问地址
      */
     @PostMapping("/upload")
-    public FastDfsResponse fastDfsUpload(@RequestParam("file") MultipartFile file) {
-        try {
-            return dfsClient.uploadFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public FastDfsResponse fastDfsUpload(@RequestParam("file") MultipartFile file,
+                                         @RequestParam(value = "isThumbnails", required = false, defaultValue = "false") boolean isThumbnails) {
+        return dfsClient.uploadFile(file, isThumbnails);
     }
 
+    @PostMapping("/upload/base64")
+    public FastDfsResponse fastDfsUpload(@RequestBody FileVo fileVo) {
+        MultipartFile multipartFile = Base64DecodedMultipartFile.base64ToMultipart(fileVo.getImageBase());
+        if (multipartFile == null) {
+            log.error("文件上传失败！！！！！！！！！");
+            return null;
+        }
+        return dfsClient.uploadFile(multipartFile, fileVo.isThumbnails());
+    }
 
     /**
      * 下载文件
@@ -140,6 +106,8 @@ public class UploadController {
     }
 
     /**
+     * 删除文件
+     *
      * @param map: filePath 文件的访问路径：例：http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gv4aAJnmCAACHmWFv_Wg172.jpg
      * @return 文件的访问路径
      */
@@ -149,13 +117,28 @@ public class UploadController {
         String filePath = map.get("filePath");
         try {
             dfsClient.delFile(filePath);
-        } catch (Exception e) {
-            // 文件不存在报异常 ： com.github.tobato.fastdfs.exception.FdfsServerException:
-            // 错误码：2，错误信息：找不到节点或文件
+        } catch (FdfsServerException e) {
             log.error("删除的文件不存在----------------->{}", e.getMessage());
         }
         return "成功删除，'" + filePath;
 
+    }
+
+
+    /**
+     * 查看文件
+     *
+     * @param filePath 文件的访问路径：例：http://192.168.1.138:8888/group1/M00/00/00/wKgBil5gv4aAJnmCAACHmWFv_Wg172.jpg
+     * @return 、
+     */
+    @GetMapping("/query")
+    public FileInfo query(String filePath) {
+        try {
+            return dfsClient.queryFileInfo(filePath);
+        } catch (FdfsServerException e) {
+            log.error("文件不存在：'{}'", e.getMessage());
+            return null;
+        }
     }
 
 }

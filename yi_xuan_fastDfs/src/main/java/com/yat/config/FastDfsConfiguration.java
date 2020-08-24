@@ -8,7 +8,7 @@ import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
  * <p>Description: 描述 </p>
- * <p>@Import(FdfsClientConfig.class) ---> 导入FastDFS-Client组件</p>
+ * <p>@Import(FastDfsClientConfig.class) ---> 导入FastDFS-Client组件</p>
  * <p>@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING) ---> 解决jmx重复注册bean的问题</p>
  *
  * @Created with IDEA
