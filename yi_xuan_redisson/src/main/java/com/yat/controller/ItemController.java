@@ -58,11 +58,12 @@ public class ItemController {
      */
     @RequestMapping("/tryLock")
     public String tryLock() {
-        String result = "fail";
-        if (redissonUtils.tryLock(LOCK_KEY, 1, 30)) {
+        String result;
+        if (redissonUtils.tryLock(LOCK_KEY, 20, 30)) {
             result = getString();
         } else {
             log.info("-------------------------没有拿到琐，退出程序------------------------------------");
+            return "没有拿到琐，退出程序";
         }
         log.info(Thread.currentThread().getName() + ", result: " + result);
         return result;
@@ -91,15 +92,15 @@ public class ItemController {
     @NotNull
     private String getString() {
         String result;
-        log.info("-------------------------拿到琐，执行具体的业务逻辑------------------------------------");
         try {
+            log.info("-------------------------拿到琐，执行具体的业务逻辑------------------------------------");
             Integer stock = redisUtils.get(ITEM_COUNT);
             if (null != stock && stock > 0) {
                 result = "success";
                 redisUtils.decrement(ITEM_COUNT);
                 log.info("-------------------------------秒杀成功-------------------------------");
             } else {
-                log.info("-------------------------------秒杀失败-------------------------------");
+                log.info("-------------------------------秒杀失败，库存不足-------------------------------");
                 result = "fail";
             }
         } finally {

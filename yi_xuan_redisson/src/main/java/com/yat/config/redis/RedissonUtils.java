@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.redisson.api.*;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
@@ -61,8 +60,7 @@ public class RedissonUtils {
      * @return 、
      */
     public <T> RBucket<T> getRBucket(RedissonClient redisson, String objectName) {
-        RBucket<T> bucket = redisson.getBucket(objectName);
-        return bucket;
+        return redisson.getBucket(objectName);
     }
 
     /**
@@ -73,8 +71,7 @@ public class RedissonUtils {
      * @return 、
      */
     public <K, V> RMap<K, V> getRMap(RedissonClient redisson, String objectName) {
-        RMap<K, V> map = redisson.getMap(objectName);
-        return map;
+        return redisson.getMap(objectName);
     }
 
     /**
@@ -85,8 +82,7 @@ public class RedissonUtils {
      * @return 、
      */
     public <V> RSortedSet<V> getRSortedSet(RedissonClient redisson, String objectName) {
-        RSortedSet<V> sortedSet = redisson.getSortedSet(objectName);
-        return sortedSet;
+        return redisson.getSortedSet(objectName);
     }
 
     /**
@@ -97,8 +93,7 @@ public class RedissonUtils {
      * @return 、
      */
     public <V> RSet<V> getRSet(RedissonClient redisson, String objectName) {
-        RSet<V> rSet = redisson.getSet(objectName);
-        return rSet;
+        return redisson.getSet(objectName);
     }
 
     /**
@@ -109,8 +104,7 @@ public class RedissonUtils {
      * @return 、
      */
     public <V> RList<V> getRList(RedissonClient redisson, String objectName) {
-        RList<V> rList = redisson.getList(objectName);
-        return rList;
+        return redisson.getList(objectName);
     }
 
     /**
@@ -121,8 +115,7 @@ public class RedissonUtils {
      * @return 、
      */
     public <V> RQueue<V> getRQueue(RedissonClient redisson, String objectName) {
-        RQueue<V> rQueue = redisson.getQueue(objectName);
-        return rQueue;
+        return redisson.getQueue(objectName);
     }
 
     /**
@@ -133,8 +126,7 @@ public class RedissonUtils {
      * @return 、
      */
     public <V> RDeque<V> getRDeque(RedissonClient redisson, String objectName) {
-        RDeque<V> rDeque = redisson.getDeque(objectName);
-        return rDeque;
+        return redisson.getDeque(objectName);
     }
 
     /**
@@ -268,7 +260,7 @@ public class RedissonUtils {
      * 尝试获取锁 该方法的使用需要注意（小心）
      * 在业务逻辑做操作 if(tryLock(lockKey, waitTime, leaseTime)){执行具体逻辑}else{不再执行}
      *
-     * @param lockKey 、
+     * @param lockKey   、
      * @param unit      时间单位
      * @param waitTime  最多等待时间
      * @param leaseTime 上锁后自动释放锁时间
@@ -304,7 +296,7 @@ public class RedissonUtils {
      * @param lock 、
      */
 
-    public void unlock(RLock lock) {
+    private void unlock(RLock lock) {
         lock.unlock();
     }
 
@@ -315,7 +307,7 @@ public class RedissonUtils {
      * 分布式锁的异步执行 解锁 unlockAsync(key)
      * 在业务逻辑做操作 if(asyncReentrantLock(lockKey, waitTime, leaseTime)){执行具体逻辑}else{不再执行}
      *
-     * @param lockKey  、
+     * @param lockKey   、
      * @param waitTime  最多等待时间
      * @param leaseTime 上锁后自动释放锁时间
      */
@@ -341,9 +333,7 @@ public class RedissonUtils {
     public boolean fairLock(String lockKey, int waitTime, int leaseTime) {
         RLock fairLock = redissonClient.getFairLock(lockKey);
         try {
-            //该方法没有返回值，一定会加锁
-            //fairLock.lock(leaseTime,TIME_TYPE);
-            //该方法需要 判断锁的持有情况
+            // 该方法需要 判断锁的持有情况
             return fairLock.tryLock(waitTime, leaseTime, TIME_TYPE);
         } catch (Exception e) {
             log.error("分布式锁公平锁失败asyncReentrantLock:{}", ExceptionUtils.getStackTrace(e));
@@ -352,10 +342,23 @@ public class RedissonUtils {
     }
 
     /**
+     * 公平锁
+     * 当多个Redisson客户端线程同时请求加锁时，优先分配给先发出请求的线程。
+     *
+     * @param lockKey
+     * @param leaseTime
+     */
+    public void fairLock(String lockKey, int leaseTime) {
+        RLock fairLock = redissonClient.getFairLock(lockKey);
+        // 该方法没有返回值，一定会加锁
+        fairLock.lock(leaseTime, TIME_TYPE);
+    }
+
+    /**
      * 公平锁 的异步执行
      * 保证了当多个Redisson客户端线程同时请求加锁时，优先分配给先发出请求的线程。
      *
-     * @param lockKey 、
+     * @param lockKey   、
      * @param leaseTime 、
      */
     public boolean fairAsyncLock(String lockKey, int waitTime, int leaseTime) {
