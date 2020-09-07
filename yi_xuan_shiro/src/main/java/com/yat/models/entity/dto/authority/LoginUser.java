@@ -1,13 +1,9 @@
 package com.yat.models.entity.dto.authority;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Date;
 
 /**
  * <p>Description: 存储登陆的用户信息 </p>

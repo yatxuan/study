@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity {
 
     @TableId
     private Long id;

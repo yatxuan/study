@@ -1,9 +1,7 @@
 package com.yat.json.gosnjson;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.yat.json.entity.User;
 
 import java.util.ArrayList;
@@ -82,6 +80,11 @@ public class GsonJsonTest {
 
         List jsonToList = GsonJsonUtils.getJsonToList(listToJson);
         System.out.println(jsonToList);
+
+        List<User> fromList = new Gson().fromJson(listToJson, new TypeToken<List<User>>() {
+        }.getType());
+
+        System.out.println(fromList);
     }
 
     private static void objectToJson() {

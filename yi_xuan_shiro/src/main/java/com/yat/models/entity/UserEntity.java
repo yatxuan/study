@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.yat.models.entity.base.BaseEntity;
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * <p>Description: 系统用户表 </p>
  *
@@ -18,7 +20,7 @@ import lombok.*;
 @AllArgsConstructor
 @TableName("tb_user")
 @EqualsAndHashCode(callSuper = false)
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 2180152431279445394L;
     /**

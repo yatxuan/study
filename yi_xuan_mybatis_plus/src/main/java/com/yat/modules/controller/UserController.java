@@ -3,6 +3,7 @@ package com.yat.modules.controller;
 import com.yat.modules.entity.UserEntity;
 import com.yat.modules.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import java.util.List;
  * @Date: 2020/6/8
  * @Time: 16:18
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
