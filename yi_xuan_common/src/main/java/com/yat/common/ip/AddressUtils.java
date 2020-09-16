@@ -1,6 +1,10 @@
 package com.yat.common.ip;
 
 import cn.hutool.core.io.resource.ClassPathResource;
+import cn.hutool.http.useragent.Engine;
+import cn.hutool.http.useragent.OS;
+import cn.hutool.http.useragent.Platform;
+import cn.hutool.http.useragent.UserAgentUtil;
 import com.yat.common.refactoring.toolkit.FileUtil;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -37,6 +41,7 @@ public class AddressUtils {
 
     /**
      * 获取ip地址
+     *
      * @param request /
      * @return /
      */
@@ -120,6 +125,86 @@ public class AddressUtils {
         UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
         Browser browser = userAgent.getBrowser();
         return browser.getName();
+    }
+
+    /**
+     * 获取浏览器版本
+     */
+    public static String getBrowserVersion(HttpServletRequest request) {
+        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.getVersion();
+    }
+
+    /**
+     * 判断终端是否为移动终端
+     */
+    public static boolean isMobile(HttpServletRequest request) {
+        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.isMobile();
+    }
+
+    /**
+     * 获取系统类型
+     *
+     * @return 系统类型
+     */
+    public static OS getOs(HttpServletRequest request) {
+        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.getOs();
+    }
+
+    /**
+     * 获取引擎类型
+     *
+     * @return 引擎类型
+     */
+    public static Engine getEngine(HttpServletRequest request) {
+        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.getEngine();
+    }
+
+    /**
+     * 获取引擎版本
+     *
+     * @return 引擎版本
+     */
+    public static String getEngineVersion(HttpServletRequest request) {
+        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.getEngineVersion();
+    }
+
+    /**
+     * 获取平台类型
+     *
+     * @return 平台类型
+     */
+    public static Platform getPlatform(HttpServletRequest request) {
+        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.getPlatform();
+    }
+
+    /**
+     * 判断当前ip是否属于当前网段
+     *
+     * @param ip   IP地址：192.168.1.12
+     * @param cidr 网段：192.168.1.0/26
+     * @return true-属于，false-不属于
+     */
+    public static boolean isInRange(String ip, String cidr) {
+        String[] ips = ip.split("\\.");
+        int ipAddr = (Integer.parseInt(ips[0]) << 24)
+                | (Integer.parseInt(ips[1]) << 16)
+                | (Integer.parseInt(ips[2]) << 8) | Integer.parseInt(ips[3]);
+        int type = Integer.parseInt(cidr.replaceAll(".*/", ""));
+        int mask = 0xFFFFFFFF << (32 - type);
+        String cidrIp = cidr.replaceAll("/.*", "");
+        String[] cidrIps = cidrIp.split("\\.");
+        int cidrIpAddr = (Integer.parseInt(cidrIps[0]) << 24)
+                | (Integer.parseInt(cidrIps[1]) << 16)
+                | (Integer.parseInt(cidrIps[2]) << 8)
+                | Integer.parseInt(cidrIps[3]);
+
+        return (ipAddr & mask) == (cidrIpAddr & mask);
     }
 
     /**
