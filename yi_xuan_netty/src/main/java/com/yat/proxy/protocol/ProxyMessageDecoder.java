@@ -4,6 +4,12 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
+/**
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:35
+ */
 public class ProxyMessageDecoder extends LengthFieldBasedFrameDecoder {
 
     private static final byte HEADER_SIZE = 4;

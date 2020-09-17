@@ -3,12 +3,10 @@ package com.yat.mvc.annotation;
 import java.lang.annotation.*;
 
 /**
+ * <p>Description: 忽略请求 </p>
  *
- * 忽略请求
- *
- * @author  ynz
- * @email   ynz@myframe.cn
- * @version 创建时间：2018年6月25日 上午9:03:03
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:23
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

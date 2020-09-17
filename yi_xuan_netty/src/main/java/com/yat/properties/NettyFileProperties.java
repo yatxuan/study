@@ -12,9 +12,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
- * @author ynz
- * @version 创建时间：2018/6/26
- * @email ynz@myframe.cn
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:29
  */
 @ConfigurationProperties(prefix = "netty.file")
 @Data

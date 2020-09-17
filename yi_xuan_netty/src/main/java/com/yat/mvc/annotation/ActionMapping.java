@@ -3,12 +3,10 @@ package com.yat.mvc.annotation;
 import java.lang.annotation.*;
 
 /**
+ * <p>Description: 类似RequestMapping </p>
  *
- * 类似RequestMapping
- *
- * @author  ynz
- * @email   ynz@myframe.cn
- * @version 创建时间：2018年6月25日 下午5:22:36
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:23
  */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

@@ -3,9 +3,10 @@ package com.yat.mvc.annotation;
 import java.lang.annotation.*;
 
 /**
- * @author ynz
- * @version 创建时间：2018/6/22
- * @email ynz@myframe.cn
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:23
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

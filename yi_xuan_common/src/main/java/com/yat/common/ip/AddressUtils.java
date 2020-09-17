@@ -1,13 +1,8 @@
 package com.yat.common.ip;
 
 import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.http.useragent.Engine;
-import cn.hutool.http.useragent.OS;
-import cn.hutool.http.useragent.Platform;
-import cn.hutool.http.useragent.UserAgentUtil;
+import cn.hutool.http.useragent.*;
 import com.yat.common.refactoring.toolkit.FileUtil;
-import eu.bitwalker.useragentutils.Browser;
-import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
@@ -38,6 +33,11 @@ public class AddressUtils {
 
     private static final String UNKNOWN = "unknown";
 
+
+    public static void main(String[] args) {
+        String cityInfo = getCityInfo("39.144.1.129");
+        System.out.println(cityInfo);
+    }
 
     /**
      * 获取ip地址
@@ -122,7 +122,7 @@ public class AddressUtils {
      * 获取浏览器信息
      */
     public static String getBrowser(HttpServletRequest request) {
-        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+        UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         Browser browser = userAgent.getBrowser();
         return browser.getName();
     }
@@ -131,7 +131,7 @@ public class AddressUtils {
      * 获取浏览器版本
      */
     public static String getBrowserVersion(HttpServletRequest request) {
-        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+       UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         return userAgent.getVersion();
     }
 
@@ -139,7 +139,7 @@ public class AddressUtils {
      * 判断终端是否为移动终端
      */
     public static boolean isMobile(HttpServletRequest request) {
-        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+       UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         return userAgent.isMobile();
     }
 
@@ -149,7 +149,7 @@ public class AddressUtils {
      * @return 系统类型
      */
     public static OS getOs(HttpServletRequest request) {
-        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+       UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         return userAgent.getOs();
     }
 
@@ -159,7 +159,7 @@ public class AddressUtils {
      * @return 引擎类型
      */
     public static Engine getEngine(HttpServletRequest request) {
-        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+       UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         return userAgent.getEngine();
     }
 
@@ -169,7 +169,7 @@ public class AddressUtils {
      * @return 引擎版本
      */
     public static String getEngineVersion(HttpServletRequest request) {
-        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+       UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         return userAgent.getEngineVersion();
     }
 
@@ -179,7 +179,7 @@ public class AddressUtils {
      * @return 平台类型
      */
     public static Platform getPlatform(HttpServletRequest request) {
-        cn.hutool.http.useragent.UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+       UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         return userAgent.getPlatform();
     }
 

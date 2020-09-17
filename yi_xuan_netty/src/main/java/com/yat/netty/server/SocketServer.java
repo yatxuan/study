@@ -19,15 +19,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author ynz
- * @version 创建时间：2018/6/26
- * @email ynz@myframe.cn
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:28
  */
 @Configuration
 @EnableConfigurationProperties({NettySocketProperties.class})
 @ConditionalOnProperty(  //配置文件属性是否为true
-		value = {"netty.socket.enabled"},
-		matchIfMissing = false
+        value = {"netty.socket.enabled"},
+        matchIfMissing = false
 )
 @Slf4j
 @RequiredArgsConstructor
@@ -38,9 +39,9 @@ public class SocketServer {
 
     @Bean("starSocketServer")
     public String start() {
-        Thread thread =  new Thread(() -> {
-        	NioEventLoopGroup bossGroup = new NioEventLoopGroup(nettySocketProperties.getBossThreads());
-	        NioEventLoopGroup workerGroup = new NioEventLoopGroup(nettySocketProperties.getWorkThreads());
+        Thread thread = new Thread(() -> {
+            NioEventLoopGroup bossGroup = new NioEventLoopGroup(nettySocketProperties.getBossThreads());
+            NioEventLoopGroup workerGroup = new NioEventLoopGroup(nettySocketProperties.getWorkThreads());
             try {
                 log.info("start netty [SocketServer] server ,port: " + nettySocketProperties.getPort());
                 ServerBootstrap boot = new ServerBootstrap();
@@ -49,11 +50,11 @@ public class SocketServer {
                         .handler(new LoggingHandler(LogLevel.INFO))
                         .childHandler(socketPipeline);
                 Channel ch = null;
-               //是否绑定IP
-                if(StringUtils.isNotEmpty(nettySocketProperties.getBindIp())){
-                	ch = boot.bind(nettySocketProperties.getBindIp(),nettySocketProperties.getPort()).sync().channel();
-                }else{
-                	ch = boot.bind(nettySocketProperties.getPort()).sync().channel();
+                //是否绑定IP
+                if (StringUtils.isNotEmpty(nettySocketProperties.getBindIp())) {
+                    ch = boot.bind(nettySocketProperties.getBindIp(), nettySocketProperties.getPort()).sync().channel();
+                } else {
+                    ch = boot.bind(nettySocketProperties.getPort()).sync().channel();
                 }
                 ch.closeFuture().sync();
             } catch (InterruptedException e) {
@@ -74,11 +75,11 @@ public class SocketServer {
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);*/
 
-    	boot.option(ChannelOption.SO_BACKLOG, 1024)
-			.option(ChannelOption.TCP_NODELAY, true)
-			.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-			.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-			.childOption(ChannelOption.SO_KEEPALIVE, true);
+        boot.option(ChannelOption.SO_BACKLOG, 1024)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childOption(ChannelOption.SO_KEEPALIVE, true);
         return boot;
     }
 

@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
  * @author Yat-Xuan
  * @date 2020/8/6 14:05
  */
+@Slf4j
 @Component
 @ConditionalOnProperty(  // 配置文件属性是否为true
         value = {"netty.http.enabled"},
@@ -31,7 +33,7 @@ public class HttpPipeline extends ChannelInitializer<SocketChannel> {
 
     @Override
     public void initChannel(SocketChannel ch) {
-        //	log.error("test", this);
+        log.error("test:{}", this);
         ChannelPipeline p = ch.pipeline();
         p.addLast(new HttpServerCodec());
         p.addLast(new HttpContentCompressor());

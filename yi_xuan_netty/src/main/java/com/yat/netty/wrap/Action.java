@@ -5,11 +5,13 @@ import lombok.Data;
 import java.lang.reflect.Method;
 
 /**
- * @author ynz
- * @version 创建时间：2018/6/21
- * @email ynz@myframe.cn
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:28
  */
 @Data
+@SuppressWarnings("all")
 public class Action {
     String httpMethod;
     Class<?> controllerClass;

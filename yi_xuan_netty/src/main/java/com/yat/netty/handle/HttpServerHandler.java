@@ -25,8 +25,15 @@ import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:25
+ */
 @Component
 @Slf4j
+@SuppressWarnings("all")
 @ChannelHandler.Sharable //@Sharable 注解用来说明ChannelHandler是否可以在多个channel直接共享使用
 public class HttpServerHandler  extends ChannelInboundHandlerAdapter {
 

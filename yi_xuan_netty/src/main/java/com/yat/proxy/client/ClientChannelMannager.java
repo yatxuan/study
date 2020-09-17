@@ -16,9 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * 代理客户端与后端真实服务器连接管理
+ * <p>Description: 代理客户端与后端真实服务器连接管理 </p>
  *
- * @author fengfei
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:32
  */
 @Slf4j
 public class ClientChannelMannager {

@@ -10,6 +10,12 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+/**
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:29
+ */
 @ConfigurationProperties(prefix="netty.ws")
 @Data
 @Validated

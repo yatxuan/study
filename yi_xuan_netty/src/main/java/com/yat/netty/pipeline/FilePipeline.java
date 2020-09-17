@@ -13,9 +13,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
- * @author ynz
- * @version 创建时间：2018/6/26
- * @email ynz@myframe.cn
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:26
  */
 @Component
 @ConditionalOnProperty(  // 配置文件属性是否为true
@@ -34,6 +35,6 @@ public class FilePipeline extends ChannelInitializer<SocketChannel> {
         p.addLast("http-aggregator", new HttpObjectAggregator(65536));
         p.addLast("http-encoder", new HttpResponseEncoder());
         p.addLast("http-chunked", new ChunkedWriteHandler());
-        p.addLast("fileServerHandler",fleServerHandler);
+        p.addLast("fileServerHandler", fleServerHandler);
     }
 }

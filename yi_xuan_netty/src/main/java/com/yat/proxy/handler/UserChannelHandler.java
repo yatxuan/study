@@ -37,7 +37,6 @@ public class UserChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-
         // 当出现异常就关闭连接
         ctx.close();
     }

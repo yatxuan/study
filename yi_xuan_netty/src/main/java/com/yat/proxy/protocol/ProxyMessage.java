@@ -3,10 +3,10 @@ package com.yat.proxy.protocol;
 import java.util.Arrays;
 
 /**
- * 代理客户端与代理服务器消息交换协议
+ * <p>Description: 代理客户端与代理服务器消息交换协议 </p>
  *
- * @author fengfei
- *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:35
  */
 public class ProxyMessage {
 

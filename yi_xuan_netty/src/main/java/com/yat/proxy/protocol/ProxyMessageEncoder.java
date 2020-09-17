@@ -4,6 +4,12 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
+/**
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:35
+ */
 public class ProxyMessageEncoder extends MessageToByteEncoder<ProxyMessage> {
 
     private static final int TYPE_SIZE = 1;

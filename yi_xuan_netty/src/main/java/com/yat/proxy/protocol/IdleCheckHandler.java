@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * check idle chanel.
+ * <p>Description: check idle chanel. </p>
  *
- * @author fengfei
- *
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:35
  */
 public class IdleCheckHandler extends IdleStateHandler {
 

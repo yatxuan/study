@@ -29,9 +29,10 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
 
 /**
- * 类加载器工具类
+ * <p>Description: 类加载器工具类 </p>
  *
- * @author dingnate
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:36
  */
 public class ClassLoaderUtil {
     private static final Logger LOG = LoggerFactory.getLogger(ClassLoaderUtil.class);

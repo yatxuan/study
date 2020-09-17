@@ -18,11 +18,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * HTTPS服务
+ * <p>Description: HTTPS服务 </p>
  *
- * @author ynz
- * @version 创建时间：2018年6月25日 下午5:39:36
- * @email ynz@myframe.cn
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:27
  */
 @Configuration
 @EnableConfigurationProperties({NettyHttpsProperties.class})

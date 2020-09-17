@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.yat.netty.wrap;
 
 import java.io.ByteArrayOutputStream;
@@ -11,12 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * <p>Description: 响应对象 </p>
  *
- * 响应对象
- *
- * @author  ynz
- * @email   ynz@myframe.cn
- * @version 创建时间：2018年6月25日 上午9:03:43
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:29
  */
 public class HttpResponseWrapper {
 	private Map<String, String> headers = new HashMap<String, String>();

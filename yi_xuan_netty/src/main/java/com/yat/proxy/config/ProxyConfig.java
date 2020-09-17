@@ -9,9 +9,10 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * server config
+ * <p>Description: server config </p>
  *
- * @author fengfei
+ * @author Yat-Xuan
+ * @date 2020/9/17 11:33
  */
 @Slf4j
 @Data
@@ -26,14 +27,12 @@ public class ProxyConfig implements Serializable {
 
 
     static {
-
         // 代理配置信息存放在用户根目录下
         String dataPath = System.getProperty("user.home") + "/" + ".lanproxy/";
         File file = new File(dataPath);
         if (!file.isDirectory()) {
             file.mkdir();
         }
-
         CONFIG_FILE = dataPath + "/config.json";
     }
 
@@ -107,7 +106,7 @@ public class ProxyConfig implements Serializable {
                 if (clientInetPortMapping.containsKey(clientKey)) {
                     throw new IllegalArgumentException("密钥同时作为客户端标识，不能重复： " + clientKey);
                 }
-                //        List<ClientProxyMapping> mappings = client.getProxyMappings();
+                // List<ClientProxyMapping> mappings = client.getProxyMappings();
                 List<Integer> ports = Arrays.asList(clientSever.getPort());
                 clientInetPortMapping.put(clientKey, ports);
 
