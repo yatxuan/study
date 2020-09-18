@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
  * <p>Description: 描述 </p>
  *
  * @author Yat-Xuan
- * @date 2020/4/14 17:39
+ * @date 2020/6/8 10:55
  */
 @Data
+@SuppressWarnings("all")
 class ApiError {
 
     private Integer status = 400;

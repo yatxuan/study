@@ -47,6 +47,7 @@ public class MinioController {
     @PostMapping("/upload/{bucketName}")
     public MinioObject saveObject(@RequestParam("multipartFile") MultipartFile multipartFile,
                                   @PathVariable("bucketName") String bucketName) throws IOException {
+
         // 获取原文件名称
         String filename = multipartFile.getOriginalFilename();
         // 重新生成文件名，防止名称冲突

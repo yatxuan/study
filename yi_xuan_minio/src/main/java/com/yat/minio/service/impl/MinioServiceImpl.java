@@ -40,6 +40,7 @@ public class MinioServiceImpl implements MinioService {
         try {
             minioClient = MinioConfig.getInstance();
         } catch (InvalidPortException | InvalidEndpointException e) {
+            log.error("MinIoClient初始化失败{}", e.getMessage());
             throw new CustomException("MinIoClient初始化失败");
         }
     }
@@ -53,22 +54,29 @@ public class MinioServiceImpl implements MinioService {
             return statObject(bucketName, objectName);
         } catch (XmlPullParserException e) {
             log.error("解析返回的XML异常{}", e.getMessage());
+            e.printStackTrace();
             throw new CustomException("解析返回的XML异常");
         } catch (NoSuchAlgorithmException e) {
+            log.error("找不到相应的签名算法{}", e.getMessage());
             throw new CustomException("找不到相应的签名算法");
         } catch (InvalidKeyException e) {
             throw new CustomException("不合法的access key或者secret key");
         } catch (IOException e) {
+            log.error("Minio连接异常{}", e.getMessage());
             throw new CustomException("Minio连接异常");
         } catch (InvalidBucketNameException e) {
             throw new CustomException("不合法的存储桶名称: '" + bucketName + "'");
         } catch (InsufficientDataException | InvalidArgumentException e) {
+            log.error("Minio内部异常{}", e.getMessage());
             throw new CustomException("Minio内部异常");
         } catch (NoResponseException e) {
+            log.error("服务器无响应{}", e.getMessage());
             throw new CustomException("服务器无响应");
         } catch (ErrorResponseException e) {
+            log.error("执行失败{}", e.getMessage());
             throw new CustomException("执行失败");
         } catch (InternalException e) {
+            log.error("内部异常{}", e.getMessage());
             throw new CustomException("内部异常");
         }
     }
@@ -91,25 +99,33 @@ public class MinioServiceImpl implements MinioService {
             }
             return minioObject;
         } catch (XmlPullParserException e) {
+            log.error("解析返回的XML异常{}", e.getMessage());
             throw new CustomException("解析返回的XML异常");
         } catch (NoSuchAlgorithmException e) {
+            log.error("找不到相应的签名算法{}", e.getMessage());
             throw new CustomException("找不到相应的签名算法");
         } catch (InvalidKeyException e) {
             throw new CustomException("不合法的access key或者secret key");
         } catch (IOException e) {
+            log.error("Minio连接异常{}", e.getMessage());
             throw new CustomException("Minio连接异常");
         } catch (InvalidBucketNameException e) {
             throw new CustomException("不合法的存储桶名称: '" + bucketName + "'");
         } catch (InsufficientDataException e) {
+            log.error("Minio内部异常{}", e.getMessage());
             throw new CustomException("Minio内部异常");
         } catch (NoResponseException e) {
+            log.error("服务器无响应{}", e.getMessage());
             throw new CustomException("服务器无响应");
         } catch (ErrorResponseException e) {
+            log.error("执行失败{}", e.getMessage());
             throw new CustomException("执行失败");
         } catch (InternalException e) {
+            log.error("内部异常{}", e.getMessage());
             throw new CustomException("内部异常");
         } catch (InvalidExpiresRangeException e) {
-            throw new CustomException("presigned URL已经过期了");
+            log.error("Minio内部异常{}", e.getMessage());
+            throw new CustomException("内部异常");
         }
     }
 
@@ -130,10 +146,12 @@ public class MinioServiceImpl implements MinioService {
         } catch (InvalidBucketNameException e) {
             throw new CustomException("不合法的存储桶名称: '" + bucketName + "'");
         } catch (NoSuchAlgorithmException e) {
+            log.error("找不到相应的签名算法{}", e.getMessage());
             throw new CustomException("找不到相应的签名算法");
         } catch (InvalidKeyException e) {
             throw new CustomException("不合法的access key或者secret key");
         } catch (IOException e) {
+            log.error("Minio连接异常{}", e.getMessage());
             throw new CustomException("Minio连接异常");
         } catch (MinioException e) {
             log.error("bucketExists方法：{}", e.getMessage());
@@ -147,12 +165,16 @@ public class MinioServiceImpl implements MinioService {
             // 列出所有存储桶
             return minioClient.listBuckets();
         } catch (XmlPullParserException e) {
+            log.error("解析返回的XML异常：{}", e.getMessage());
             throw new CustomException("解析返回的XML异常");
         } catch (NoSuchAlgorithmException e) {
+            log.error("找不到相应的签名算法：{}", e.getMessage());
             throw new CustomException("找不到相应的签名算法");
         } catch (InvalidKeyException e) {
+            log.error("不合法的access key或者secret key：{}", e.getMessage());
             throw new CustomException("不合法的access key或者secret key");
         } catch (IOException e) {
+            log.error("bucketExists方法：{}", e.getMessage());
             throw new CustomException("Minio连接异常");
         } catch (MinioException e) {
             log.error("listBuckets方法：{}", e.getMessage());

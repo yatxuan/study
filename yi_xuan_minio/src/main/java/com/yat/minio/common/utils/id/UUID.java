@@ -1,6 +1,6 @@
 package com.yat.minio.common.utils.id;
 
-import com.yat.minio.common.exception.UtilException;
+import com.yat.minio.common.exception.CustomException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author yat
  */
+@SuppressWarnings("all")
 public final class UUID implements java.io.Serializable, Comparable<UUID> {
 
     private static final long serialVersionUID = -1185015143654744140L;
@@ -432,7 +433,8 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
         try {
             return SecureRandom.getInstance("SHA1PRNG");
         } catch (NoSuchAlgorithmException e) {
-            throw new UtilException("UUID生成异常");
+
+            throw new CustomException("UUID生成异常");
         }
     }
 
