@@ -1,5 +1,6 @@
 package com.yat.social.common.exception;
 
+import io.lettuce.core.RedisConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthResponse;
@@ -24,6 +25,15 @@ public class OauthExceptionHandler extends ResponseEntityExceptionHandler {
         return AuthResponse.builder()
                 .code(ex.getCode())
                 .msg(ex.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(value = {RedisConnectionException.class})
+    public AuthResponse redisConnectionError(RedisConnectionException ex) {
+        log.error("异常数据：------------->{}", ex.getMessage());
+        return AuthResponse.builder()
+                .code(500)
+                .msg("Redis链接超时")
                 .build();
     }
 
