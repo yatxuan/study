@@ -1,4 +1,4 @@
-package com.yat.utils.spring;
+package com.yat.social.common.utils.spring;
 
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
@@ -7,8 +7,6 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * <p>Description: spring工具类 方便在非spring管理环境中获取bean </p>
@@ -26,7 +24,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
     private static ConfigurableListableBeanFactory beanFactory;
 
     @Override
-    public void postProcessBeanFactory( ConfigurableListableBeanFactory beanFactory) throws BeansException {
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         SpringUtils.beanFactory = beanFactory;
     }
 

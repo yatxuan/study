@@ -21,7 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <jasypt.version>2.1.1</jasypt.version>
         <hutool.version>5.3.7</hutool.version>
         <alipay-sdk-version>4.8.10.ALL</alipay-sdk-version>
     </properties>
@@ -52,13 +51,6 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <!--jasypt配置文件加解密-->
-        <dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>${jasypt.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -77,12 +69,11 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-
         <!-- 第三方授权工具类 -->
         <dependency>
             <groupId>me.zhyd.oauth</groupId>
             <artifactId>JustAuth</artifactId>
-            <version>1.14.0</version>
+            <version>1.15.7</version>
         </dependency>
         <!--    支付宝授权登陆，需要单独引入依赖    -->
         <dependency>

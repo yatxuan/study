@@ -20,6 +20,7 @@
 5. [springboot整合Minio文件系统---yi_xuan_minio](https://github.com/yatxuan/study/tree/master/yi_xuan_minio)
 6. [springboot整合Mybatis_plus---yi_xuan_Mybatis_plus](https://github.com/yatxuan/study/tree/master/yi_xuan_mybatis_plus)
 4. [springboot整合netty---yi_xuan_netty]()
+4. [springboot整合oss---yi_xuan_oss]()
 7. [Springboot整合RabbitMQ---yi_xuan_rabbitmq](https://github.com/yatxuan/study/tree/master/yi_xuan_rabbitmq)
 8. [SpringBoot整合MySQL读写分离---yi_xuan_read_write_database](https://github.com/yatxuan/study/tree/master/yi_xuan_read_write_database)
 4. [springboot整合Redis---yi_xuan_redis]()
