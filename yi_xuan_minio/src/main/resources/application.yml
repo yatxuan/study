@@ -21,5 +21,4 @@ spring:
       max-request-size: 10MB
       #      最大支持文件大小
       max-file-size: 10MB
-
 # ---------------------------- FileUpload ----------------------------

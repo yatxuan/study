@@ -1,4 +1,31 @@
 server:
-  port: 9010
+  port: 8877
 
+# ---------------------------- OSS ----------------------------
+# OSS相关配置信息
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com # oss对外服务的访问域名
+    accessKeyId: LTAI4GH9ArAjRMzH7zzzUEaZ # 访问身份验证中用到用户标识
+    secretAccessKey: 4bqw60ABXAZ4JyH2QlGGohnyhWAews # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: yat # oss的存储空间
+    policy:
+      expire: 300 # 签名有效期(S)
+    maxSize: 10 # 上传文件大小(M)
+    callback: http://piercemapping.yatxuan.cn/oss/callback # 文件上传成功后的回调地址
+    dir:
+      prefix: yat/images/ # 上传文件夹路径前缀
+# ---------------------------- OSS ----------------------------
+
+# ---------------------------- FileUpload ----------------------------
+spring:
+  servlet:
+    multipart:
+      #      是否支持 multipart 上传文件
+      enabled: true
+      #      最大支持请求大小
+      max-request-size: 10MB
+      #      最大支持文件大小
+      max-file-size: 10MB
+# ---------------------------- FileUpload ----------------------------
 
