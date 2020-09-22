@@ -1,5 +1,8 @@
 package com.yat.config.alipay;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.yat.common.utils.ResultResponse;
 import com.yat.entity.vo.TradeVo;
 import org.springframework.http.ResponseEntity;
 
@@ -19,9 +22,9 @@ public interface IAliPayApiService {
      *
      * @param trade 支付数据
      * @return 、
-     * @throws Exception 、
+     * @throws AlipayApiException 、
      */
-    ResponseEntity<String> toPayAsPc(TradeVo trade) throws Exception;
+    ResultResponse toPayAsPc(TradeVo trade) throws AlipayApiException;
 
     /**
      * 支付宝手机网页支付
@@ -30,7 +33,7 @@ public interface IAliPayApiService {
      * @return 、
      * @throws Exception 、
      */
-    ResponseEntity<String> toPayAsWeb(TradeVo trade) throws Exception;
+    ResultResponse toPayAsWeb(TradeVo trade) throws Exception;
 
     /**
      * 支付之后跳转的链接
@@ -39,7 +42,7 @@ public interface IAliPayApiService {
      * @param response 、
      * @return 、
      */
-    ResponseEntity<String> returnPage(HttpServletRequest request, HttpServletResponse response);
+    ResultResponse returnPage(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 支付异步通知(要公网访问)，接收异步通知，
@@ -49,7 +52,55 @@ public interface IAliPayApiService {
      * @param request 、
      * @return 、
      */
-    ResponseEntity<Object> notify(HttpServletRequest request);
+    void notify(HttpServletRequest request);
 
+    /**
+     * 查询订单
+     *
+     * @param outTradeNo 商户订单号
+     * @param tradeNo    支付宝交易号
+     * @return 、
+     * @throws AlipayApiException 、
+     */
+    AlipayTradeQueryResponse checkingOrder(String outTradeNo, String tradeNo) throws AlipayApiException;
 
+    /**
+     * 退款
+     *
+     * @param outTradeNo 商户订单号
+     * @param tradeNo    支付宝交易号
+     * @return 、
+     * @throws AlipayApiException 、
+     */
+    ResultResponse refund(String outTradeNo, String tradeNo) throws AlipayApiException;
+
+    /**
+     * 退款
+     *
+     * @param outTradeNo 商户订单号
+     * @param tradeNo    支付宝交易号
+     * @return 、
+     * @throws AlipayApiException 、
+     */
+    ResultResponse refundInquiry(String outTradeNo, String tradeNo) throws AlipayApiException;
+
+    /**
+     * 关闭交易
+     *
+     * @param outTradeNo 商户订单号
+     * @param tradeNo    支付宝交易号
+     * @return 、
+     * @throws AlipayApiException 、
+     */
+    ResultResponse closeTransaction(String outTradeNo, String tradeNo) throws AlipayApiException;
+
+    /**
+     * 下载账单
+     *
+     * @param outTradeNo 商户订单号
+     * @param tradeNo    支付宝交易号
+     * @return 、
+     * @throws AlipayApiException 、
+     */
+    ResultResponse downloadTheBill(String outTradeNo, String tradeNo) throws AlipayApiException;
 }

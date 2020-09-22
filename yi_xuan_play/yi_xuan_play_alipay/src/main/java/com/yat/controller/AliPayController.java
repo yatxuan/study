@@ -1,16 +1,14 @@
 package com.yat.controller;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.yat.common.utils.ResultResponse;
 import com.yat.config.alipay.IAliPayApiService;
 import com.yat.entity.vo.TradeVo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +29,29 @@ public class AliPayController {
     private final IAliPayApiService aliPayApiService;
 
     /**
+     * PC端支付测试
+     *
+     * @param response 、
+     * @throws Exception 、
+     */
+    @GetMapping
+    public void test(HttpServletResponse response) throws Exception {
+        TradeVo trade = new TradeVo();
+        trade.setSubject("手机");
+        trade.setTotalAmount("66");
+        trade.setBody("手机描述介绍");
+
+        ResultResponse resultResponse = aliPayApiService.toPayAsPc(trade);
+        String body = String.valueOf(resultResponse.get("data"));
+        response.setContentType("text/html;charset=utf-8");
+        //直接将完整的表单html输出到页面
+        assert body != null;
+        response.getWriter().write(body);
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
+    /**
      * 支付宝PC网页支付
      * 买家测试账号：mgqxpv9809@sandbox.com
      * 买家测试密码：111111
@@ -38,10 +59,10 @@ public class AliPayController {
      *
      * @param trade 支付数据
      * @return 、
-     * @throws Exception 、
+     * @throws AlipayApiException 、
      */
     @PostMapping("/toPayAsPC")
-    public ResponseEntity<String> toPayAsPc(@Validated @RequestBody TradeVo trade) throws Exception {
+    public ResultResponse toPayAsPc(@Validated @RequestBody TradeVo trade) throws AlipayApiException {
         return aliPayApiService.toPayAsPc(trade);
     }
 
@@ -53,7 +74,7 @@ public class AliPayController {
      * @throws Exception 、
      */
     @PostMapping(value = "/toPayAsWeb")
-    public ResponseEntity<String> toPayAsWeb(@Validated @RequestBody TradeVo trade) throws Exception {
+    public ResultResponse toPayAsWeb(@Validated @RequestBody TradeVo trade) throws Exception {
         return aliPayApiService.toPayAsWeb(trade);
     }
 
@@ -64,9 +85,10 @@ public class AliPayController {
      * @return 、
      */
     @RequestMapping("/notify")
-    public ResponseEntity<Object> notify(HttpServletRequest request) {
+    public ResultResponse notify(HttpServletRequest request) {
         log.info("------------------------------支付异步通知------------------------------");
-        return aliPayApiService.notify(request);
+        aliPayApiService.notify(request);
+        return ResultResponse.success();
     }
 
     /**
@@ -77,9 +99,46 @@ public class AliPayController {
      * @return 、
      */
     @RequestMapping("/return")
-    public ResponseEntity<String> returnPage(HttpServletRequest request, HttpServletResponse response) {
+    public ResultResponse returnPage(HttpServletRequest request, HttpServletResponse response) {
         log.info("------------------------------支付回调地址------------------------------");
         return aliPayApiService.returnPage(request, response);
     }
+
+    /**
+     * 订单查询接口
+     *
+     * @return 、
+     */
+    @RequestMapping("/checking/order")
+    public ResultResponse checkingOrder() throws AlipayApiException {
+        // 商户订单号
+        String outTradeNo = "202009221628058103";
+        // 支付宝交易号
+        String tradeNo = "2020092222001498000508804301";
+        log.info("------------------------------支付订单查询------------------------------");
+        AlipayTradeQueryResponse response = aliPayApiService.checkingOrder(outTradeNo, tradeNo);
+
+        if (response.isSuccess()) {
+            return ResultResponse.success(response);
+        } else {
+            return ResultResponse.error("查询失败", response);
+        }
+    }
+
+    /**
+     * 退款
+     *
+     * @return 、
+     */
+    @RequestMapping("/refund")
+    public ResultResponse refund() throws AlipayApiException {
+        // 商户订单号
+        String outTradeNo = "202009221628058103";
+        // 支付宝交易号
+        String tradeNo = "2020092222001498000508804301";
+        log.info("------------------------------支付退款------------------------------");
+        return aliPayApiService.refund(outTradeNo, tradeNo);
+    }
+
 
 }
