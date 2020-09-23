@@ -37,9 +37,9 @@ public class AliPayController {
     @GetMapping
     public void test(HttpServletResponse response) throws Exception {
         TradeVo trade = new TradeVo();
-        trade.setSubject("手机");
-        trade.setTotalAmount("66");
-        trade.setBody("手机描述介绍");
+        trade.setSubject("iPhone12");
+        trade.setTotalAmount("300");
+        trade.setBody("全新的iPhone手机");
 
         ResultResponse resultResponse = aliPayApiService.toPayAsPc(trade);
         String body = String.valueOf(resultResponse.get("data"));
@@ -92,7 +92,7 @@ public class AliPayController {
     }
 
     /**
-     * 支付之后回调地址
+     * 支付之后-回调地址
      *
      * @param request  、
      * @param response 、
@@ -107,16 +107,15 @@ public class AliPayController {
     /**
      * 订单查询接口
      *
+     * @param outTradeNo 商户订单号
      * @return 、
      */
     @RequestMapping("/checking/order")
-    public ResultResponse checkingOrder() throws AlipayApiException {
-        // 商户订单号
-        String outTradeNo = "202009221628058103";
+    public ResultResponse checkingOrder(String outTradeNo) throws AlipayApiException {
         // 支付宝交易号
         String tradeNo = "2020092222001498000508804301";
         log.info("------------------------------支付订单查询------------------------------");
-        AlipayTradeQueryResponse response = aliPayApiService.checkingOrder(outTradeNo, tradeNo);
+        AlipayTradeQueryResponse response = aliPayApiService.checkingOrder(outTradeNo, null);
 
         if (response.isSuccess()) {
             return ResultResponse.success(response);
@@ -127,17 +126,59 @@ public class AliPayController {
 
     /**
      * 退款
+     * 商户订单号202009231043015824  第三方交易号2020092322001498000508914248
      *
      * @return 、
      */
     @RequestMapping("/refund")
     public ResultResponse refund() throws AlipayApiException {
         // 商户订单号
+        String outTradeNo = "202009231043015824";
+        // 支付宝交易号
+        String tradeNo = "2020092322001498000508914248";
+        log.info("------------------------------支付退款------------------------------");
+        return aliPayApiService.refund(outTradeNo, tradeNo);
+    }
+
+    /**
+     * 退款查询
+     *
+     * @return 、
+     */
+    @RequestMapping("/refundInquiry")
+    public ResultResponse refundInquiry() throws AlipayApiException {
+        // 商户订单号
         String outTradeNo = "202009221628058103";
         // 支付宝交易号
         String tradeNo = "2020092222001498000508804301";
-        log.info("------------------------------支付退款------------------------------");
-        return aliPayApiService.refund(outTradeNo, tradeNo);
+        // 请求退款接口时，传入的退款请求号
+        String outRequestNo = "HZ01RF001222";
+        log.info("------------------------------支付退款查询------------------------------");
+        return aliPayApiService.refundInquiry(outTradeNo, tradeNo, outRequestNo);
+    }
+
+    /**
+     * 关闭交易
+     *
+     * @param outTradeNo 商户订单号
+     * @return 、
+     */
+    @RequestMapping("/closeTransaction")
+    public ResultResponse closeTransaction(String outTradeNo) throws AlipayApiException {
+        log.info("------------------------------关闭交易------------------------------");
+        return aliPayApiService.closeTransaction(outTradeNo, null);
+    }
+
+    /**
+     * 下载账单-报错：入参错误，参考文档：https://opendocs.alipay.com/open/270/105899
+     *
+     * @param billDate 账单时间：日账单格式为yyyy-MM-dd
+     * @return 、
+     */
+    @RequestMapping("/downloadTheBill")
+    public ResultResponse downloadTheBill(String billDate) throws AlipayApiException {
+        log.info("------------------------------下载账单------------------------------");
+        return aliPayApiService.getTheBill(billDate);
     }
 
 

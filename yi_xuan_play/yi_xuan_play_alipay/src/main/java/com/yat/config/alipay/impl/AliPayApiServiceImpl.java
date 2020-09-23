@@ -1,8 +1,11 @@
 package com.yat.config.alipay.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.StreamProgress;
 import cn.hutool.core.lang.Console;
+import cn.hutool.core.lang.ObjectId;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -20,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +48,6 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
     private final AliPayConfig aliPayBean;
     private final AlipayClient alipayClient;
 
-
     @Override
     public ResultResponse toPayAsPc(TradeVo trade) throws AlipayApiException {
 
@@ -65,6 +69,7 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
     @Override
     public ResultResponse toPayAsWeb(TradeVo trade) throws Exception {
 
+        // 商户订单号
         trade.setOutTradeNo(AlipayUtils.getOrderCode());
         // 创建API对应的request(手机网页版)
         AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
@@ -136,17 +141,19 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
             return ResultResponse.error("查询失败，订单不存在", resultResponse);
         }
 
-        Map<String, String> map = new HashMap<>(8);
+        Map<String, Object> map = new HashMap<>(8);
         // 商户订单号
         map.put("out_trade_no", outTradeNo);
         // 支付宝交易号
         map.put("trade_no", tradeNo);
         // 退款金额
-        map.put("refund_amount", resultResponse.getBuyerPayAmount());
+        String buyerPayAmount = "66";
+        BigDecimal amount = new BigDecimal(buyerPayAmount);
+        map.put("refund_amount", amount);
         // 退款备注
         map.put("refund_reason", "正常退款");
-        //
-        map.put("out_request_no", "HZ01RF001");
+        // 标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
+        map.put("out_request_no", StrUtil.swapCase(ObjectId.next()));
         // 操作员编号
         map.put("operator_id", "OP001");
         // 商店编号
@@ -165,14 +172,15 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
     }
 
     @Override
-    public ResultResponse refundInquiry(String outTradeNo, String tradeNo) throws AlipayApiException {
+    public ResultResponse refundInquiry(String outTradeNo, String tradeNo, String outRequestNo) throws AlipayApiException {
 
         Map<String, String> map = new HashMap<>(8);
         // 商户订单号
         map.put("out_trade_no", outTradeNo);
         // 支付宝交易号
         map.put("trade_no", tradeNo);
-        map.put("out_request_no", "2014112611001004680073956707");
+        // 请求退款接口时，传入的退款请求号，如果在退款请求时未传入，则该值为创建交易时的外部交易号
+        map.put("out_request_no", outRequestNo);
 
         AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
         request.setBizContent(new Gson().toJson(map));
@@ -187,11 +195,20 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
     @Override
     public ResultResponse closeTransaction(String outTradeNo, String tradeNo) throws AlipayApiException {
 
-        Map<String, String> map = new HashMap<>(8);
-        // 商户订单号
-        map.put("out_trade_no", outTradeNo);
-        // 支付宝交易号
-        map.put("trade_no", tradeNo);
+        Map<String, String> map = new HashMap<>(3);
+
+        if (StrUtil.isBlank(tradeNo)) {
+            if (StrUtil.isBlank(outTradeNo)) {
+                return ResultResponse.error("关闭交易失败", "参数错误");
+            }
+            // 商户订单号
+            map.put("out_trade_no", outTradeNo);
+        } else {
+            // 支付宝交易号
+            map.put("trade_no", tradeNo);
+        }
+
+        // 卖家端自定义的的操作员 ID
         map.put("operator_id", "YX01");
 
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
@@ -205,15 +222,17 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
     }
 
     @Override
-    public ResultResponse downloadTheBill(String outTradeNo, String tradeNo) throws AlipayApiException {
+    public ResultResponse getTheBill(String billDate) throws AlipayApiException {
 
         Map<String, String> map = new HashMap<>(8);
-        //
+        // 账单类型：trade、signcustomer；
+        // trade指商户基于支付宝交易收单的业务账单；
+        // signcustomer是指基于商户支付宝余额收入及支出等资金变动的帐务账单。
         map.put("bill_type", "trade");
-        //
-        map.put("bill_date", "bill_date");
+        // 账单时间：日账单格式为yyyy-MM-dd，
+        map.put("bill_date", billDate);
 
-        //创建API对应的request类
+        // 创建API对应的request类
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         // 设置业务参数
         request.setBizContent(new Gson().toJson(map));
@@ -235,15 +254,20 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
      * @return 、
      */
     private String getBizContent(TradeVo trade) {
+
         Map<String, Object> extendParams = new HashMap<>(1);
         extendParams.put("sys_service_provider_id", aliPayBean.getSysServiceProviderId());
 
         Map<String, Object> bizContent = new HashMap<>(7);
         bizContent.put("out_trade_no", trade.getOutTradeNo());
+        //  销售产品码，与支付宝签约的产品码名称
         bizContent.put("product_code", "FAST_INSTANT_TRADE_PAY");
+        // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]。类型：Price
         bizContent.put("total_amount", trade.getTotalAmount());
         bizContent.put("subject", trade.getSubject());
         bizContent.put("body", trade.getBody());
+        // 绝对超时时间，格式为yyyy-MM-dd HH:mm:ss 一分钟后超时
+        // bizContent.put("time_expire", DateUtil.offsetMinute(new Date(), 1).toString());
         bizContent.put("extend_params", extendParams);
         return new Gson().toJson(bizContent);
     }
@@ -304,7 +328,6 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
         map.put("sellerId", sellerId);
         map.put("tradeStatus", tradeStatus);
         map.put("totalAmount", totalAmount);
-
         map.put("receiptAmount", receiptAmount);
         map.put("invoiceAmount", invoiceAmount);
         map.put("buyerPayAmount", buyerPayAmount);
@@ -327,7 +350,6 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
      * 下载账单
      */
     private void downloadTheBill(String urlStr) {
-
         // 带进度显示的文件下载
         HttpUtil.downloadFile(urlStr, FileUtil.file("d:/"), new StreamProgress() {
             @Override

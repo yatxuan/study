@@ -33,7 +33,9 @@ public class AlipayUtils {
         String[] split1 = s.split(" ");
         String s1 = split1[0] + split1[1];
         String[] split2 = s1.split(":");
-        return split2[0] + split2[1] + split2[2] + a;
+        String orderNumber = split2[0] + split2[1] + split2[2] + a;
+        System.out.println("下单订单号为-------->" + orderNumber);
+        return orderNumber;
     }
 
     /**

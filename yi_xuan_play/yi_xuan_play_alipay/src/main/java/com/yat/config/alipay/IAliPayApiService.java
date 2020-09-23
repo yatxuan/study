@@ -36,7 +36,7 @@ public interface IAliPayApiService {
     ResultResponse toPayAsWeb(TradeVo trade) throws Exception;
 
     /**
-     * 支付之后跳转的链接
+     * 支付之后跳转的链接(回调地址)
      *
      * @param request  、
      * @param response 、
@@ -50,7 +50,6 @@ public interface IAliPayApiService {
      * 根据trade_status进行后续业务处理
      *
      * @param request 、
-     * @return 、
      */
     void notify(HttpServletRequest request);
 
@@ -75,14 +74,15 @@ public interface IAliPayApiService {
     ResultResponse refund(String outTradeNo, String tradeNo) throws AlipayApiException;
 
     /**
-     * 退款
+     * 退款查询
      *
-     * @param outTradeNo 商户订单号
-     * @param tradeNo    支付宝交易号
+     * @param outTradeNo   商户订单号
+     * @param tradeNo      支付宝交易号
+     * @param outRequestNo 请求退款接口时，传入的退款请求号
      * @return 、
      * @throws AlipayApiException 、
      */
-    ResultResponse refundInquiry(String outTradeNo, String tradeNo) throws AlipayApiException;
+    ResultResponse refundInquiry(String outTradeNo, String tradeNo, String outRequestNo) throws AlipayApiException;
 
     /**
      * 关闭交易
@@ -97,10 +97,9 @@ public interface IAliPayApiService {
     /**
      * 下载账单
      *
-     * @param outTradeNo 商户订单号
-     * @param tradeNo    支付宝交易号
+     * @param billDate 账单时间：日账单格式为yyyy-MM-dd
      * @return 、
      * @throws AlipayApiException 、
      */
-    ResultResponse downloadTheBill(String outTradeNo, String tradeNo) throws AlipayApiException;
+    ResultResponse getTheBill(String billDate) throws AlipayApiException;
 }
