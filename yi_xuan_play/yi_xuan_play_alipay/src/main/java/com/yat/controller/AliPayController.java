@@ -112,8 +112,6 @@ public class AliPayController {
      */
     @RequestMapping("/checking/order")
     public ResultResponse checkingOrder(String outTradeNo) throws AlipayApiException {
-        // 支付宝交易号
-        String tradeNo = "2020092222001498000508804301";
         log.info("------------------------------支付订单查询------------------------------");
         AlipayTradeQueryResponse response = aliPayApiService.checkingOrder(outTradeNo, null);
 

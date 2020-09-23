@@ -102,7 +102,6 @@ public class AliPayApiServiceImpl implements IAliPayApiService {
 
     @Override
     public void notify(HttpServletRequest request) {
-        Map<String, String[]> parameterMap = request.getParameterMap();
         // 内容验签，防止黑客篡改参数
         if (AlipayUtils.rsaCheck(request, aliPayBean)) {
             Map<String, String> map = getMap(request);
