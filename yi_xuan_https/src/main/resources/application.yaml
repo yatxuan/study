@@ -1,7 +1,10 @@
 server:
   ssl:
+#    配置证书别名
     key-alias: tomcat
+#    配置证书密码
     key-store-password: 336699
     key-store-type: PKCS12
+#    配置证书路径(正式环境下，应配置的地址为服务器存放正式的路径)
     key-store: yi_xuan_https\keystore.p12
   port: 9999
