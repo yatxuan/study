@@ -4,10 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.yat</groupId>
-    <artifactId>yi_xuan_rabbitmq</artifactId>
+    <groupId>com.yat</groupId>
+    <artifactId>yi_xuan_rocketmq</artifactId>
     <version>1.0.0</version>
-    <description>Springboot整合RabbitMQ</description>
+
+    <description>RocketMq学习</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -41,21 +42,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
-        <!-- 实现对 RabbitMQ 的自动化配置 -->
+        <!-- RocketMq 依赖 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.3.0</version>
         </dependency>
 
-        <!-- 方便等会写单元测试 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
+
 </project>

@@ -6,5 +6,5 @@ server:
     key-store-password: 336699
     key-store-type: PKCS12
 #    配置证书路径(正式环境下，应配置的地址为服务器存放正式的路径)
-    key-store: yi_xuan_https\keystore.p12
+    key-store: /usr/data/api/https/keystore.p12
   port: 9999

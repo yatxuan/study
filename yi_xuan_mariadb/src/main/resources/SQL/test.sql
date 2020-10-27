@@ -1,3 +1,18 @@
+/*
+Navicat MariaDB Data Transfer
+
+Source Server         : 虚拟机-fastDfs
+Source Server Version : 100506
+Source Host           : 192.168.8.131:32768
+Source Database       : test
+
+Target Server Type    : MariaDB
+Target Server Version : 100506
+File Encoding         : 65001
+
+Date: 2020-10-26 17:47:53
+*/
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -5,16 +20,16 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
-  `id` bigint(20) NOT NULL COMMENT '主键ID',
-  `name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '姓名',
+  `id` varchar(50) NOT NULL COMMENT '主键ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '姓名',
   `age` int(11) DEFAULT NULL COMMENT '年龄',
-  `email` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '邮箱',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `version` int(11) DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of tb_user

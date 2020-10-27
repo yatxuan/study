@@ -10,8 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import static com.yat.config.socket.SocketHandler.register;
 
@@ -32,7 +31,22 @@ public class SocketServer {
     private Integer port;
     private boolean started;
     private ServerSocket serverSocket;
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    /**
+     * 创建线程池
+     * ThreadPoolExecutor(int corePoolSize,             即使空闲时仍保留在池中的线程数，除非设置 allowCoreThreadTimeOut
+     * int maximumPoolSize,                    池中允许的最大线程数
+     * long keepAliveTime,                     当线程数大于核心时，这是多余的空闲线程在终止之前等待新任务的最大时间。
+     * TimeUnit unit,                          keepAliveTime参数的时间单位
+     * new ArrayBlockingQueue<Runnable>(5)     在执行任务之前用于保存任务的队列。 该队列将仅保存execute方法提交的Runnable任务。
+     * )
+     */
+    private ExecutorService executorService =
+            new ThreadPoolExecutor(
+                    0, Integer.MAX_VALUE,
+                    60L, TimeUnit.SECONDS,
+                    new SynchronousQueue<>(), Executors.defaultThreadFactory(),
+                    new ThreadPoolExecutor.AbortPolicy()
+            );
 
     public static void main(String[] args) {
         new SocketServer().start(8068);

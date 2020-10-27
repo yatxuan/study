@@ -12,18 +12,20 @@ import static com.yat.config.socket.SocketPool.add;
 import static com.yat.config.socket.SocketPool.remove;
 
 /**
- * Socket操作处理类
+ * <p>Description: Socket操作处理类 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/10/26 9:37
  */
 @Slf4j
 public class SocketHandler{
 
-
     /**
      * 将连接的Socket注册到Socket池中
-     * @param socket
-     * @return
+     * @param socket 、
+     * @return 、
      */
-    public static ClientSocket register(Socket socket){
+    static ClientSocket register(Socket socket){
         ClientSocket clientSocket = new ClientSocket();
         clientSocket.setSocket(socket);
         try {
@@ -42,10 +44,10 @@ public class SocketHandler{
 
     /**
      * 向指定客户端发送信息
-     * @param clientSocket
-     * @param message
+     * @param clientSocket 、
+     * @param message 、
      */
-    public static void sendMessage(ClientSocket clientSocket, String message){
+    static void sendMessage(ClientSocket clientSocket, String message){
         try {
             clientSocket.getOutputStream().write(message.getBytes(StandardCharsets.UTF_8));
             // clientSocket.getOutputStream().writeUTF(message);
@@ -57,8 +59,8 @@ public class SocketHandler{
 
     /**
      * 获取指定客户端的上传信息
-     * @param clientSocket
-     * @return
+     * @param clientSocket 、
+     * @return 、
      */
     public static String onMessage(ClientSocket clientSocket){
         byte[] bytes = new byte[1024];
@@ -74,9 +76,9 @@ public class SocketHandler{
 
     /**
      * 指定Socket资源回收
-     * @param clientSocket
+     * @param clientSocket 、
      */
-    public static void close(ClientSocket clientSocket){
+    static void close(ClientSocket clientSocket){
         log.info("进行资源回收");
         if (clientSocket != null){
             log.info("开始回收socket相关资源，其Key为{}", clientSocket.getKey());
@@ -100,10 +102,10 @@ public class SocketHandler{
 
     /**
      * 发送数据包，判断数据连接状态
-     * @param clientSocket
-     * @return
+     * @param clientSocket 、
+     * @return 、
      */
-    public static boolean isSocketClosed(ClientSocket clientSocket){
+    static boolean isSocketClosed(ClientSocket clientSocket){
         try {
             clientSocket.getSocket().sendUrgentData(1);
             return false;

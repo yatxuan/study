@@ -2,6 +2,12 @@ package com.yat.config.socket;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/10/26 9:38
+ */
 public class SocketPool {
 
     private static final ConcurrentHashMap<String, ClientSocket> ONLINE_SOCKET_MAP = new ConcurrentHashMap<>();

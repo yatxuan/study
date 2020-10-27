@@ -25,10 +25,8 @@ public class RedissonController {
 
     private final RedissonUtils redissonUtils;
 
-
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     private static String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(new Date());
     }
 
@@ -44,10 +42,9 @@ public class RedissonController {
         final String lockKey = "lockKey";
 
         new Thread(() -> {
-
             redissonUtils.lock(lockKey, TimeUnit.MINUTES, 10);
-
             System.out.println(getCurrentDate() + " " + name + " begin...");
+
             for (int i = 0; i < 20; i++) {
                 try {
                     Thread.sleep(1000);
@@ -56,8 +53,8 @@ public class RedissonController {
                     e.printStackTrace();
                 }
             }
-            System.out.println(getCurrentDate() + " " + name + " end...");
 
+            System.out.println(getCurrentDate() + " " + name + " end...");
             redissonUtils.unlock(lockKey);
         }).start();
 

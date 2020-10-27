@@ -1,18 +1,16 @@
-package com.yat.modules.entity;
+package com.yat.mariadb.modules.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.yat.modules.entity.base.BaseEntity;
+import com.yat.mariadb.modules.entity.base.BaseEntity;
 import lombok.*;
 
 import java.util.Date;
 
 /**
- * <p>Description: 测试表 </p>
+ * <p>Description: 用户表 </p>
  *
- * @Created with IDEA
- * @author: Yat
- * @Date: 2020/5/20
- * @Time: 10:39
+ * @author Yat-Xuan
+ * @date 2020/10/26 15:24
  */
 @Getter
 @Setter
