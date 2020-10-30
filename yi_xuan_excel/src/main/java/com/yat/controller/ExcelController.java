@@ -1,6 +1,7 @@
 package com.yat.controller;
 
 import com.yat.model.PhoneModel;
+import com.yat.model.Temporary;
 import com.yat.util.AbstractExcelParam;
 import com.yat.util.ExcelParam;
 import com.yat.util.ExcelUtil;
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>Description: 描述 </p>
@@ -31,6 +31,28 @@ public class ExcelController {
     @GetMapping(value = "/")
     public String ss1() {
         return "index";
+    }
+
+    /**
+     * 临时导入，读取数据
+     *
+     * @param file 、
+     * @return 、
+     * @throws Exception 、
+     */
+    @PostMapping(value = "/temporary")
+    @ResponseBody
+    public List<Temporary> temporary(MultipartFile file) throws Exception {
+        List<Temporary> list = ExcelUtil.readXls(file.getBytes(), Temporary.class);
+
+        list = list.stream()
+                .filter(temporary -> !temporary.getC().equals("字符"))
+                .filter(temporary -> !temporary.getC().equals("数值"))
+                .filter(temporary -> !temporary.getC().equals("YYYY-MM-DD"))
+                .collect(Collectors.toList());
+        System.out.println(list.size());
+
+        return list;
     }
 
     /**

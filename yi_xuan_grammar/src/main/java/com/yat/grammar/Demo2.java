@@ -1,8 +1,5 @@
 package com.yat.grammar;
 
-import com.yat.entity.UserEntity;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +13,7 @@ import java.util.List;
 public class Demo2 {
 
     public static void main(String[] args) {
+
         List<String> list = Arrays.asList("aaaa", "bbbb", "cccc");
         list.forEach(new Demo2()::getPrint);
 
