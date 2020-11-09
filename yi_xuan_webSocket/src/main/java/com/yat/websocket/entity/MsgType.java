@@ -1,8 +1,10 @@
 package com.yat.websocket.entity;
 
 /**
- * @author: yat
- * @date: 2019-08-10 9:56
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/11/9 11:44
  */
 public enum MsgType {
     /**

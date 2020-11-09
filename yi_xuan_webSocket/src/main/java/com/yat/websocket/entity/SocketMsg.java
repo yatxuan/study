@@ -3,8 +3,10 @@ package com.yat.websocket.entity;
 import lombok.Data;
 
 /**
- * @author: yat
- * @date: 2019-08-10 9:55
+ * <p>Description: 描述 </p>
+ *
+ * @author Yat-Xuan
+ * @date 2020/11/9 11:44
  */
 @Data
 public class SocketMsg {

@@ -16,5 +16,6 @@ public class WebSocketApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WebSocketApplication.class);
+        System.out.println("-----------------------------------------------程序初始化完成-----------------------------------------------");
     }
 }

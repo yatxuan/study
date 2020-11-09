@@ -14,6 +14,7 @@ public class MybatisPlusApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MybatisPlusApplication.class);
+        System.out.println("--------------------------------系统初始化结束-----------------------------------");
     }
 
 }
