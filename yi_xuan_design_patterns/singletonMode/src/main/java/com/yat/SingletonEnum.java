@@ -1,4 +1,4 @@
-package com.yat.enumeration;
+package com.yat;
 
 /**
  * <p>Description: 枚举单例模式 </p>
@@ -10,7 +10,7 @@ package com.yat.enumeration;
 public enum SingletonEnum {
 
     /**
-     *
+     *初始化
      */
     INSTANCE;
 

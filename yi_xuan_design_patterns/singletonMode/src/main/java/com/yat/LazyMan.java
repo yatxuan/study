@@ -14,6 +14,7 @@ public class LazyMan {
     private static LazyMan instance;
 
     private LazyMan() {
+        System.err.println("--------进入LazyMan构造方法----------");
     }
 
     public static LazyMan getInstance() {

@@ -15,6 +15,7 @@ public class HungryChinese {
     private static HungryChinese instance = new HungryChinese();
 
     private HungryChinese() {
+        System.err.println("--------进入HungryChinese构造方法----------");
     }
 
     public static HungryChinese getInstance() {
