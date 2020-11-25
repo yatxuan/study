@@ -8,8 +8,6 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * <p>Description: spring工具类 方便在非spring管理环境中获取bean </p>
  *
