@@ -12,8 +12,9 @@
     <description>23种设计模式</description>
 
     <modules>
-        <module>singletonMode</module>
-        <module>strategyMode</module>
+        <module>factory_mode</module>
+        <module>singleton_mode</module>
+        <module>strategy_mode</module>
     </modules>
 
     <properties>
