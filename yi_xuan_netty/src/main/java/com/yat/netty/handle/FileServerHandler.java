@@ -15,18 +15,21 @@ import java.io.RandomAccessFile;
 
 /**
  * <p>Description: 描述 </p>
+ * <p>@Sharable 注解用来说明ChannelHandler是否可以在多个channel直接共享使用</p>
  *
  * @author Yat-Xuan
  * @date 2020/9/17 11:25
  */
 @Component
 @Slf4j
-@ChannelHandler.Sharable //@Sharable 注解用来说明ChannelHandler是否可以在多个channel直接共享使用
+@ChannelHandler.Sharable
 public class FileServerHandler extends ChannelInboundHandlerAdapter {
 
     // private static final Pattern ALLOWED_FILE_NAME = Pattern.compile("[A-Za-z0-9][-_A-Za-z0-9\\.]*");
 
-    //文件存放路径
+    /**
+     * 文件存放路径
+     */
     @Value("${netty.file.path:}")
     String path;
 
@@ -48,7 +51,6 @@ public class FileServerHandler extends ChannelInboundHandlerAdapter {
                         } else {
                             sendRedirect(ctx, url + "/");
                         }
-                        return;
                     } else {
                         transferFile(file, ctx);
                     }
@@ -57,7 +59,7 @@ public class FileServerHandler extends ChannelInboundHandlerAdapter {
                 }
             }
         } catch (Exception e) {
-            log.error("Exception:{}", e);
+            log.error("Exception:" + e);
             sendError(ctx, HttpResponseStatus.BAD_REQUEST);
         }
     }
@@ -65,8 +67,8 @@ public class FileServerHandler extends ChannelInboundHandlerAdapter {
     /**
      * 传输文件
      *
-     * @param file
-     * @param ctx
+     * @param file \
+     * @param ctx  \
      */
     private void transferFile(File file, ChannelHandlerContext ctx) {
         try {
@@ -80,14 +82,14 @@ public class FileServerHandler extends ChannelInboundHandlerAdapter {
             ChannelFuture lastContentFuture = ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
             lastContentFuture.addListener(ChannelFutureListener.CLOSE);
         } catch (Exception e) {
-            log.error("Exception:{}", e);
+            log.error("Exception:" + e);
         }
     }
 
     /**
      * 监听传输状态
      *
-     * @param sendFileFuture
+     * @param sendFileFuture \
      */
     private void addListener(ChannelFuture sendFileFuture) {
         sendFileFuture.addListener(new ChannelProgressiveFutureListener() {
@@ -112,8 +114,8 @@ public class FileServerHandler extends ChannelInboundHandlerAdapter {
     /**
      * 请求为目录时，显示文件列表
      *
-     * @param ctx
-     * @param dir
+     * @param ctx \
+     * @param dir \
      */
     private static void sendListing(ChannelHandlerContext ctx, File dir) {
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
