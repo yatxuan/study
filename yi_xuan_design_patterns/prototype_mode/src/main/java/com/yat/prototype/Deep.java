@@ -3,6 +3,7 @@ package com.yat.prototype;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <p>Description: 描述 </p>
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Deep implements Cloneable {
     private String name;
 

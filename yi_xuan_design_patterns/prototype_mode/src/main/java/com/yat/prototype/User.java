@@ -32,8 +32,10 @@ public class User {
         FileConcretePrototype fileC = (FileConcretePrototype) fileA.clone();
 
         fileA.show();
+        fileB.getDeep().setName("次要文件");
         fileB.show();
         fileC.show();
+        fileA.show();
 
 
     }
