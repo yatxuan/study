@@ -33,6 +33,7 @@ public class User {
 
         fileA.show();
         fileB.getDeep().setName("次要文件");
+        fileB.setFilename("filename");
         fileB.show();
         fileC.show();
         fileA.show();

@@ -41,7 +41,7 @@ public abstract class Prototype implements Cloneable {
     private Deep deep;
 
     @Override
-    protected Prototype clone() {
+    public Prototype clone() {
         Prototype prototype = null;
         try {
             // 有下面这句话就能实现浅拷贝
