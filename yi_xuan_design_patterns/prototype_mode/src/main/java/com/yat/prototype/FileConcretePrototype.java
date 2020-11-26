@@ -1,5 +1,7 @@
 package com.yat.prototype;
 
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -10,6 +12,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2020/11/26 - 11:43
  */
+@NoArgsConstructor
 public class FileConcretePrototype extends Prototype {
 
     public FileConcretePrototype(Integer fileId, String filename, Map<String, Double> scores, ArrayList<Integer> list, Deep deep) {

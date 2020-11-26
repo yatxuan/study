@@ -2,6 +2,7 @@ package com.yat.prototype;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +39,16 @@ public class User {
         fileC.show();
         fileA.show();
 
+        List<FileConcretePrototype> fileList = new ArrayList<>(10);
 
+        for (int i = 0, num = 10; i < num; i++) {
+            FileConcretePrototype fileD = (FileConcretePrototype) fileA.clone();
+            fileD.setFilename("循环次数：" + i);
+            fileD.getDeep().setName("次要文件:" + i);
+            fileList.add(fileD);
+        }
+
+        fileA.show();
+        System.out.println(fileList);
     }
 }
