@@ -26,10 +26,10 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         log.info("start insert fill ....");
         Date date = new Date();
-        this.setFieldValByName("createTime", date, metaObject);
-        this.setFieldValByName("updateTime", date, metaObject);
-        this.setFieldValByName("version", 1, metaObject);
-        this.setFieldValByName("deleted", 0, metaObject);
+        this.strictInsertFill(metaObject, "createTime", Date.class, date);
+        this.strictInsertFill(metaObject, "updateTime", Date.class, date);
+        this.strictInsertFill(metaObject, "version", Integer.class, 1);
+        this.strictInsertFill(metaObject, "deleted", Integer.class, 0);
     }
 
     /**
@@ -41,6 +41,6 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         log.info("start update fill ....");
 
-        this.setFieldValByName("updateTime", new Date(), metaObject);
+        this.strictUpdateFill(metaObject, "updateTime", Date.class, new Date());
     }
 }

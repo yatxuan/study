@@ -4,6 +4,6 @@
 
 
     <select id="selectPageVo" resultType="com.yat.modules.entity.UserEntity">
-        SELECT id,`name` FROM `user` WHERE age=#{age}
+        SELECT id,`name` FROM `tb_user` WHERE age=#{age}
     </select>
 </mapper>
