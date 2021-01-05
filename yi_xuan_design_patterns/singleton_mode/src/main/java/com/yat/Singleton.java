@@ -20,7 +20,7 @@ public class Singleton implements Serializable {
         System.err.println("--------进入Singleton构造方法----------");
     }
 
-    public static final Singleton getInstance() {
+    public static Singleton getInstance() {
         return SingletonHolder.INSTANCE;
     }
 }

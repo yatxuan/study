@@ -15,6 +15,9 @@
         <module>factory_mode</module>
         <module>singleton_mode</module>
         <module>strategy_mode</module>
+        <module>builder_mode</module>
+        <module>prototype_mode</module>
+        <module>proxy_mode</module>
     </modules>
 
     <properties>
