@@ -34,12 +34,4 @@
 12. [Springboot-MySql分库分表+读写分离---yi_xuan_sub_database_table_read_write](https://github.com/yatxuan/study/tree/master/yi_xuan_sub_database_table_read_write)
 13. [SpringBoot整合WebSocket---yi_xuan_webSocket](https://github.com/yatxuan/study/tree/master/yi_xuan_webSocket)
 
-## 感谢
-
-如果您感觉我写的文章对您有用，或者解决了您的问题，想请作者喝瓶水的，请扫下方。
-
-<p>
-    <img width="100" src="http://minio.yatxuan.cn/pic/1514546b772b4d03bd5719bdd91393e4.png" >
-    <img width="100" src="http://minio.yatxuan.cn/pic/19f370c443884cb28391909a1416f35d.jpg" >
-</p>
    
